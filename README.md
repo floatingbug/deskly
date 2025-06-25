@@ -56,3 +56,27 @@ GET    /api/spaces/:id      // Details anzeigen
 POST   /api/spaces          // (Admin) Space anlegen
 POST   /api/bookings        // Space buchen
 GET    /api/bookings        // Eigene Buchungen anzeigen
+```
+
+---
+
+## 🖥️ Frontend-Seiten
+
+- **Home:** Such- & Filterfunktionen, Ergebnisliste  
+- **Login/Register:** Auth-Formulare  
+- **Space-Details:** Infos & Buchung  
+- **Dashboard (User/Admin):** Buchungsübersicht, Space-Verwaltung  
+
+---
+
+## ✅ Features geplant
+
+- E-Mail-Bestätigung  
+- Echtzeitverfügbarkeit via Socket.io  
+- Bewertungen & Kommentare  
+
+---
+
+## 📄 Lizenz
+
+MIT License
