@@ -1,11 +1,10 @@
 const {getDB} = require("@config/db");
 
 
-async function register({doc}){
+async function getSpaceById({query}){
 	try{
 		const db = await getDB();
-		const result = await db.collection("users").insertOne(doc);
-
+		const result = await db.collection("spaces").findOne(query);
 		return result;
 	}
 	catch(error){
@@ -14,4 +13,4 @@ async function register({doc}){
 }
 
 
-module.exports = register;
+module.exports = getSpaceById;

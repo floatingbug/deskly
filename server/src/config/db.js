@@ -1,4 +1,4 @@
-const {MongoClient} = require("mongodb");
+const {MongoClient, ObjectId} = require("mongodb");
 const url = process.env.MONGO_URL;
 let db = null;
 
@@ -36,4 +36,5 @@ async function getDB(){
 module.exports = {
 	connectDB,
 	getDB,
+	ObjectId,
 };

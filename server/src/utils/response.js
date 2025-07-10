@@ -1,4 +1,4 @@
-function response(res, {success, code, message = "", errors = [], data: {}}){
+function response(res, {success, code, message = "", errors = [], data = {}}){
 	if(success){
 		return res.status(code).
 			json({

@@ -1,10 +1,10 @@
 const {getDB} = require("@config/db");
 
 
-async function register({doc}){
+async function login({query}){
 	try{
 		const db = await getDB();
-		const result = await db.collection("users").insertOne(doc);
+		const result = await db.collection("users").findOne(query);
 
 		return result;
 	}
@@ -14,4 +14,4 @@ async function register({doc}){
 }
 
 
-module.exports = register;
+module.exports = login;
