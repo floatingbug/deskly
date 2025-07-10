@@ -2,8 +2,8 @@
 </script>
 
 
-<template>
-</template>
+<template>    
+</template>   
 
 
 <style scoped>

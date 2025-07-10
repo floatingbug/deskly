@@ -1,7 +1,45 @@
 @import './base.css';
 
 
+@font-face {
+	font-family: 'Roboto';
+	src: url('/fonts/Roboto-Regular.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+
 body {
+	font-family: 'Roboto', sans-serif;
+	font-size: 0.8rem;
 	margin: 0;
 	padding: 0;
+	box-sizing: border-box;
+}
+
+
+.layout {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 4rem;
+	margin-bottom: 12rem;
+}
+
+::-webkit-scrollbar {
+  width: 6px; /* Standard: 16px */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.errors {
+	color: var(--p-red-500);
 }
