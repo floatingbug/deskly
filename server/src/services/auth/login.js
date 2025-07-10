@@ -47,7 +47,13 @@ async function login({nameOrEmail, password}){
 			success: true,
 			code: 200,
 			message: "Sent token.",
-			data: token,
+			data: {
+				user: {
+					name: user.name,
+					role: user.role,
+					jwt: token,
+				}
+			}
 		};
 	}
 	catch(error){
