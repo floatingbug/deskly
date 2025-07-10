@@ -6,7 +6,7 @@ import useDevice from "@/composables/useDevice.js";
 
 
 const {device} = useDevice();
-const {user} = useUserStore();
+const {user, unsetUser} = useUserStore();
 const router = useRouter();
 const isActionsClosed = ref(true);
 const actionButtonsRoleUser = ref([
@@ -70,6 +70,14 @@ function closeActions(event){
 	if(event.target.attributes.type && event.target.attributes.type.value === "button"){
 		isActionsClosed.value = true;
 	}
+}
+
+function onSignOutButtonClick(){
+	localStorage.removeItem("jwt");
+	localStorage.removeItem("isSignedIn");
+	unsetUser();
+
+	router.push("/auth/sign-in");
 }
 
 </script>
@@ -201,6 +209,7 @@ function closeActions(event){
 						variant="outlined"
 						severity="secondary"
 						size="small"
+						@click="onSignOutButtonClick"
 					>
 						Sign out
 					</Button>

@@ -9,6 +9,10 @@ const disabledDates = ref([
 ]);
 
 
+function onBookButtonClick(){
+	console.log(bookedDates.value);
+}
+
 </script>
 
 
@@ -57,6 +61,7 @@ const disabledDates = ref([
 		</InputGroup>
 
 		<Button 
+			@click="onBookButtonClick"
 		>
 			<i class="pi pi-check"></i>
 			Book

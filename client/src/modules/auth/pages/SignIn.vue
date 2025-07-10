@@ -3,9 +3,11 @@ import {ref, reactive, watch} from "vue";
 import {useRouter} from "vue-router";
 import AuthLayout from "../layouts/AuthLayout.vue";
 import signInAPI from "../api/signInAPI.js";
+import useUserStore from "@/stores/useUserStore.js";
 
 
 const router = useRouter();
+const {setUser, user} = useUserStore();
 const credentials = reactive({
 	nameOrEmail: "",
 	password: "",
@@ -26,9 +28,11 @@ async function onSignInButtonClick(){
 		return;
 	}
 
-	console.log(result.data);
-	
-	//router.push("/spaces");
+	setUser(result.data.user);
+	localStorage.setItem("jwt", user.jwt);
+	localStorage.setItem("isSignedIn", true);
+
+	router.push("/spaces");
 }
 
 </script>

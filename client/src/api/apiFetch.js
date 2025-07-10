@@ -1,10 +1,15 @@
 const API_URL = import.meta.env.VITE_API_URL;
+import useUserStore from "@/stores/useUserStore.js";
+
+
+const {user} = useUserStore();
 
 
 export default async function apiFetch({path, options, addJwt = false}){
 	const url = `${API_URL}${path}`;
 
-	//if(addJwt) options.headers.authorization = user.jwt;
+	if(addJwt && user.isSignedIn) options.headers.authorization = user.jwt;
+	else if(addJwt) options.headers.authorization = localStorage.getItem("jwt");
 
 	try{
 		const response = await fetch(url, options);
