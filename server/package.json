@@ -24,6 +24,7 @@
 	  "@config": "src/config",
 	  "@models": "src/models",
 	  "@services": "src/services",
-	  "@utils": "src/utils"
+	  "@utils": "src/utils",
+	  "@middleware": "src/middleware"
   }
 }
