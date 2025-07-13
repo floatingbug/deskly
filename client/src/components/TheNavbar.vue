@@ -14,25 +14,29 @@ const actionButtonsRoleUser = ref([
 		label: "Home",
 		id: "home",
 		isActive: false,
-		path : "/"
+		path : "/",
+		icon: "pi pi-home",
 	},
 	{
 		label: "Spaces",
 		id: "spaces",
 		isActive: false,
-		path : "/spaces"
+		path : "/spaces",
+		icon: "pi pi-th-large",
 	},
 	{
 		label: "My Bookings",
 		id: "myBookings",
 		isActive: false,
-		path : "/my-bookings"
+		path : "/my-bookings",
+		icon: "pi pi-list",
 	},
 	{
 		label: "Contact",
 		id: "contact",
 		isActive: false,
-		path : "/contact"
+		path : "/contact",
+		icon: "pi pi-envelope",
 	},
 ]);
 
@@ -41,19 +45,22 @@ const actionButtonsSignedOutUser = ref([
 		label: "Home",
 		id: "home",
 		isActive: false,
-		path : "/"
+		path : "/",
+		icon: "pi pi-home",
 	},
 	{
 		label: "Spaces",
 		id: "spaces",
 		isActive: false,
-		path : "/spaces"
+		path : "/spaces",
+		icon: "pi pi-th-large",
 	},
 	{
 		label: "Contact",
 		id: "contact",
 		isActive: false,
-		path : "/contact"
+		path : "/contact",
+		icon: "pi pi-envelope",
 	},
 ]);
 
@@ -120,6 +127,7 @@ function onSignOutButtonClick(){
 					>
 						<Button
 							:label="button.label"
+							:icon="button.icon"
 							:class="button.isActive ? 'button-selected' : ''"
 							variant="outlined"
 							size="small"
@@ -191,6 +199,7 @@ function onSignOutButtonClick(){
 					>
 						<Button
 							:label="button.label"
+							:icon="button.icon"
 							:class="button.isActive ? 'button-selected' : ''"
 							variant="outlined"
 							size="small"

@@ -4,6 +4,7 @@ import { RouterLink, RouterView } from 'vue-router'
 import TheNavbar from "@/components/TheNavbar.vue";
 import useUserStore from "@/stores/useUserStore.js";
 import fetchUserByJwtAPI from "@/api/fetchUserByJwtAPI.js";
+import Toast from 'primevue/toast';
 
 
 const {setUser} = useUserStore();
@@ -23,9 +24,13 @@ onMounted(async () => {
 
 <template>
 	<TheNavbar />
+	<Toast />
 
 	<RouterView />
 </template>
 
-<style scoped>
+<style>
+.p-toast {
+	z-index: 5000 !important;
+}
 </style>

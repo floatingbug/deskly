@@ -18,6 +18,8 @@ import semantic from "./theming/semantic.js";
 import components from "./theming/components.js";
 import Textarea from 'primevue/textarea';
 import Dialog from 'primevue/dialog';
+import Divider from "primevue/divider";
+import ToastService from 'primevue/toastservice';
 
 
 const app = createApp(App)
@@ -27,6 +29,7 @@ const MyPreset = definePreset(Aura, {
 	components,
 });
 
+app.use(ToastService);
 app.use(PrimeVue, {
     theme: {
         preset: MyPreset,
@@ -44,6 +47,7 @@ app.component("FloatLabel", FloatLabel);
 app.component("DatePicker", DatePicker);
 app.component("Textarea", Textarea);
 app.component("Dialog", Dialog);
+app.component("Divider", Divider);
 
 app.use(router)
 

@@ -11,7 +11,7 @@ const {spacesStoreSpaces} = useSpacesStore();
 const showDialog = ref(false);
 
 
-function onCardClick(){
+function onCardClick(space){
 	if(!user.isSignedIn){
 		showDialog.value = true;
 	}
@@ -52,7 +52,7 @@ function onCardClick(){
 		class="space-card"
 		v-for="(space, index) in spacesStoreSpaces"
 		:key="index"
-		@click="onCardClick"
+		@click="onCardClick(space)"
 	>
 		<div class="space-card__head">
 			<div class="space-card__head-top">

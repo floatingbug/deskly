@@ -167,6 +167,16 @@ async function onFilterAction(event){
 				
 				<Sort @sort:action="onSortAction" />
 				
+				<Paginator 
+					class="paginator"
+					v-model:first="currentPage"
+					:rows="10" 
+					:totalRecords="spacesStoreMetaData.totalEntries" 
+					:rowsPerPageOptions="[10, 20, 30]" 
+					@page="onPageChange"
+				/>
+
+				
 				<div class="spaces">
 					<SpaceCards />
 				</div>

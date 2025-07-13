@@ -65,13 +65,10 @@ ul {
 	flex-direction: column;
 	border-radius: 8px;
 	overflow: hidden;
-	border: 1px solid var(--space-informations-border-color);
-	background-color: var(--space-informations-bg-color);
 }
 
 header {
 	padding: 1rem;
-	background-color: var(--space-informations-header-bg);
 }
 
 .header__description {
@@ -96,6 +93,5 @@ main {
 
 footer {
 	padding: 1rem;
-	border-top: 1px solid var(--space-informations-border-color);
 }
 </style>

@@ -1,16 +1,49 @@
 <script setup>
-import {ref} from "vue";
+import {ref, onMounted} from "vue";
+import getDisabledDates from "../utils/getDisabledDates.js";
+
+
+const props = defineProps({
+	space: Object,
+	bookings: Array,
+});
+
+
+const emit = defineEmits(["bookSpaceForm:action"]);
 
 
 const selectedDate = ref();
-const selectedTime = ref();
-const bookedDates = ref();
 const disabledDates = ref([
 ]);
+const specialRequest = ref("");
+
+
+onMounted(() => {
+	// set disabled dates
+	props.bookings.forEach(booking => {
+		const dates =  getDisabledDates(booking.startDate, booking.endDate);
+		disabledDates.value.push(...dates);
+	});
+});
 
 
 function onBookButtonClick(){
-	console.log(bookedDates.value);
+	const startDate = selectedDate.value[0].toISOString().split("T")[0];
+	const endDate = selectedDate.value[1].toISOString().split("T")[0];
+	const hours = selectedDate.value[1].getUTCHours().toString().padStart(2, "0");
+	const minutes = selectedDate.value[1].getUTCMinutes().toString().padStart(2, "0");
+	const startTime = `${hours}:${minutes}`;
+	
+	emit("bookSpaceForm:action", {
+		action: "newBooking",
+		booking: {
+			spaceId: props.space._id,
+			startDate,
+			endDate,
+			startTime,
+			specialRequest: specialRequest.value,
+		},
+	});
 }
 
 </script>
@@ -18,36 +51,16 @@ function onBookButtonClick(){
 
 <template>
 	<div class="book-space-form">
-		<InputGroup>
-			<InputGroupAddon>
-				<i class="pi pi-calendar"></i>
-			</InputGroupAddon>
-		
-			<FloatLabel variant="in">
-				<DatePicker 
-					v-model="selectedDate" 
-					:disabledDates="disabledDates"
-					dateFormat="dd.mm.yy"
-					selectionMode="range" 
-					:manualInput="false"
-				/>
-				<label for="date">Booking Days</label>
-			</FloatLabel>
-		</InputGroup>
-		
-		<InputGroup>
-			<InputGroupAddon>
-				<i class="pi pi-clock"></i>
-			</InputGroupAddon>
-		
-			<FloatLabel variant="in">
-				<DatePicker 
-					v-model="selectedTime" 
-					timeOnly
-				/>
-				<label for="date">Start Time</label>
-			</FloatLabel>
-		</InputGroup>
+		<DatePicker 
+			v-model="selectedDate" 
+			:disabledDates="disabledDates"
+			dateFormat="dd.mm.yy"
+			selectionMode="range" 
+			:manualInput="false"
+			inline
+			:showTime="selectedDate?.length === 2"
+			hourFormat="12"
+		/>
 
 		<InputGroup>
 			<InputGroupAddon>
@@ -55,7 +68,7 @@ function onBookButtonClick(){
 			</InputGroupAddon>
 
 			<FloatLabel>
-				<Textarea></Textarea>
+				<Textarea v-model="specialRequest"></Textarea>
 				<label for="special-requests">Special Requests</label>
 			</FloatLabel>
 		</InputGroup>
@@ -75,5 +88,9 @@ function onBookButtonClick(){
 	display: flex;
 	flex-direction: column;
 	gap: 2rem;
+}
+
+.p-textarea {
+	width: 100%;
 }
 </style>

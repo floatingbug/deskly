@@ -6,6 +6,7 @@ const user = reactive({
 	name: "",
 	role: "",
 	jwt: "",
+	bookings: [],
 });
 
 
@@ -23,7 +24,11 @@ function unsetUser(){
 	user.jwt = "";
 }
 
+function setUserStoreBookings(bookings){
+	user.bookings = bookings;
+}
+
 
 export default function useUserStore(){
-	return {user, setUser, unsetUser};
+	return {user, setUser, unsetUser, setUserStoreBookings};
 }
