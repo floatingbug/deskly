@@ -80,7 +80,7 @@ function onImgLoad(key){
     <div 
         class="space-card"
         v-for="(space, index) in spacesStoreSpaces"
-        :key="space._id || index"
+        :key="space._id"
         @click="onCardClick(space)"
     >
         <div class="space-card__image">
@@ -89,14 +89,17 @@ function onImgLoad(key){
               :src="getPlaceholderUrl(space)"
               alt=""
               aria-hidden="true"
-              :class="{ 'is-hidden': !!loadedMap[space._id || index] }"
+              :class="{ 'is-hidden': !!loadedMap[space._id] }"
             />
             <img 
               class="full"
               :src="getImageUrl(space)"
               alt="Space image"
-              :class="{ 'is-loaded': !!loadedMap[space._id || index] }"
-              @load="onImgLoad(space._id || index)"
+              :class="{ 'is-loaded': !!loadedMap[space._id] }"
+              loading="lazy"
+              decoding="async"
+              fetchpriority="low"
+              @load="onImgLoad(space._id)"
             />
             <div class="space-card__price">
                 <span class="price">€{{space.hourlyRate}}</span>
@@ -145,8 +148,8 @@ function onImgLoad(key){
 
 .space-card__image { position: relative; aspect-ratio: 5/3; background: var(--p-surface-200); overflow: hidden; }
 .space-card__image img { width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity 300ms ease; }
-.space-card__image img.placeholder { filter: blur(8px); transform: scale(1.05); }
-.space-card__image img.placeholder.is-hidden { opacity: 0; }
+.space-card__image img.placeholder { filter: blur(10px); transform: scale(1.05); opacity: 1; }
+.space-card__image img.placeholder.is-hidden { opacity: 0; visibility: hidden; }
 .space-card__image img.full { opacity: 0; }
 .space-card__image img.full.is-loaded { opacity: 1; }
 .space-card__price { position: absolute; left: 0.75rem; bottom: 0.75rem; background: rgba(0,0,0,0.65); color: white; padding: 0.2rem 0.5rem; border-radius: 6px; display: inline-flex; gap: 0.15rem; align-items: baseline; }
