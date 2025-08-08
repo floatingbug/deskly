@@ -1,21 +1,33 @@
 <script setup>
-import {ref} from "vue";
+import {ref, watch} from "vue";
 
 
 const emit = defineEmits(["searchInput:action"]);
 
 
 const searchInput = ref("");
+let debounceId = null;
 
+
+function emitSearch(){
+  emit("searchInput:action", {
+    action: "searchInput",
+    data: {
+      searchInput: searchInput.value,
+    }
+  });
+}
 
 function filterBySearchInput(){
-	emit("searchInput:action", {
-		action: "searchInput",
-		data: {
-			searchInput: searchInput.value,
-		}
-	});
+  emitSearch();
 }
+
+watch(searchInput, () => {
+  if(debounceId) clearTimeout(debounceId);
+  debounceId = setTimeout(() => {
+    emitSearch();
+  }, 400);
+});
 
 </script>
 
