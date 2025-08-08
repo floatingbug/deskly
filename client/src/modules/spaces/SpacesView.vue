@@ -34,6 +34,8 @@ const isFilterClosed = ref(true);
 const isLoading = ref(false);
 const error = ref("");
 const abortRef = ref(null);
+const sentinel = ref(null);
+const cache = new Map();
 
 
 onMounted(async () => {
@@ -51,6 +53,16 @@ onMounted(async () => {
 
   if(device.size >= 1024) isFilterClosed.value = false;
   await loadSpaces();
+
+  // Infinite scroll observer
+  const io = new IntersectionObserver(async entries => {
+    const [entry] = entries;
+    if(entry.isIntersecting){
+      await loadMore();
+    }
+  }, { root: null, rootMargin: '300px', threshold: 0 });
+
+  if(sentinel.value) io.observe(sentinel.value);
 });
 
 
@@ -120,23 +132,55 @@ const queryString = computed(() => {
 
 async function syncUrlAndLoad(){
   router.replace({ query: Object.fromEntries(new URLSearchParams(queryString.value)) });
-  await loadSpaces();
+  // reset list when we change core params (page usually 0)
+  await loadSpaces({ append: false });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-async function loadSpaces(){
+async function loadSpaces({ append = false } = {}){
   try{
     if(abortRef.value) abortRef.value.abort();
     abortRef.value = new AbortController();
     isLoading.value = true;
     error.value = "";
-    const fetched = await fetchSpacesAPI({ query: queryString.value });
-    spacesStoreSpaces.value = fetched.data.spaces;
-    spacesStoreMetaData.value = fetched.data.metaData;
+    const key = queryString.value;
+    let fetched;
+    if(cache.has(key)){
+      fetched = cache.get(key);
+    } else {
+      fetched = await fetchSpacesAPI({ query: key });
+      cache.set(key, fetched);
+    }
+
+    if(append){
+      const existing = spacesStoreSpaces.value || [];
+      const incoming = fetched.data.spaces || [];
+      const seen = new Set(existing.map(s => s._id));
+      const merged = existing.concat(incoming.filter(s => !seen.has(s._id)));
+      spacesStoreSpaces.value = merged;
+      spacesStoreMetaData.value = fetched.data.metaData;
+    } else {
+      spacesStoreSpaces.value = fetched.data.spaces;
+      spacesStoreMetaData.value = fetched.data.metaData;
+    }
   } catch(e){
     error.value = 'Failed to load spaces';
   } finally{
     isLoading.value = false;
   }
+}
+
+const hasMore = computed(() => {
+  const total = Number(spacesStoreMetaData.value?.totalEntries ?? 0);
+  return (spacesStoreSpaces.value?.length ?? 0) < total;
+});
+
+async function loadMore(){
+  if(isLoading.value) return;
+  if(!hasMore.value) return;
+  state.page += 1;
+  router.replace({ query: Object.fromEntries(new URLSearchParams(queryString.value)) });
+  await loadSpaces({ append: true });
 }
 
 </script>
@@ -212,6 +256,9 @@ async function loadSpaces(){
                     :rowsPerPageOptions="[10, 20, 30]" 
                     @page="onPageChange"
                 />
+
+                <!-- Infinite scroll sentinel -->
+                <div ref="sentinel"></div>
 			</div>
 		</div>
 	</div>
