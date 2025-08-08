@@ -1,6 +1,6 @@
 <script setup>
-import {ref} from "vue";
-import {useRouter} from "vue-router";
+import {ref, onMounted, watch} from "vue";
+import {useRouter, useRoute} from "vue-router";
 import useUserStore from "@/stores/useUserStore.js";
 import useDevice from "@/composables/useDevice.js";
 
@@ -8,14 +8,15 @@ import useDevice from "@/composables/useDevice.js";
 const {device} = useDevice();
 const {user, unsetUser} = useUserStore();
 const router = useRouter();
+const route = useRoute();
 const isActionsClosed = ref(true);
 const actionButtonsRoleUser = ref([
 	{
-		label: "Home",
-		id: "home",
+		label: "Dashboard",
+		id: "dashboard",
 		isActive: false,
-		path : "/",
-		icon: "pi pi-home",
+		path : "/dashboard/user",
+		icon: "pi pi-th-large",
 	},
 	{
 		label: "Spaces",
@@ -25,17 +26,34 @@ const actionButtonsRoleUser = ref([
 		icon: "pi pi-th-large",
 	},
 	{
-		label: "My Bookings",
-		id: "myBookings",
+		label: "Inbox",
+		id: "inbox",
 		isActive: false,
-		path : "/my-bookings",
-		icon: "pi pi-list",
+		path : "/inbox",
+		icon: "pi pi-envelope",
+	},
+]);
+
+const actionButtonsRoleHost = ref([
+	{
+		label: "Dashboard",
+		id: "dashboard",
+		isActive: false,
+		path : "/dashboard/host",
+		icon: "pi pi-th-large",
 	},
 	{
-		label: "Contact",
-		id: "contact",
+		label: "Add Space",
+		id: "addSpace",
 		isActive: false,
-		path : "/contact",
+		path : "/add-space",
+		icon: "pi pi-plus",
+	},
+	{
+		label: "Inbox",
+		id: "inbox",
+		isActive: false,
+		path : "/inbox",
 		icon: "pi pi-envelope",
 	},
 ]);
@@ -55,15 +73,38 @@ const actionButtonsSignedOutUser = ref([
 		path : "/spaces",
 		icon: "pi pi-th-large",
 	},
-	{
-		label: "Contact",
-		id: "contact",
-		isActive: false,
-		path : "/contact",
-		icon: "pi pi-envelope",
-	},
 ]);
 
+
+onMounted(() => {
+	// activate home or dashboard button
+	if(!user.isSignedIn){
+		actionButtonsSignedOutUser.value[0].isActive = true;
+	}
+	else if(user.role === "user"){
+		actionButtonsRoleUser.value[0].isActive = true;
+	}
+	else {
+		actionButtonsRoleHost.value[0].isActive = true;
+	}
+})
+
+
+// activate button if route change
+watch(() => route.fullPath, (fullPath) => {
+	if(!user.isSignedIn){
+		const button = actionButtonsSignedOutUser.value.find(button => button.path === fullPath);
+		if(button) button.isActive = true;
+	}
+	else if(user.role === "user"){
+		const button = actionButtonsRoleUser.value.find(button => button.path === fullPath);
+		if(button) button.isActive = true;
+	}
+	else if(user.role === "host"){
+		const button = actionButtonsRoleHost.value.find(button => button.path === fullPath);
+		if(button) button.isActive = true;
+	}
+});
 
 function onActionButtonClicked({id, path, buttons}){
 	buttons.forEach(button => button.isActive = false);
@@ -144,7 +185,7 @@ function onSignOutButtonClick(){
 				<div class="navbar-actions__sign-buttons">
 					<Button
 						variant="text"
-						severity="secondary"
+						severity="contrast"
 						size="small"
 						@click="router.push('/auth/sign-in')"
 					>
@@ -152,8 +193,7 @@ function onSignOutButtonClick(){
 					</Button>
 					
 					<Button
-						variant="outlined"
-						severity="info"
+						severity="contrast"
 						size="small"
 						@click="router.push('/auth/sign-up')"
 					>
@@ -202,7 +242,6 @@ function onSignOutButtonClick(){
 							:icon="button.icon"
 							:class="button.isActive ? 'button-selected' : ''"
 							variant="outlined"
-							size="small"
 							@click="onActionButtonClicked({id: button.id, path: button.path, buttons: actionButtonsRoleUser})"
 							:pt="{
 								root: {
@@ -215,7 +254,6 @@ function onSignOutButtonClick(){
 
 				<div class="navbar-actions__sign-out">
 					<Button
-						variant="outlined"
 						severity="secondary"
 						size="small"
 						@click="onSignOutButtonClick"
@@ -226,10 +264,72 @@ function onSignOutButtonClick(){
 			</div>
 		</div>
 	</template>
+
+	<!-- Navbar for user-role: host -->
+
+	<template v-if="user.role === 'host'">
+		<div class="navbar-container">
+			<div class="navbar">
+				<div class="navbar__logo">
+					Deskly
+				</div>
+
+				<Button
+					class="navbar__menu-button"
+					v-if="device.size < 1000"
+					variant="text"
+					severity="secondary"
+					size="large"
+					@click="isActionsClosed = !isActionsClosed"
+				>
+					<i class="pi pi-bars navbar__menu-button-icon" style="font-size: 1.4rem;"></i>
+				</Button>
+			</div>
+
+			<div 
+				class="navbar-actions" 
+				:class="isActionsClosed && device.size < 1000 ? 'navbar-actions-closed' : ''"
+				@click="closeActions"
+			>
+				<div class="spacer" v-if="device.size >= 1000"></div>
+
+				<ul class="navbar-actions__links">
+					<li 
+						v-for="(button, index) in actionButtonsRoleHost"
+						:key="index"
+					>
+						<Button
+							:label="button.label"
+							:icon="button.icon"
+							:class="button.isActive ? 'button-selected' : ''"
+							variant="outlined"
+							@click="onActionButtonClicked({id: button.id, path: button.path, buttons: actionButtonsRoleHost})"
+							:pt="{
+								root: {
+									class: 'navbar-actions__button'
+								},
+							}"
+						/>
+					</li>
+				</ul>
+
+				<div class="navbar-actions__sign-out">
+					<Button
+						severity="secondary"
+						size="small"
+						@click="onSignOutButtonClick"
+					>
+						Sign out
+					</Button>
+				</div>
+			</div>
+		</div>
+
+	</template>
 </template>
 
 
-<style>
+<style scoped>
 ul {
 	list-style: none;
 	margin: 0;
@@ -247,6 +347,7 @@ ul {
 	display: flex;
 	align-items: center;
 	padding: 0 1rem;
+	border-bottom: 1px solid var(--p-surface-500);
 	background-color: var(--nav-bg-color);
 }
 
@@ -255,6 +356,7 @@ ul {
 	text-transform: uppercase;
 	letter-spacing: 1px;
 	font-weight: 800;
+	color: var(--p-primary-contrast-color);
 }
 
 .navbar__menu-button {
@@ -295,8 +397,12 @@ ul {
 }
 
 .navbar-actions__button {
-	color: var(--p-primary-700) !important;
+	color: var(--p-primary-contrast-color) !important;
 	border-color: hsl(from var(--p-primary-400) h s calc(l + 5) / 100%) !important;
+}
+
+.navbar-actions__button:hover {
+	color: var(--p-primary-color) !important;
 }
 
 .navbar-actions li .p-button {
@@ -322,13 +428,18 @@ ul {
 }
 
 .navbar-actions li .p-button.button-selected {
-	border: 1px solid var(--button-selected-color);
+	color: var(--p-primary-color) !important;
+	background-color: var(--p-primary-contrast-color);
 }
 
 @media(min-width: 1000px) {
+	.navbar {
+		height: 48px;
+	}
+
 	.navbar-actions {
 		max-width: unset;
-		height: 40px;
+		height: 48px;
 		top: 0;
 		right: 0;
 		flex-direction: row;

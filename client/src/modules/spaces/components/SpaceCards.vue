@@ -1,5 +1,5 @@
 <script setup>
-import {ref} from "vue";
+import {ref, onMounted} from "vue";
 import {useRouter} from "vue-router";
 import useSpacesStore from "@/stores/useSpacesStore.js";
 import useUserStore from "@/stores/useUserStore.js";
@@ -9,6 +9,7 @@ const router = useRouter();
 const {user} = useUserStore();
 const {spacesStoreSpaces} = useSpacesStore();
 const showDialog = ref(false);
+const createdAt = ref();
 
 
 function onCardClick(space){
@@ -18,6 +19,10 @@ function onCardClick(space){
 	else{
 		router.push(`/book-space?spaceId=${space._id}`)
 	}
+}
+
+function formatDate(zDate){
+	return new Date(zDate).toLocaleDateString();
 }
 
 </script>
@@ -98,7 +103,7 @@ function onCardClick(space){
 
 		<div class="space-card__footer">
 			<div class="space-card__footer-created-at">
-				<span>Created at:</span> {{space.createdAt}}
+				<span>Created at:</span> {{formatDate(space.createdAt)}}
 			</div>
 		</div>
 	</div>
@@ -132,7 +137,7 @@ function onCardClick(space){
 }
 
 .space-card__head {
-	height: 40%;
+	height: 50%;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -147,7 +152,6 @@ function onCardClick(space){
 
 .space-card__head-description {
 	padding: 1rem;
-	font-size: 0.8rem;
 }
 
 .space-card__head-location {
@@ -156,7 +160,7 @@ function onCardClick(space){
 }
 
 .space-card__main {
-	height: 40%;
+	height: 30%;
 	display: flex;
 	overflow-y: scroll;
 	margin-top: 2rem;
@@ -189,17 +193,5 @@ function onCardClick(space){
 	margin-top: auto;
 	padding: 1rem;
 	border-top: 1px solid var(--space-card-border-color);
-}
-
-@media(min-width: 768px) {
-	.space-card__head-description {
-		font-size: 1rem;
-	}
-}
-
-@media(min-width: 1024px) {
-	.space-card__head-description {
-		font-size: 0.8rem;
-	}
 }
 </style>

@@ -11,6 +11,7 @@ import Button from "primevue/button";
 import InputGroup from "primevue/inputgroup";
 import InputGroupAddon from "primevue/inputgroupaddon";
 import InputText from "primevue/inputtext";
+import InputNumber from "primevue/inputnumber";
 import FloatLabel from "primevue/floatlabel";
 import DatePicker from 'primevue/datepicker';
 import { definePreset } from '@primeuix/themes';
@@ -20,6 +21,7 @@ import Textarea from 'primevue/textarea';
 import Dialog from 'primevue/dialog';
 import Divider from "primevue/divider";
 import ToastService from 'primevue/toastservice';
+import Chip from 'primevue/chip';
 
 
 const app = createApp(App)
@@ -48,6 +50,8 @@ app.component("DatePicker", DatePicker);
 app.component("Textarea", Textarea);
 app.component("Dialog", Dialog);
 app.component("Divider", Divider);
+app.component("InputNumber", InputNumber);
+app.component("Chip", Chip);
 
 app.use(router)
 

@@ -1,6 +1,17 @@
 <script setup>
+import {ref, onMounted} from "vue";
+
+
 const props = defineProps({
 	space: Object,
+});
+
+
+const createdAt = ref();
+
+
+onMounted(() => {
+	createdAt.value = new Date(props.space.createdAt).toLocaleDateString();
 });
 
 </script>
@@ -48,7 +59,7 @@ const props = defineProps({
 
 		<footer>
 			<div class="date">
-				{{space.createdAt}}
+				<span>Created at: </span>{{createdAt}}
 			</div>
 		</footer>
 	</div>
