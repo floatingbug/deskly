@@ -6,7 +6,6 @@ import fetchSpacesAPI from "./api/fetchSpacesAPI.js";
 import SpaceCards from "./components/SpaceCards.vue";
 import Filter from "./components/Filter.vue";
 import Sort from "./components/Sort.vue";
-import Paginator from 'primevue/paginator';
 import SearchInput from "./components/SearchInput.vue";
 import useDevice from "@/composables/useDevice.js";
 
@@ -71,11 +70,7 @@ watch(() => device.size, () => {
 });
 
 
-async function onPageChange(event){
-  state.limit = event.rows;
-  state.page = event.page;
-  await syncUrlAndLoad();
-}
+// Pagination controls removed; infinite scroll handles page advance
 
 async function onSortAction(event){
   state.page = 0;
@@ -224,16 +219,6 @@ async function loadMore(){
 				
 				<Sort @sort:action="onSortAction" />
 				
-                <Paginator 
-                    class="paginator"
-                    :first="state.page * state.limit"
-                    :rows="state.limit" 
-                    :totalRecords="spacesStoreMetaData.totalEntries" 
-                    :rowsPerPageOptions="[10, 20, 30]" 
-                    @page="onPageChange"
-                />
-
-				
 			<div class="spaces">
 				<template v-if="isLoading">
 					<div v-for="n in 8" :key="n" class="space-skeleton"></div>
@@ -248,15 +233,6 @@ async function loadMore(){
 				</template>
 			</div>
 				
-                <Paginator 
-                    class="paginator"
-                    :first="state.page * state.limit"
-                    :rows="state.limit" 
-                    :totalRecords="spacesStoreMetaData.totalEntries" 
-                    :rowsPerPageOptions="[10, 20, 30]" 
-                    @page="onPageChange"
-                />
-
                 <!-- Infinite scroll sentinel -->
                 <div ref="sentinel"></div>
 			</div>
