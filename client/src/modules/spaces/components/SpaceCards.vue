@@ -1,5 +1,5 @@
 <script setup>
-import {ref} from "vue";
+import {ref, reactive} from "vue";
 import {useRouter} from "vue-router";
 import useSpacesStore from "@/stores/useSpacesStore.js";
 import useUserStore from "@/stores/useUserStore.js";
@@ -10,7 +10,7 @@ const {user} = useUserStore();
 const {spacesStoreSpaces} = useSpacesStore();
 const showDialog = ref(false);
 const createdAt = ref();
-const loadedMap = ref({});
+const loadedMap = reactive({});
 
 
 function onCardClick(space){
@@ -40,11 +40,12 @@ function getImageUrl(space){
 
 function getPlaceholderUrl(space){
   const seed = encodeURIComponent(space.name || 'space');
-  return `https://picsum.photos/seed/${seed}/60/36`;
+  // same aspect ratio to avoid layout shift
+  return `https://picsum.photos/seed/${seed}/120/72`;
 }
 
 function onImgLoad(key){
-  loadedMap.value[key] = true;
+  loadedMap[key] = true;
 }
 
 </script>
@@ -88,13 +89,13 @@ function onImgLoad(key){
               :src="getPlaceholderUrl(space)"
               alt=""
               aria-hidden="true"
-              :class="{ 'is-hidden': loadedMap[space._id || index] }"
+              :class="{ 'is-hidden': !!loadedMap[space._id || index] }"
             />
             <img 
               class="full"
               :src="getImageUrl(space)"
               alt="Space image"
-              :class="{ 'is-loaded': loadedMap[space._id || index] }"
+              :class="{ 'is-loaded': !!loadedMap[space._id || index] }"
               @load="onImgLoad(space._id || index)"
             />
             <div class="space-card__price">
