@@ -1,5 +1,5 @@
 <script setup>
-import {ref, onMounted} from "vue";
+import {ref} from "vue";
 import {useRouter} from "vue-router";
 import useSpacesStore from "@/stores/useSpacesStore.js";
 import useUserStore from "@/stores/useUserStore.js";
@@ -10,6 +10,7 @@ const {user} = useUserStore();
 const {spacesStoreSpaces} = useSpacesStore();
 const showDialog = ref(false);
 const createdAt = ref();
+const loadedMap = ref({});
 
 
 function onCardClick(space){
@@ -35,6 +36,15 @@ function getImageUrl(space){
   // Placeholder fallback image per space (in real app, use space.imageUrl)
   const seed = encodeURIComponent(space.name || 'space');
   return `https://picsum.photos/seed/${seed}/600/360`;
+}
+
+function getPlaceholderUrl(space){
+  const seed = encodeURIComponent(space.name || 'space');
+  return `https://picsum.photos/seed/${seed}/60/36`;
+}
+
+function onImgLoad(key){
+  loadedMap.value[key] = true;
 }
 
 </script>
@@ -72,8 +82,21 @@ function getImageUrl(space){
         :key="space._id || index"
         @click="onCardClick(space)"
     >
-		<div class="space-card__image">
-			<img :src="getImageUrl(space)" alt="Space image" />
+        <div class="space-card__image">
+            <img 
+              class="placeholder"
+              :src="getPlaceholderUrl(space)"
+              alt=""
+              aria-hidden="true"
+              :class="{ 'is-hidden': loadedMap[space._id || index] }"
+            />
+            <img 
+              class="full"
+              :src="getImageUrl(space)"
+              alt="Space image"
+              :class="{ 'is-loaded': loadedMap[space._id || index] }"
+              @load="onImgLoad(space._id || index)"
+            />
             <div class="space-card__price">
                 <span class="price">€{{space.hourlyRate}}</span>
                 <span class="per">/h</span>
@@ -119,8 +142,12 @@ function getImageUrl(space){
 }
 .space-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.12); transform: translateY(-2px); }
 
-.space-card__image { position: relative; aspect-ratio: 5/3; background: var(--p-surface-200); }
-.space-card__image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.space-card__image { position: relative; aspect-ratio: 5/3; background: var(--p-surface-200); overflow: hidden; }
+.space-card__image img { width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity 300ms ease; }
+.space-card__image img.placeholder { filter: blur(8px); transform: scale(1.05); }
+.space-card__image img.placeholder.is-hidden { opacity: 0; }
+.space-card__image img.full { opacity: 0; }
+.space-card__image img.full.is-loaded { opacity: 1; }
 .space-card__price { position: absolute; left: 0.75rem; bottom: 0.75rem; background: rgba(0,0,0,0.65); color: white; padding: 0.2rem 0.5rem; border-radius: 6px; display: inline-flex; gap: 0.15rem; align-items: baseline; }
 .space-card__price .price { font-weight: 700; }
 .space-card__price .per { font-size: 0.8rem; opacity: 0.9; }
