@@ -65,19 +65,20 @@ function getImageUrl(space){
 		</div>
 	</Dialog>
 
-	<div 
-		class="space-card"
-		v-for="(space, index) in spacesStoreSpaces"
-		:key="index"
-		@click="onCardClick(space)"
-	>
+    <TransitionGroup name="fade" tag="div" class="cards-grid">
+    <div 
+        class="space-card"
+        v-for="(space, index) in spacesStoreSpaces"
+        :key="space._id || index"
+        @click="onCardClick(space)"
+    >
 		<div class="space-card__image">
 			<img :src="getImageUrl(space)" alt="Space image" />
-			<div class="space-card__price">
-				<span class="price">€{{space.hourlyRate}}</span>
-				<span class="per">/h</span>
-			</div>
-		</div>
+            <div class="space-card__price">
+                <span class="price">€{{space.hourlyRate}}</span>
+                <span class="per">/h</span>
+            </div>
+        </div>
 
 		<div class="space-card__body">
 			<h2 class="space-card__name">{{space.name}}</h2>
@@ -93,11 +94,15 @@ function getImageUrl(space){
 				<Chip v-for="(label, i) in getFirstAmenityLabels(space)" :key="i" :label="label" />
 			</div>
 		</div>
-	</div>
+    </div>
+    </TransitionGroup>
 </template>
 
 
 <style scoped>
+.cards-grid { display: contents; }
+.fade-enter-active, .fade-leave-active { transition: all .25s ease; }
+.fade-enter-from, .fade-leave-to { opacity: 0; transform: translateY(8px); }
 .space-card__dialog-buttons { width: 100%; display: flex; justify-content: flex-end; gap: 1rem; margin-top: 3rem; }
 
 .space-card {

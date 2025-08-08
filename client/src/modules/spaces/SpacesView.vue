@@ -238,7 +238,10 @@ function backToTop(){
 				
 				<Sort @sort:action="onSortAction" />
 				
-			<div class="spaces">
+            <div class="spaces">
+                <div class="count" v-if="spacesStoreMetaData.totalEntries >= 0">
+                  <small>{{ spacesStoreSpaces.length }} of {{ spacesStoreMetaData.totalEntries }} loaded</small>
+                </div>
 				<template v-if="isLoading">
 					<div v-for="n in 8" :key="n" class="space-skeleton"></div>
 				</template>
@@ -329,6 +332,7 @@ function backToTop(){
 	margin-top: 1rem;
 }
 
+.count { padding: 0 1rem; color: var(--p-surface-600); }
 .chips { display: flex; gap: 0.5rem; padding: 0 1rem; flex-wrap: wrap; }
 .empty { display: flex; align-items: center; gap: 0.5rem; color: var(--p-surface-700); }
 .empty__icon { color: var(--p-primary-600); }
