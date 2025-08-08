@@ -1,5 +1,5 @@
 <script setup>
-import {ref, reactive, onMounted, watch, computed} from "vue";
+import {ref, reactive, onMounted, onBeforeUnmount, watch, computed} from "vue";
 import { useRoute, useRouter } from "vue-router";
 import useSpacesStore from "@/stores/useSpacesStore.js";
 import fetchSpacesAPI from "./api/fetchSpacesAPI.js";
@@ -35,6 +35,7 @@ const error = ref("");
 const abortRef = ref(null);
 const sentinel = ref(null);
 const cache = new Map();
+const showBackToTop = ref(false);
 
 
 onMounted(async () => {
@@ -62,7 +63,19 @@ onMounted(async () => {
   }, { root: null, rootMargin: '300px', threshold: 0 });
 
   if(sentinel.value) io.observe(sentinel.value);
+
+  const onScroll = () => {
+    showBackToTop.value = window.scrollY > 600;
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  // store cleanup
+  cleanupFns.push(() => window.removeEventListener('scroll', onScroll));
 });
+const cleanupFns = [];
+onBeforeUnmount(() => {
+  cleanupFns.forEach(fn => { try { fn(); } catch {} });
+});
+
 
 
 watch(() => device.size, () => {
@@ -178,6 +191,12 @@ async function loadMore(){
   await loadSpaces({ append: true });
 }
 
+const isAppending = computed(() => isLoading.value && (spacesStoreSpaces.value?.length ?? 0) > 0);
+
+function backToTop(){
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 </script>
 
 
@@ -234,7 +253,19 @@ async function loadMore(){
 			</div>
 				
                 <!-- Infinite scroll sentinel -->
-                <div ref="sentinel"></div>
+                <div ref="sentinel" class="sentinel">
+                    <i v-if="isAppending" class="pi pi-spinner pi-spin"></i>
+                </div>
+
+                <Button 
+                  v-if="showBackToTop"
+                  class="back-to-top"
+                  rounded
+                  @click="backToTop"
+                  :pt="{ root: { class: 'back-to-top__btn' } }"
+                >
+                  <i class="pi pi-arrow-up"></i>
+                </Button>
 			</div>
 		</div>
 	</div>
@@ -311,6 +342,16 @@ async function loadMore(){
 @keyframes shimmer {
   0% { background-position: 100% 0; }
   100% { background-position: -100% 0; }
+}
+
+.sentinel { display: flex; justify-content: center; align-items: center; padding: 1rem; color: var(--p-surface-600); }
+.back-to-top__btn { 
+  position: fixed; 
+  right: 1rem; 
+  bottom: 1.2rem; 
+  z-index: 3000; 
+  width: 44px; height: 44px; 
+  display: inline-flex; align-items: center; justify-content: center;
 }
 
 @media(min-width: 480px) {
