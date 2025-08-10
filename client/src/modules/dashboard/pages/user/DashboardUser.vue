@@ -18,6 +18,7 @@ import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import Sidebar from 'primevue/sidebar';
+import Tag from 'primevue/tag';
 
 const toast = useToast();
 const { setUserStoreBookings, user } = useUserStore();
