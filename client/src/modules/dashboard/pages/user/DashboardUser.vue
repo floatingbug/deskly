@@ -149,15 +149,35 @@ function toggleSidebar() {
 				modal
 				dismissable
 				aria-label="Booking statistics"
-				class="stats-sidebar"
+				class="stats-sidebar w-[380px]"
 			>
-				<h3>Stats</h3>
-				<ul class="stats-list">
-					<li><strong>Total:</strong> {{ stats.total }}</li>
-					<li><strong>Current:</strong> {{ stats.current }}</li>
-					<li><strong>Upcoming:</strong> {{ stats.upcoming }}</li>
-					<li><strong>Past:</strong> {{ stats.past }}</li>
-				</ul>
+				<div class="px-4 py-6">
+					<div class="flex items-center gap-3 mb-6">
+						<i class="pi pi-chart-line text-xl text-primary-600" />
+						<h3 class="text-lg font-semibold text-surface-700">Reservation Analytics</h3>
+					</div>
+					
+					<div class="grid gap-4">
+						<div v-for="(stat, key) in stats" :key="key" class="bg-surface-50 rounded-lg p-4 shadow-sm">
+							<div class="flex justify-between items-center">
+								<span class="text-sm text-surface-500 capitalize">{{ key }}</span>
+								<Tag 
+									:value="stat" 
+									:severity="{
+										total: 'info',
+										current: 'success',
+										upcoming: 'warning',
+										past: 'contrast'
+									}[key]"
+									rounded
+								/>
+							</div>
+							<div class="mt-2">
+								<span class="text-2xl font-bold text-surface-800">{{ stat }}</span>
+							</div>
+						</div>
+					</div>
+				</div>
 			</Sidebar>
 		</div>
 
