@@ -80,34 +80,51 @@ function toggleSidebar() {
     <section class="dashboard-user" v-if="isInitialized">
         <header class="dashboard-header">
             <div class="header-left">
-                <h2>Your dashboard</h2>
-                <p class="subtitle">Manage your bookings and messages</p>
+                <h1 class="text-2xl font-bold text-primary-700">Booking Management</h1>
+                <p class="text-sm text-surface-500 mt-1">Manage your workspace reservations and communications</p>
             </div>
-            <div class="header-right">
-                <InputText
-                    v-model="searchQuery"
-                    placeholder="Search bookings"
-                    class="search-input"
-                    aria-label="Search bookings"
-                />
+            <div class="header-right flex items-center gap-4">
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search text-surface-400" />
+                    <InputText
+                        v-model="searchQuery"
+                        placeholder="Search reservations..."
+                        class="search-input w-[320px]"
+                        aria-label="Search bookings"
+                    />
+                </span>
                 <Button
-                    icon="pi pi-bars"
-                    class="sidebar-toggle"
+                    icon="pi pi-filter"
+                    class="sidebar-toggle p-3"
                     aria-label="Toggle stats sidebar"
                     @click="toggleSidebar"
-                    aria-expanded="isSidebarVisible.toString()"
+                    severity="secondary"
+                    text
+                    rounded
                 />
             </div>
         </header>
 
         <div class="dashboard-body">
             <div class="main-content">
-                <Tabs v-model="activeTab" class="tabs-modern">
-                    <TabList>
-                        <Tab value="all" as="button">All bookings</Tab>
-                        <Tab value="current" as="button">Current</Tab>
-                        <Tab value="upcoming" as="button">Upcoming</Tab>
-                        <Tab value="past" as="button">Past</Tab>
+                <Tabs v-model="activeTab" class="custom-tabs">
+                    <TabList class="flex gap-6 border-b border-surface-100">
+                        <Tab 
+                            v-for="tab in [
+                                { value: 'all', label: 'All Reservations' },
+                                { value: 'current', label: 'Active Now' },
+                                { value: 'upcoming', label: 'Upcoming' },
+                                { value: 'past', label: 'History' }
+                            ]" 
+                            :key="tab.value"
+                            :value="tab.value"
+                            class="pb-4 px-2 transition-colors hover:text-primary-600"
+                            :class="{ 'text-primary-600 border-b-2 border-primary-600': activeTab === tab.value }"
+                        >
+                            <template #default="{ selected }">
+                                <span class="text-sm font-medium">{{ tab.label }}</span>
+                            </template>
+                        </Tab>
                     </TabList>
                     <TabPanels>
                         <TabPanel value="all">
@@ -164,13 +181,19 @@ function toggleSidebar() {
 .dashboard-user {
     display: flex;
     flex-direction: column;
-    height: 100%;
-    padding: 1rem 1.5rem;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: var(--p-text-color);
-    background-color: var(--p-surface-50);
-    min-height: 100vh;
-    box-sizing: border-box;
+    height: 100vh;
+    padding: 1.5rem 2rem;
+    background: linear-gradient(195deg, var(--surface-50) 30%, var(--primary-50) 150%);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.dashboard-header {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(8px);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1.5rem;
 }
 .dashboard-header {
     display: flex;
@@ -222,25 +245,27 @@ function toggleSidebar() {
     flex: 1 1 auto;
     overflow-y: auto;
 }
+.custom-tabs :deep(.p-tabpanel) {
+    padding: 1.5rem 0;
+}
+
 .stats-sidebar {
-    width: 280px;
-    padding: 1rem;
-    background-color: var(--p-surface-0);
-    border-radius: 12px;
-    box-shadow: var(--p-shadow-3);
-    font-size: 1rem;
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    border-left: 1px solid var(--surface-100);
 }
-.stats-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+
+.search-input {
+    transition: all 0.3s ease;
+    border: 1px solid var(--surface-200);
 }
-.stats-list li {
-    padding: 0.5rem 0;
-    border-bottom: 1px solid var(--p-surface-200);
+
+.search-input:hover {
+    border-color: var(--primary-300);
 }
-.stats-list li:last-child {
-    border-bottom: none;
+
+.search-input:focus {
+    box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--primary-500) 20%, transparent);
 }
 .cancel-dialog p {
     font-size: 1.1rem;
