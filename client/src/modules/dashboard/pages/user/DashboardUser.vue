@@ -28,11 +28,24 @@ const pendingCancelBookingId = ref('');
 const searchQuery = ref('');
 const isSidebarVisible = ref(false);
 const activeTab = ref("all");
+const hasInitialLoad = ref(false);
 
 onMounted(async () => {
-    const fetchedBookings = await fetchBookingsAPI();
-    setUserStoreBookings(fetchedBookings.data);
-    isInitialized.value = true;
+    try {
+        const fetchedBookings = await fetchBookingsAPI();
+        setUserStoreBookings(fetchedBookings.data);
+        isInitialized.value = true;
+        // Erzwinge Update des aktiven Tabs nach Datenladung
+        hasInitialLoad.value = true;
+        activeTab.value = "all"; 
+    } catch (error) {
+        toast.add({ 
+            severity: 'error', 
+            summary: 'Daten konnten nicht geladen werden',
+            detail: error.message,
+            life: 3000 
+        });
+    }
 });
 
 const stats = computed(() => {
@@ -78,7 +91,7 @@ function toggleSidebar() {
 </script>
 
 <template>
-    <section class="dashboard-user" v-if="isInitialized">
+    <section class="dashboard-user" v-if="isInitialized && hasInitialLoad">
         <header class="dashboard-header">
             <div class="header-left">
                 <h1 class="text-2xl font-bold text-primary-700">Booking Management</h1>
