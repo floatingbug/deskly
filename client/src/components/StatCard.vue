@@ -14,13 +14,25 @@ const props = defineProps({
         
         <main>
             <div class="stat__count">
-                <div class="stat__count-label">
-                    {{stat.count.label}}:
+                <div class="stat-header">
+                    <div class="stat__count-label">
+                        {{stat.count.label}}:
+                    </div>
+                    <div class="stat__count-value">
+                        {{stat.count.value}}
+                    </div>
                 </div>
-        
-                <div class="stat__count-value">
-                    {{stat.count.value}}
-                </div>
+                <Chart 
+                    v-if="stat.chartType"
+                    :type="stat.chartType" 
+                    :data="stat.chartData"
+                    :options="{
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } }
+                    }"
+                    class="chart"
+                />
             </div>
         </main>
         
@@ -28,6 +40,10 @@ const props = defineProps({
         </footer>
     </div>
 </template>   
+
+<script setup>
+import Chart from 'primevue/chart';
+</script>
 
 
 <style scoped>
