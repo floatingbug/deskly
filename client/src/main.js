@@ -1,44 +1,42 @@
-import './assets/main.css'
-import 'primeicons/primeicons.css'
+import "./assets/main.css";
+import "primeicons/primeicons.css";
 
-
-import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router'
-import PrimeVue from 'primevue/config';
-import Aura from '@primeuix/themes/aura';
+import { createApp } from "vue";
+import App from "./App.vue";
+import router from "./router";
+import PrimeVue from "primevue/config";
+import Aura from "@primeuix/themes/aura";
 import Button from "primevue/button";
 import InputGroup from "primevue/inputgroup";
 import InputGroupAddon from "primevue/inputgroupaddon";
 import InputText from "primevue/inputtext";
 import InputNumber from "primevue/inputnumber";
 import FloatLabel from "primevue/floatlabel";
-import DatePicker from 'primevue/datepicker';
-import { definePreset } from '@primeuix/themes';
+import DatePicker from "primevue/datepicker";
+import { definePreset } from "@primeuix/themes";
 import semantic from "./theming/semantic.js";
 import components from "./theming/components.js";
-import Textarea from 'primevue/textarea';
-import Dialog from 'primevue/dialog';
+import Textarea from "primevue/textarea";
+import Dialog from "primevue/dialog";
 import Divider from "primevue/divider";
-import ToastService from 'primevue/toastservice';
-import Chip from 'primevue/chip';
+import ToastService from "primevue/toastservice";
+import Chip from "primevue/chip";
 
-
-const app = createApp(App)
+const app = createApp(App);
 
 const MyPreset = definePreset(Aura, {
-	semantic,
-	components,
+    semantic,
+    components,
 });
 
 app.use(ToastService);
 app.use(PrimeVue, {
     theme: {
         preset: MyPreset,
-		options: {
-			darkModeSelector: false,
-		}
-    }
+        options: {
+            darkModeSelector: false,
+        },
+    },
 });
 
 app.component("Button", Button);
@@ -53,6 +51,6 @@ app.component("Divider", Divider);
 app.component("InputNumber", InputNumber);
 app.component("Chip", Chip);
 
-app.use(router)
+app.use(router);
 
-app.mount('#app')
+app.mount("#app");
