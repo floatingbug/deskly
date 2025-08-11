@@ -1,31 +1,28 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue';
-import { useToast } from 'primevue/usetoast';
-import Bookings from './components/Bookings.vue';
-import CurrBookings from './components/CurrBookings.vue';
-import UpcomingBookings from './components/UpcomingBookings.vue';
-import PastBookings from './components/PastBookings.vue';
-import cancelBookingAPI from './api/cancelBookingAPI.js';
-import contactHostAPI from './api/contactHostAPI.js';
-import fetchBookingsAPI from './api/fetchBookingsAPI.js';
-import useUserStore from '@/stores/useUserStore.js';
-import Tabs from 'primevue/tabs';
-import TabList from 'primevue/tablist';
-import Tab from 'primevue/tab';
-import TabPanels from 'primevue/tabpanels';
-import TabPanel from 'primevue/tabpanel';
-import InputText from 'primevue/inputtext';
-import Button from 'primevue/button';
-import Dialog from 'primevue/dialog';
-import Sidebar from 'primevue/sidebar';
-import Tag from 'primevue/tag';
+import { ref, onMounted, computed } from "vue";
+import { useToast } from "primevue/usetoast";
+import Bookings from "./components/Bookings.vue";
+import CurrBookings from "./components/CurrBookings.vue";
+import UpcomingBookings from "./components/UpcomingBookings.vue";
+import PastBookings from "./components/PastBookings.vue";
+import cancelBookingAPI from "./api/cancelBookingAPI.js";
+import contactHostAPI from "./api/contactHostAPI.js";
+import fetchBookingsAPI from "./api/fetchBookingsAPI.js";
+import useUserStore from "@/stores/useUserStore.js";
+import Tabs from "primevue/tabs";
+import TabList from "primevue/tablist";
+import Tab from "primevue/tab";
+import TabPanels from "primevue/tabpanels";
+import TabPanel from "primevue/tabpanel";
+import Tag from "primevue/tag";
+import StatCard from "@/components/StatCard.vue";
 
 const toast = useToast();
 const { setUserStoreBookings, user } = useUserStore();
 const isInitialized = ref(false);
 const isCancelDialogVisible = ref(false);
-const pendingCancelBookingId = ref('');
-const searchQuery = ref('');
+const pendingCancelBookingId = ref("");
+const searchQuery = ref("");
 const isSidebarVisible = ref(false);
 const activeTab = ref("all");
 const hasInitialLoad = ref(false);
@@ -37,13 +34,13 @@ onMounted(async () => {
         isInitialized.value = true;
         // Erzwinge Update des aktiven Tabs nach Datenladung
         hasInitialLoad.value = true;
-        activeTab.value = "all"; 
+        activeTab.value = "all";
     } catch (error) {
-        toast.add({ 
-            severity: 'error', 
-            summary: 'Daten konnten nicht geladen werden',
+        toast.add({
+            severity: "error",
+            summary: "Daten konnten nicht geladen werden",
             detail: error.message,
-            life: 3000 
+            life: 3000,
         });
     }
 });
@@ -51,10 +48,36 @@ onMounted(async () => {
 const stats = computed(() => {
     const bookings = user.bookings || [];
     const now = new Date();
-    const current = bookings.filter(b => new Date(b.startDate) <= now && now <= new Date(b.endDate)).length;
-    const upcoming = bookings.filter(b => new Date(b.startDate) > now).length;
-    const past = bookings.filter(b => new Date(b.endDate) < now).length;
-    return { total: bookings.length, current, upcoming, past };
+
+    const total = {
+        count: {
+            label: "Total", 
+            value: bookings.length
+        },
+    };
+
+    const current = {
+        count: {
+            label: "Count",
+            value: bookings.filter((b) => new Date(b.startDate) <= now && now <= new Date(b.endDate)).length,
+        },
+    };
+
+    const upcoming = {
+        count: {
+            label: "Upcoming",
+            value: bookings.filter((b) => new Date(b.startDate) > now).length,
+        },
+    };
+
+    const past = {
+        count: {
+            label: "Past",
+            value: bookings.filter((b) => new Date(b.endDate) < now).length,
+        },
+    };
+    
+    return { total, current, upcoming, past };
 });
 
 function confirmCancel(bookingId) {
@@ -65,23 +88,23 @@ function confirmCancel(bookingId) {
 async function performCancel() {
     try {
         await cancelBookingAPI({ bookingId: pendingCancelBookingId.value });
-        const filtered = user.bookings.filter(b => b._id !== pendingCancelBookingId.value);
+        const filtered = user.bookings.filter((b) => b._id !== pendingCancelBookingId.value);
         setUserStoreBookings(filtered);
-        toast.add({ severity: 'success', summary: 'Booking canceled', life: 2000 });
+        toast.add({ severity: "success", summary: "Booking canceled", life: 2000 });
     } catch (e) {
-        toast.add({ severity: 'error', summary: 'Cancel failed', life: 2500 });
+        toast.add({ severity: "error", summary: "Cancel failed", life: 2500 });
     } finally {
         isCancelDialogVisible.value = false;
-        pendingCancelBookingId.value = '';
+        pendingCancelBookingId.value = "";
     }
 }
 
 async function onBookingsAction(event) {
-    if (event.action === 'cancelBooking') {
+    if (event.action === "cancelBooking") {
         confirmCancel(event.bookingId);
-    } else if (event.action === 'contactHost') {
+    } else if (event.action === "contactHost") {
         await contactHostAPI({ creatorId: event.creatorId, message: event.message });
-        toast.add({ severity: 'success', summary: 'Message sent', life: 2000 });
+        toast.add({ severity: "success", summary: "Message sent", life: 2000 });
     }
 }
 
@@ -121,15 +144,23 @@ function toggleSidebar() {
 
         <div class="dashboard-body">
             <div class="main-content">
-                <Tabs v-model="activeTab" class="custom-tabs">
+                <div class="stats-container">
+                    <StatCard 
+                        v-for="(stat, index) in stats"
+                        :key="index"
+                        :stat="stat"
+                    />
+                </div>
+
+                <Tabs v-model:value="activeTab" class="custom-tabs">
                     <TabList class="flex gap-6 border-b border-surface-100">
-                        <Tab 
+                        <Tab
                             v-for="tab in [
                                 { value: 'all', label: 'All Reservations' },
                                 { value: 'current', label: 'Active Now' },
                                 { value: 'upcoming', label: 'Upcoming' },
-                                { value: 'past', label: 'History' }
-                            ]" 
+                                { value: 'past', label: 'History' },
+                            ]"
                             :key="tab.value"
                             :value="tab.value"
                             class="pb-4 px-2 transition-colors hover:text-primary-600"
@@ -156,52 +187,9 @@ function toggleSidebar() {
                     </TabPanels>
                 </Tabs>
             </div>
+        </div>
 
-			<Sidebar
-				v-model:visible="isSidebarVisible"
-				position="right"
-				modal
-				dismissable
-				aria-label="Booking statistics"
-				class="stats-sidebar w-[380px]"
-			>
-				<div class="px-4 py-6">
-					<div class="flex items-center gap-3 mb-6">
-						<i class="pi pi-chart-line text-xl text-primary-600" />
-						<h3 class="text-lg font-semibold text-surface-700">Reservation Analytics</h3>
-					</div>
-					
-					<div class="grid gap-4">
-						<div v-for="(stat, key) in stats" :key="key" class="bg-surface-50 rounded-lg p-4 shadow-sm">
-							<div class="flex justify-between items-center">
-								<span class="text-sm text-surface-500 capitalize">{{ key }}</span>
-								<Tag 
-									:value="stat" 
-									:severity="{
-										total: 'info',
-										current: 'success',
-										upcoming: 'warning',
-										past: 'contrast'
-									}[key]"
-									rounded
-								/>
-							</div>
-							<div class="mt-2">
-								<span class="text-2xl font-bold text-surface-800">{{ stat }}</span>
-							</div>
-						</div>
-					</div>
-				</div>
-			</Sidebar>
-		</div>
-
-        <Dialog
-            v-model:visible="isCancelDialogVisible"
-            modal
-            header="Cancel booking"
-            class="cancel-dialog"
-            draggable
-        >
+        <Dialog v-model:visible="isCancelDialogVisible" modal header="Cancel booking" class="cancel-dialog" draggable>
             <p>Are you sure you want to cancel this booking?</p>
             <template #footer>
                 <Button label="No" severity="secondary" @click="isCancelDialogVisible = false" />
@@ -218,7 +206,11 @@ function toggleSidebar() {
     height: 100vh;
     padding: 1.5rem 2rem;
     background: linear-gradient(195deg, var(--surface-50) 30%, var(--primary-50) 150%);
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family:
+        "Inter",
+        system-ui,
+        -apple-system,
+        sans-serif;
 }
 
 .dashboard-header {
@@ -279,14 +271,21 @@ function toggleSidebar() {
     flex: 1 1 auto;
     overflow-y: auto;
 }
-.custom-tabs :deep(.p-tabpanel) {
-    padding: 1.5rem 0;
+
+.stats-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 1.2rem;
+    padding: 1.2rem;
 }
 
-.stats-sidebar {
-    background-color: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(8px);
-    border-left: 1px solid var(--surface-100);
+.custom-tabs {
+    margin-top: 2.8rem;
+}
+
+.custom-tabs :deep(.p-tabpanel) {
+    padding: 1.5rem 0;
 }
 
 .search-input {
