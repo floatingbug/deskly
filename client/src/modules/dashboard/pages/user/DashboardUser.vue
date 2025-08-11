@@ -16,6 +16,7 @@ import TabPanels from "primevue/tabpanels";
 import TabPanel from "primevue/tabpanel";
 import Tag from "primevue/tag";
 import StatCard from "@/components/StatCard.vue";
+import Chart from 'primevue/chart';
 
 const toast = useToast();
 const { setUserStoreBookings, user } = useUserStore();
@@ -48,12 +49,32 @@ onMounted(async () => {
 const stats = computed(() => {
     const bookings = user.bookings || [];
     const now = new Date();
+    
+    // Generiere monatliche Buchungsstatistik
+    const monthlyCounts = bookings.reduce((acc, booking) => {
+        const month = new Date(booking.createdAt).toLocaleString('default', { month: 'short' });
+        acc[month] = (acc[month] || 0) + 1;
+        return acc;
+    }, {});
 
     const total = {
         count: {
             label: "Total", 
             value: bookings.length
         },
+        chartType: 'line',
+        chartData: {
+            labels: Object.keys(monthlyCounts),
+            datasets: [
+                {
+                    label: 'Bookings pro Monat',
+                    data: Object.values(monthlyCounts),
+                    borderColor: '#3B82F6',
+                    tension: 0.4,
+                    fill: false
+                }
+            ]
+        }
     };
 
     const current = {
