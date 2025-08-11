@@ -21,6 +21,7 @@ import Dialog from "primevue/dialog";
 import Divider from "primevue/divider";
 import ToastService from "primevue/toastservice";
 import Chip from "primevue/chip";
+import Chart from 'primevue/chart';
 
 const app = createApp(App);
 
@@ -50,6 +51,7 @@ app.component("Dialog", Dialog);
 app.component("Divider", Divider);
 app.component("InputNumber", InputNumber);
 app.component("Chip", Chip);
+app.component("Chart", Chart);
 
 app.use(router);
 
