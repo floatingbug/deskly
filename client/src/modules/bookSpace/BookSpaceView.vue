@@ -1,6 +1,7 @@
 <script setup>
 import { ref, reactive, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import Card from 'primevue/card';
 import fetchSpaceById from "./api/fetchSpaceById.js";
 import SpaceInformations from "./components/SpaceInformations.vue";
 import BookSpaceForm from "./components/BookSpaceForm.vue";
@@ -36,30 +37,78 @@ async function onBookSpaceFormAction(event) {
 <template>
     <div v-if="space && bookings" class="layout">
         <div class="space-booking">
-            <SpaceInformations class="space-informations" :space="space" />
+            <div class="header">
+                <Button 
+                    icon="pi pi-arrow-left"
+                    label="Back to Spaces"
+                    @click="router.push('/spaces')"
+                    severity="secondary"
+                    text
+                    rounded
+                />
+                <h1 class="text-3xl font-bold text-primary-700 mt-4">{{ space.name }}</h1>
+            </div>
 
-            <Divider></Divider>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <Card class="space-informations p-6 shadow-lg rounded-xl">
+                    <template #title>Space Details</template>
+                    <template #content>
+                        <SpaceInformations :space="space" />
+                    </template>
+                </Card>
 
-            <BookSpaceForm
-                class="book-space-form"
-                :space="space"
-                :bookings="bookings"
-                @bookSpaceForm:action="onBookSpaceFormAction"
-            />
+                <Divider align="center" class="lg:hidden">
+                    <span class="text-surface-500 text-sm">Booking Form</span>
+                </Divider>
+
+                <Card class="book-space-form p-6 shadow-lg rounded-xl">
+                    <template #title>Reservation</template>
+                    <template #subtitle>Available time slots</template>
+                    <template #content>
+                        <BookSpaceForm
+                            :space="space"
+                            :bookings="bookings"
+                            @bookSpaceForm:action="onBookSpaceFormAction"
+                        />
+                    </template>
+                </Card>
+            </div>
         </div>
     </div>
 </template>
 
 <style scoped>
 .space-booking {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    padding: 0 1rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
 }
 
-.space-informations,
-.book-space-form {
-    flex: 1;
+.header {
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+:deep(.p-card) {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--surface-100);
+    transition: transform 0.3s ease;
+}
+
+:deep(.p-card:hover) {
+    transform: translateY(-2px);
+}
+
+:deep(.p-card-title) {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary-700);
+}
+
+:deep(.p-card-subtitle) {
+    color: var(--surface-500);
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
 }
 </style>
