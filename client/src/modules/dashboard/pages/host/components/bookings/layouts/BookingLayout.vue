@@ -22,22 +22,23 @@ const props = defineProps({
 <style scoped>
 .booking {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    row-gap: 0.8rem;
-    padding: 1rem;
-    user-select: none;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+    padding: 1.25rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
     cursor: pointer;
-    border-top: 1px solid var(--p-surface-500);
-    border-bottom: 1px solid var(--p-surface-500);
-    background-color: var(--p-surface-200);
 }
-.booking:first-child {
-    border-top: unset;
-}
-.booking:last-child {
-    border-bottom: unset;
-}
+
 .booking:hover {
-    background-color: var(--p-primary-200);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: #f8f9fa;
+}
+
+.booking:active {
+    transform: translateY(0);
 }
 </style>

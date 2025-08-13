@@ -86,66 +86,74 @@ function editSpace(space) {
 
 <style scoped>
 .spaces-table {
-    width: 100%;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
 }
 
 h2 {
-    width: 100%;
-    padding: 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    padding: 1.25rem 1.5rem;
     margin: 0;
-    border-radius: 8px 8px 0 0;
-    color: var(--p-primary-contrast-color);
-    border: 1px solid var(--p-surface-500);
-    background-color: var(--p-primary-500);
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
 }
 
 .host-spaces {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-    border: 1px solid var(--p-surface-500);
+    padding: 1.5rem;
 }
 
 .space {
-    width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    column-gap: 1rem;
-    row-gap: 1.2rem;
-    padding: 1.2rem;
-    cursor: pointer;
-    background-color: var(--p-surface-200);
-    border-top: 1px solid var(--p-surface-500);
-    border-bottom: 1px solid var(--p-surface-500);
-}
-
-.space:first-child {
-    border-top: unset;
-}
-
-.space:last-child {
-    border-bottom: unset;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .space:hover {
-    background-color: var(--p-primary-200);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    background: #f8f9fa;
 }
 
 .space__item {
-    max-width: 300px;
     display: flex;
-    gap: 1rem;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f1f3f5;
+}
+
+.space__item:last-child {
+    border-bottom: none;
+}
+
+.space__item-name {
+    color: #6c757d;
+    font-size: 0.9rem;
 }
 
 .space__item-value {
-    font-weight: bold;
-    color: var(--p-primary-color);
+    color: #2d3436;
+    font-weight: 500;
+    font-size: 0.95rem;
 }
 
 @media (min-width: 1024px) {
     .spaces-table {
-        max-width: unset;
+        margin: 0 auto;
+        max-width: 1400px;
+    }
+    
+    .space {
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 </style>

@@ -62,21 +62,36 @@ function onKeydown(event) {
 <style scoped>
 .booking-item {
     display: flex;
-    gap: 1rem;
+    justify-content: space-between;
     align-items: center;
-    padding: 0.6rem;
+    padding: 0.75rem 1rem;
+    background: white;
     border-radius: 6px;
+    transition: background 0.2s ease;
 }
+
+.booking-item:hover {
+    background: #f8f9fa;
+}
+
 .booking-item:focus {
-    outline: 2px dashed var(--p-primary-color);
+    outline: 2px solid #4dabf7;
     outline-offset: 2px;
 }
-.item-value {
-    color: var(--p-primary-color);
-    margin-left: auto;
+
+.item-name {
+    font-size: 0.9rem;
+    color: #6c757d;
 }
+
+.item-value {
+    font-weight: 500;
+    color: #2d3436;
+    font-size: 0.95rem;
+}
+
 .booking-item[aria-disabled="true"] {
-    opacity: 0.6;
-    pointer-events: none;
+    opacity: 0.5;
+    background: #f8f9fa;
 }
 </style>

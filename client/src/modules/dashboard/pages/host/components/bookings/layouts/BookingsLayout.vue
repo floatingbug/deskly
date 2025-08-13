@@ -34,29 +34,35 @@ const props = defineProps({
 
 <style scoped>
 .bookings {
-    width: 100%;
-    min-width: 280px;
-    display: flex;
-    flex-direction: column;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
 }
+
 header {
-    padding: 1rem;
-    border-radius: 8px 8px 0 0;
-    border: 1px solid var(--p-surface-500);
-    color: var(--p-primary-contrast-color);
-    background-color: var(--p-primary-500);
+    padding: 1.25rem 1.5rem;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
 }
+
 header h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1a1a1a;
     margin: 0;
 }
+
 main {
+    padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 1.2rem;
-    border: 1px solid var(--p-surface-500);
-    padding: 0.6rem;
+    gap: 1rem;
 }
+
 footer {
-    margin-top: 0.6rem;
+    padding: 1rem 1.5rem;
+    background: #f8f9fa;
+    border-top: 1px solid #e9ecef;
 }
 </style>

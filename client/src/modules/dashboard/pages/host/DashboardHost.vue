@@ -79,31 +79,35 @@ async function onSpacesAction(event) {
 
 <style scoped>
 .dashboard {
-    margin-top: 2rem;
+    margin: 2rem auto;
+    max-width: 1400px;
+    padding: 0 1.5rem;
 }
 
 .host-spaces {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 1rem;
+    margin-bottom: 3rem;
 }
 
 .host-bookings {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    padding: 1rem;
 }
 
 @media (min-width: 1024px) {
+    .dashboard {
+        padding: 0 2.5rem;
+    }
+    
     .host-bookings {
-        flex-direction: row;
-        align-items: flex-start;
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1280px) {
+    .host-bookings {
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 </style>
