@@ -127,23 +127,32 @@ h2 {
     display: flex;
     justify-content: space-between;
     gap: 0.75rem;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #f1f3f5;
+    padding: 0.75rem 1rem;
+    margin: 0 0.5rem;
+    border-bottom: 2px solid #e9ecef;
+    background: rgba(241, 243, 245, 0.3);
+    border-radius: 6px;
 }
 
 .space__item:last-child {
     border-bottom: none;
 }
 
+.space__item:nth-child(even) {
+    background: rgba(233, 236, 239, 0.4);
+}
+
 .space__item-name {
-    color: #6c757d;
-    font-size: 0.9rem;
+    color: #4a5568;
+    font-size: 0.95rem;
+    font-weight: 500;
 }
 
 .space__item-value {
     color: #2d3436;
-    font-weight: 500;
+    font-weight: 600;
     font-size: 0.95rem;
+    color: #2b6cb0;
 }
 
 @media (min-width: 1024px) {
