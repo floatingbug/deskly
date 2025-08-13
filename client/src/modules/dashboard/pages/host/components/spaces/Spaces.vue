@@ -86,20 +86,32 @@ function editSpace(space) {
 
 <style scoped>
 .spaces-table {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    overflow: hidden;
+    @apply card;
 }
 
-h2 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #1a1a1a;
-    padding: 1.25rem 1.5rem;
-    margin: 0;
-    background: #f8f9fa;
-    border-bottom: 1px solid #e9ecef;
+.spaces-table h2 {
+    @apply text-xl font-semibold p-6 border-b border-surface-200 bg-surface-50 m-0;
+}
+
+.host-spaces {
+    @apply space-y-6;
+}
+
+.space {
+    @apply grid gap-4 p-6 hover:bg-surface-50 transition-colors border-b border-surface-100 last:border-b-0;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.space__item {
+    @apply flex justify-between items-center p-3 bg-surface-100 rounded-lg;
+}
+
+.space__item-name {
+    @apply text-surface-600 text-sm;
+}
+
+.space__item-value {
+    @apply font-medium text-primary-600;
 }
 
 .host-spaces {
