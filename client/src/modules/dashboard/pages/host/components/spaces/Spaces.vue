@@ -115,7 +115,7 @@ h2 {
     border-radius: 12px;
     transition: all 0.2s ease;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    border: 1px solid #e9ecef;
+    border: 2px solid #ced4da;
     margin-bottom: 1.5rem;
 }
 
@@ -123,6 +123,7 @@ h2 {
     transform: translateY(-3px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     border-color: #4dabf7;
+    border-width: 2px;
     background: #f8f9fa;
 }
 

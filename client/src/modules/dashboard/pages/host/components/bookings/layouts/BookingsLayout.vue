@@ -43,7 +43,7 @@ const props = defineProps({
 header {
     padding: 1.25rem 1.5rem;
     background: #f8f9fa;
-    border-bottom: 1px solid #e9ecef;
+    border-bottom: 2px solid #ced4da;
 }
 
 header h2 {
@@ -63,6 +63,6 @@ main {
 footer {
     padding: 1rem 1.5rem;
     background: #f8f9fa;
-    border-top: 1px solid #e9ecef;
+    border-top: 2px solid #ced4da;
 }
 </style>
