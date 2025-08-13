@@ -1,36 +1,42 @@
 <script setup>
-import {onMounted} from "vue";
-import { RouterLink, RouterView } from 'vue-router'
+import { ref, onMounted } from "vue";
+import { RouterLink, RouterView, useRouter } from "vue-router";
 import TheNavbar from "@/components/TheNavbar.vue";
 import useUserStore from "@/stores/useUserStore.js";
 import fetchUserByJwtAPI from "@/api/fetchUserByJwtAPI.js";
-import Toast from 'primevue/toast';
+import Toast from "primevue/toast";
 
-
-const {setUser} = useUserStore();
-
+const { setUser, user } = useUserStore();
+const router = useRouter();
+const isInitialized = ref(false);
 
 onMounted(async () => {
-	if(localStorage.getItem("isSignedIn")){
-		const fetchedUser = await fetchUserByJwtAPI({
-			jwt: localStorage.getItem("jwt"),
-		});
+    if (localStorage.getItem("isSignedIn")) {
+        const fetchedUser = await fetchUserByJwtAPI({
+            jwt: localStorage.getItem("jwt"),
+        });
 
-		setUser(fetchedUser.data.user);
-	}
+        setUser(fetchedUser.data.user);
+
+        if (user.role === "user") router.push("/dashboard/user");
+        else router.push("/dashboard/host");
+    } else {
+        router.push("/");
+    }
+
+    isInitialized.value = true;
 });
-
 </script>
 
 <template>
-	<TheNavbar />
-	<Toast />
+    <TheNavbar v-if="isInitialized" />
+    <Toast />
 
-	<RouterView />
+    <RouterView />
 </template>
 
 <style>
 .p-toast {
-	z-index: 5000 !important;
+    z-index: 5000 !important;
 }
 </style>

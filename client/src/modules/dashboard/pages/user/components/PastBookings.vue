@@ -4,15 +4,13 @@ import BookingLayout from "../layouts/BookingLayout.vue";
 import useUserStore from "@/stores/useUserStore.js";
 import evalTotalAmount from "../utils/evalTotalAmount.js";
 
-
 const emit = defineEmits(["bookings:action"]);
 const props = defineProps({
-  searchQuery: {
-    type: String,
-    default: "",
-  },
+    searchQuery: {
+        type: String,
+        default: "",
+    },
 });
-
 
 const { user } = useUserStore();
 const panels = ref({});
@@ -21,114 +19,102 @@ const pastBookings = ref([]);
 const isMessageDialogVisible = ref(false);
 const message = ref("");
 
-
 onMounted(() => {
-  setBookings();
-  isInitialized.value = true;
+    setBookings();
+    isInitialized.value = true;
 });
 
+watch(
+    () => user.bookings,
+    () => {
+        setBookings();
+    },
+);
 
-watch(() => user.bookings, () => {
-  setBookings();
-});
+function setBookings() {
+    const bookings = user.bookings || [];
+    const now = new Date();
+    pastBookings.value = bookings.filter((booking) => new Date(booking.endDate) < now);
 
-function setBookings(){
-  const bookings = user.bookings || [];
-  const now = new Date();
-  pastBookings.value = bookings.filter(booking => new Date(booking.endDate) < now);
+    pastBookings.value.forEach((booking) => {
+        const totalAmount = evalTotalAmount({
+            startDate: booking.startDate,
+            endDate: booking.endDate,
+            startTime: booking.startTime,
+            hourlyRate: booking.space.hourlyRate,
+        });
 
-  pastBookings.value.forEach(booking => {
-    const totalAmount = evalTotalAmount({
-      startDate: booking.startDate,
-      endDate: booking.endDate,
-      startTime: booking.startTime,
-      hourlyRate: booking.space.hourlyRate,
+        panels.value[booking._id] = panels.value[booking._id] || { isOpen: false, totalAmount };
+        panels.value[booking._id].totalAmount = totalAmount;
     });
-
-    panels.value[booking._id] = panels.value[booking._id] || { isOpen: false, totalAmount };
-    panels.value[booking._id].totalAmount = totalAmount;
-  });
 }
 
 const filteredBookings = computed(() => {
-  const q = props.searchQuery.trim().toLowerCase();
-  const list = pastBookings.value || [];
-  if(!q) return list;
-  return list.filter(b => (b.space?.name || '').toLowerCase().includes(q));
+    const q = props.searchQuery.trim().toLowerCase();
+    const list = pastBookings.value || [];
+    if (!q) return list;
+    return list.filter((b) => (b.space?.name || "").toLowerCase().includes(q));
 });
 
-function contactHost(creatorId){
-  emit("bookings:action", {
-    action: "contactHost",
-    creatorId,
-    message: message.value,
-  });
+function contactHost(creatorId) {
+    emit("bookings:action", {
+        action: "contactHost",
+        creatorId,
+        message: message.value,
+    });
 }
 </script>
 
-
 <template>
-  <BookingLayout
-    v-if="isInitialized"
-    :bookings="filteredBookings"
-    :panels="panels"
-  >
-    <template #contactHostButton>
-      <Button class="booking__panel-buttons-contact-host"
-        severity="secondary"
-        raised
-        @click="isMessageDialogVisible = true;"
-      >
-        Contact Host
-      </Button>
-    </template>
-
-    <template #cancelBookingButton>
-      <Button class="booking__panel-buttons-cancel-booking" severity="secondary" disabled>
-        Cancel Booking
-      </Button>
-    </template>
-
-    <template #messageDialog="slotProps">
-      <Dialog 
-        v-model:visible="isMessageDialogVisible"
-        modal
-        :pt="{
-          root: {
-            style: 'width: 90%; max-width: 400px;'
-          }
-        }"
-      >
-        <template #header>
-          Contact Host
+    <BookingLayout v-if="isInitialized" :bookings="filteredBookings" :panels="panels">
+        <template #contactHostButton>
+            <Button
+                class="booking__panel-buttons-contact-host"
+                severity="secondary"
+                raised
+                @click="isMessageDialogVisible = true"
+            >
+                Contact Host
+            </Button>
         </template>
 
-        <div class="dialog__main">
-          <Textarea v-model="message" />
-        </div>
-
-        <template #footer>
-          <Button class="message-dialog__cancel-button"
-            @click="isMessageDialogVisible = false"
-          >
-            Cancel
-          </Button>
-          
-          <Button class="message-dialog__cancel-button"
-            @click="contactHost(slotProps.creatorId)"
-          >
-            Send Message
-          </Button>
+        <template #cancelBookingButton>
+            <Button class="booking__panel-buttons-cancel-booking" severity="secondary" disabled>Cancel Booking</Button>
         </template>
-      </Dialog>
-    </template>
-  </BookingLayout>
-</template>   
 
+        <template #messageDialog="slotProps">
+            <Dialog
+                v-model:visible="isMessageDialogVisible"
+                modal
+                :pt="{
+                    root: {
+                        style: 'width: 90%; max-width: 400px;',
+                    },
+                }"
+            >
+                <template #header>Contact Host</template>
+
+                <div class="dialog__main">
+                    <Textarea v-model="message" />
+                </div>
+
+                <template #footer>
+                    <Button class="message-dialog__cancel-button" @click="isMessageDialogVisible = false">
+                        Cancel
+                    </Button>
+
+                    <Button class="message-dialog__cancel-button" @click="contactHost(slotProps.creatorId)">
+                        Send Message
+                    </Button>
+                </template>
+            </Dialog>
+        </template>
+    </BookingLayout>
+</template>
 
 <style scoped>
 .dialog__main .p-textarea {
-  width: 100%;
-  min-height: 200px;
+    width: 100%;
+    min-height: 200px;
 }
 </style>

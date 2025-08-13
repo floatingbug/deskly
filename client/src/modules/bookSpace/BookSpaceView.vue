@@ -29,6 +29,8 @@ async function onBookSpaceFormAction(event) {
     if (!result.success) {
         toast.add({ severity: "warn", summary: "Booking failed", detail: result.errors[0], life: 5000 });
     }
+    
+    toast.add({ severity: "success", summary: "Booking success", detail: result.message, life: 5000 });
 
     router.push("/dashboard");
 }

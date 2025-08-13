@@ -1,21 +1,21 @@
 :root {
-	--contrast-color: var(--p-purple-500);
+    --contrast-color: var(--p-purple-500);
 
-	--space-card-bg-color: hsl(from var(--p-primary-50) h s l / 100%);
-	--space-card-head-bg-color: rgb(from var(--p-primary-100) r g b / 100%);
-	--space-card-border-color: rgb(from var(--p-surface-700) r g b / 100%);
-	--space-card-border-hover-color: hsl(from var(--p-primary-color) h s l / 100%);
+    --space-card-bg-color: hsl(from var(--p-primary-50) h s l / 100%);
+    --space-card-head-bg-color: rgb(from var(--p-primary-100) r g b / 100%);
+    --space-card-border-color: rgb(from var(--p-surface-700) r g b / 100%);
+    --space-card-border-hover-color: hsl(from var(--p-primary-color) h s l / 100%);
 
-	--filter-bg-color: hsl(from var(--p-primary-100) h s l / 100%);
-	--filter-border-color: hsl(from var(--p-surface-700) h s calc(l + 60) / 100%);
+    --filter-bg-color: hsl(from var(--p-primary-100) h s l / 100%);
+    --filter-border-color: hsl(from var(--p-surface-700) h s calc(l + 60) / 100%);
 
-	--nav-bg-color: hsl(from var(--p-primary-700) h s l / 100%);
-	--nav-actions-bg-color: hsl(from var(--p-primary-200) h s l / 80%);
+    --nav-bg-color: hsl(from var(--p-primary-700) h s l / 100%);
+    --nav-actions-bg-color: hsl(from var(--p-primary-200) h s l / 80%);
 
-	--button-selected-color: hsl(from var(--p-primary-color) calc(h + 100) s calc(l) / 100%);
+    --button-selected-color: hsl(from var(--p-primary-color) calc(h + 100) s calc(l) / 100%);
 
-	--space-informations-border-color: hsl(from var(--p-primary-color) h s l / 100%);
-	--space-informations-bg-color: hsl(from var(--p-surface-100) h s l / 100%);
-	--space-informations-header-bg: hsl(from var(--p-primary-100) h s l / 100%);
-	--space-informations-border-color: rgb(from var(--p-surface-700) r g b / 100%);
+    --space-informations-border-color: hsl(from var(--p-primary-color) h s l / 100%);
+    --space-informations-bg-color: hsl(from var(--p-surface-100) h s l / 100%);
+    --space-informations-header-bg: hsl(from var(--p-primary-100) h s l / 100%);
+    --space-informations-border-color: rgb(from var(--p-surface-700) r g b / 100%);
 }

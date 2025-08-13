@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, toRef} from "vue";
 import { useToast } from "primevue/usetoast";
 import Bookings from "./components/Bookings.vue";
 import CurrBookings from "./components/CurrBookings.vue";
@@ -17,6 +17,7 @@ import TabPanel from "primevue/tabpanel";
 import Tag from "primevue/tag";
 import StatCard from "@/components/StatCard.vue";
 import Chart from 'primevue/chart';
+import useStats from "../../composables/useStats.js";
 
 const toast = useToast();
 const { setUserStoreBookings, user } = useUserStore();
@@ -26,15 +27,16 @@ const pendingCancelBookingId = ref("");
 const searchQuery = ref("");
 const isSidebarVisible = ref(false);
 const activeTab = ref("all");
-const hasInitialLoad = ref(false);
+
+
+const { stats } = useStats({ bookings: toRef(user, 'bookings') });
+
 
 onMounted(async () => {
     try {
         const fetchedBookings = await fetchBookingsAPI();
         setUserStoreBookings(fetchedBookings.data);
         isInitialized.value = true;
-        // Erzwinge Update des aktiven Tabs nach Datenladung
-        hasInitialLoad.value = true;
         activeTab.value = "all";
     } catch (error) {
         toast.add({
@@ -44,62 +46,9 @@ onMounted(async () => {
             life: 3000,
         });
     }
+
 });
 
-const stats = computed(() => {
-    const bookings = user.bookings || [];
-    const now = new Date();
-    
-    // Generiere monatliche Buchungsstatistik
-    const monthlyCounts = bookings.reduce((acc, booking) => {
-        const month = new Date(booking.createdAt).toLocaleString('default', { month: 'short' });
-        acc[month] = (acc[month] || 0) + 1;
-        return acc;
-    }, {});
-
-    const total = {
-        count: {
-            label: "Total", 
-            value: bookings.length
-        },
-        chartType: 'line',
-        chartData: {
-            labels: Object.keys(monthlyCounts),
-            datasets: [
-                {
-                    label: 'Bookings pro Monat',
-                    data: Object.values(monthlyCounts),
-                    borderColor: '#3B82F6',
-                    tension: 0.4,
-                    fill: false
-                }
-            ]
-        }
-    };
-
-    const current = {
-        count: {
-            label: "Count",
-            value: bookings.filter((b) => new Date(b.startDate) <= now && now <= new Date(b.endDate)).length,
-        },
-    };
-
-    const upcoming = {
-        count: {
-            label: "Upcoming",
-            value: bookings.filter((b) => new Date(b.startDate) > now).length,
-        },
-    };
-
-    const past = {
-        count: {
-            label: "Past",
-            value: bookings.filter((b) => new Date(b.endDate) < now).length,
-        },
-    };
-    
-    return { total, current, upcoming, past };
-});
 
 function confirmCancel(bookingId) {
     pendingCancelBookingId.value = bookingId;
@@ -135,7 +84,7 @@ function toggleSidebar() {
 </script>
 
 <template>
-    <section class="dashboard-user" v-if="isInitialized && hasInitialLoad">
+    <section class="dashboard-user" v-if="isInitialized">
         <header class="dashboard-header">
             <div class="header-left">
                 <h1 class="text-2xl font-bold text-primary-700">Booking Management</h1>
@@ -151,20 +100,11 @@ function toggleSidebar() {
                         aria-label="Search bookings"
                     />
                 </span>
-                <Button
-                    icon="pi pi-filter"
-                    class="sidebar-toggle p-3"
-                    aria-label="Toggle stats sidebar"
-                    @click="toggleSidebar"
-                    severity="secondary"
-                    text
-                    rounded
-                />
             </div>
         </header>
 
-        <div class="dashboard-body">
-            <div class="main-content">
+        <div class="dashboard-body" v-if="isInitialized">
+            <aside>
                 <div class="stats-container">
                     <StatCard 
                         v-for="(stat, index) in stats"
@@ -172,7 +112,9 @@ function toggleSidebar() {
                         :stat="stat"
                     />
                 </div>
+            </aside>
 
+            <div class="main-content">
                 <Tabs v-model:value="activeTab" class="custom-tabs">
                     <TabList class="flex gap-6 border-b border-surface-100">
                         <Tab
@@ -224,6 +166,7 @@ function toggleSidebar() {
 .dashboard-user {
     display: flex;
     flex-direction: column;
+    align-items: center;
     height: 100vh;
     padding: 1.5rem 2rem;
     background: linear-gradient(195deg, var(--surface-50) 30%, var(--primary-50) 150%);
@@ -235,14 +178,8 @@ function toggleSidebar() {
 }
 
 .dashboard-header {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(8px);
-    padding: 1.5rem;
-    border-radius: 12px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    margin-bottom: 1.5rem;
-}
-.dashboard-header {
+    width: 100%;
+    max-width: 1200px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -283,22 +220,27 @@ function toggleSidebar() {
     background-color: var(--p-primary-100);
 }
 .dashboard-body {
+    width: 100%;
     display: flex;
+    justify-content: center;
     gap: 1.5rem;
     margin-top: 1rem;
     height: calc(100vh - 120px);
 }
 .main-content {
+    width: 100%;
+    max-width: 800px;
     flex: 1 1 auto;
     overflow-y: auto;
 }
 
 .stats-container {
-    width: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     gap: 1.2rem;
     padding: 1.2rem;
+    margin-top: 2.4rem
 }
 
 .custom-tabs {

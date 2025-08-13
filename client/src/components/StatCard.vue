@@ -1,8 +1,12 @@
 <script setup>
+import Chart from 'primevue/chart';
+
+
 const props = defineProps({
     stat: Object,
 });
 
+console.log(props.stat);
 
 </script>
 
@@ -10,29 +14,27 @@ const props = defineProps({
 <template>    
     <div class="stat">
         <header>
+            {{stat.label}}
         </header>
         
         <main>
-            <div class="stat__count">
-                <div class="stat-header">
-                    <div class="stat__count-label">
-                        {{stat.count.label}}:
-                    </div>
-                    <div class="stat__count-value">
-                        {{stat.count.value}}
-                    </div>
-                </div>
-                <Chart 
-                    v-if="stat.chartType"
-                    :type="stat.chartType" 
-                    :data="stat.chartData"
-                    :options="{
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: { legend: { display: false } }
-                    }"
-                    class="chart"
-                />
+            <Chart 
+                v-if="stat.chartType"
+                :type="stat.chartType" 
+                :data="stat.chartData"
+                :options="{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                }"
+                class="chart"
+            />
+
+            <div class="count__item"
+                v-if="stat.count"
+            >
+                <div class="count__label">{{stat.count.label}}: </div>
+                <div class="count__value">{{stat.count.value}}</div>
             </div>
         </main>
         
@@ -41,21 +43,26 @@ const props = defineProps({
     </div>
 </template>   
 
-<script setup>
-import Chart from 'primevue/chart';
-</script>
-
 
 <style scoped>
 .stat {
-    flex: 1;
-    padding: 1.2rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 1.6rem;
     border-radius: 8px;
     border: 1px solid var(--p-surface-500);
 }
 
-.stat__count {
+main {
+    margin-top: 1.6rem;
+}
+
+.count__item {
     display: flex;
-    gap: 0.8rem;
+}
+
+.count__label {
+    min-width: 88px;
 }
 </style>
