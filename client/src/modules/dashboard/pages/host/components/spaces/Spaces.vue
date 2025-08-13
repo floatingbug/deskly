@@ -109,17 +109,20 @@ h2 {
 .space {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1rem;
+    gap: 1.5rem;
     padding: 1.5rem;
     background: white;
-    border-radius: 8px;
+    border-radius: 12px;
     transition: all 0.2s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e9ecef;
+    margin-bottom: 1.5rem;
 }
 
 .space:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-color: #4dabf7;
     background: #f8f9fa;
 }
 
@@ -127,19 +130,21 @@ h2 {
     display: flex;
     justify-content: space-between;
     gap: 0.75rem;
-    padding: 0.75rem 1rem;
+    padding: 1rem;
     margin: 0 0.5rem;
-    border-bottom: 2px solid #e9ecef;
-    background: rgba(241, 243, 245, 0.3);
-    border-radius: 6px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    transition: all 0.2s ease;
 }
 
-.space__item:last-child {
-    border-bottom: none;
+.space__item:hover {
+    background: #e7f5ff;
+    border-color: #a5d8ff;
 }
 
 .space__item:nth-child(even) {
-    background: rgba(233, 236, 239, 0.4);
+    background: #f1f3f5;
 }
 
 .space__item-name {
