@@ -28,6 +28,7 @@ onMounted(async () => {
 					<Kpis />
 				</div>
 
+
 				<div class="bookings-container">
 					<Bookings :bookings="bookings" />
 				</div>
