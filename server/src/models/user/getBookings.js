@@ -1,11 +1,11 @@
 const {getDB} = require("@config/db");
 
 
-async function getBookings({query}){
+async function getBookings({pipeline}){
 	try{
 		const db = await getDB();
-		const cursor = await db.collection("bookings").find(query);
-		const result = cursor.toArray();
+		const cursor = db.collection("bookings").aggregate(pipeline);
+		const result = await cursor.toArray();
 
 		return result;
 	}

@@ -1,7 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { RouterLink, RouterView, useRouter } from "vue-router";
-import TheNavbar from "@/components/TheNavbar.vue";
 import useUserStore from "@/stores/useUserStore.js";
 import fetchUserByJwtAPI from "@/api/fetchUserByJwtAPI.js";
 import Toast from "primevue/toast";
@@ -29,13 +28,13 @@ onMounted(async () => {
 </script>
 
 <template>
-    <TheNavbar v-if="isInitialized" />
     <Toast />
-
+    
     <RouterView />
 </template>
 
 <style>
+
 .p-toast {
     z-index: 5000 !important;
 }

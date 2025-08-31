@@ -2,40 +2,66 @@
 import { ref, reactive } from "vue";
 import Select from "primevue/select";
 
+
 const emit = defineEmits(["sort:action"]);
+
 
 const sorts = reactive({
     hourlyRate: "",
     capacity: "",
 });
+
 const hourlyRateOptions = ref([
     { name: "No Sort", value: "hourlyRateClearSort" },
-    { name: "Hourly Rate: Low to High", value: "hourlyRateAscending" },
-    { name: "Hourly Rate: High to Low", value: "hourlyRateDescending" },
+    { name: "Hourly Rate: Low to High", value: "ascending" },
+    { name: "Hourly Rate: High to Low", value: "descending" },
 ]);
+
 const capacityOptions = ref([
     { name: "No Sort", value: "capacityClearSort" },
-    { name: "Capacity: Low to High", value: "capacityAscending" },
-    { name: "Capacity: High to Low", value: "capacityDescending" },
+    { name: "Capacity: Low to High", value: "ascending" },
+    { name: "Capacity: High to Low", value: "descending" },
 ]);
 
 const dateOptions = ref([
     { name: "No Sort", value: "dateClearSort" },
-    { name: "Date: Low to High", value: "dateAscending" },
-    { name: "Date: High to Low", value: "dateDescending" },
+    { name: "Date: Low to High", value: "ascending" },
+    { name: "Date: High to Low", value: "descending" },
 ]);
 
-function onSelectChange(event) {
-    const value = event.value;
+const queryObject = {
+    hourlyRate: "",
+    capacity: "",
+    date: "",
+};
 
-    if (value === "hourlyRateClearSort") sorts.hourlyRate = null;
-    if (value === "capacityClearSort") sorts.capacity = null;
-    if (value === "dateClearSort") sorts.date = null;
 
+function onSelectChange({id, value}) {
+    let query = "";
+
+    // set queryObject
+    if(id === "hourlyRate"){
+        queryObject.hourlyRate = value === "hourlyRateClearSort" ? "" : value;
+    }
+    else if(id === "capacity"){
+        queryObject.capacity = value === "capacityClearSort" ? "" : value;
+    }
+    else{
+        queryObject.date = value === "dateClearSort" ? "" : value;
+    }
+
+    // create query
+    if(queryObject.hourlyRate !== "") query += `hourlyRate=${queryObject.hourlyRate}&`;
+    if(queryObject.capacity !== "") query += `capacity=${queryObject.capacity}&`;
+    if(queryObject.date!== "") query += `date=${queryObject.date}&`;
+
+    // emit query to parent
     emit("sort:action", {
-        action: value,
+        action: "newSortQuery",
+        query,
     });
 }
+
 </script>
 
 <template>
@@ -46,7 +72,7 @@ function onSelectChange(event) {
             optionLabel="name"
             optionValue="value"
             placeholder="Sort by Hourly Rate"
-            @change="onSelectChange"
+            @update:modelValue="val => onSelectChange({id: 'hourlyRate', value: val})"
         />
 
         <Select
@@ -55,7 +81,7 @@ function onSelectChange(event) {
             optionLabel="name"
             optionValue="value"
             placeholder="Sort by Capacity"
-            @change="onSelectChange"
+            @update:modelValue="val => onSelectChange({id: 'capacity', value: val})"
         />
 
         <Select
@@ -64,7 +90,7 @@ function onSelectChange(event) {
             optionLabel="name"
             optionValue="value"
             placeholder="Sort by Date"
-            @change="onSelectChange"
+            @update:modelValue="val => onSelectChange({id: 'date', value: val})"
         />
     </div>
 </template>

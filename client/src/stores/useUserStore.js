@@ -5,7 +5,6 @@ const user = reactive({
     name: "",
     role: "",
     jwt: "",
-    bookings: [],
 });
 
 function setUser({ name, role, jwt }) {
@@ -20,12 +19,11 @@ function unsetUser() {
     user.name = "";
     user.role = "";
     user.jwt = "";
+    localStorage.removeItem("isSignedIn");
+    localStorage.removeItem("jwt");
 }
 
-function setUserStoreBookings(bookings) {
-    user.bookings = bookings;
-}
 
 export default function useUserStore() {
-    return { user, setUser, unsetUser, setUserStoreBookings };
+    return { user, setUser, unsetUser};
 }

@@ -2,18 +2,21 @@ const {getDB} = require("@config/db");
 
 
 async function getSpaces({pagination, sortings, filter}){
-	const skip = pagination.skip;
-	const limit = pagination.limit;
-
 	try{
 		const db = await getDB();
 
 		const totalEntries = await db.collection("spaces").countDocuments(filter);
 
 		const cursor = await db.collection("spaces").find(filter);
-		cursor.sort(sortings)
-		cursor.skip(skip);
-		cursor.limit(limit);
+
+		if(sortings){
+			cursor.sort(sortings)
+		}
+		
+		if(pagination){
+			cursor.skip(pagination.skip);
+			cursor.limit(pagination.limit);
+		}
 
 		const spaces = await cursor.toArray();
 

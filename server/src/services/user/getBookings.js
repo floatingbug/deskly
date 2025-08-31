@@ -3,18 +3,31 @@ const userModel = require("@models/user");
 
 async function getBookings({userId}){
 	try{
-		const aggregation = [
+		const pipeline = [
 			{
 				$match: {
+					userId,
 				}
 			},
-			$lookup: {
-				from: "bookings",
-
-			}
+			{
+				$addFields: {
+					spaceObjectId: { $toObjectId: "$spaceId" }
+				}
+			},
+			{
+				$lookup: {
+					from: "spaces",
+					localField: "spaceObjectId",
+					foreignField: "_id",
+					as: "space",
+				}
+			},
+			{
+				$unwind: "$space",
+			},
 		];
 
-		const result = await userModel.getBookings({query});
+		const result = await userModel.getBookings({pipeline});
 
 		return {
 			success: true,

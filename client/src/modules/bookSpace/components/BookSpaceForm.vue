@@ -1,17 +1,25 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, reactive, watch, onMounted } from "vue";
 import getDisabledDates from "../utils/getDisabledDates.js";
+
 
 const props = defineProps({
     space: Object,
     bookings: Array,
 });
 
+
 const emit = defineEmits(["bookSpaceForm:action"]);
+
 
 const selectedDate = ref();
 const disabledDates = ref([]);
 const specialRequest = ref("");
+const bookingStatus = reactive({
+    totalHours: 0,
+    totalAmount: 0,
+});
+
 
 onMounted(() => {
     // set disabled dates
@@ -21,12 +29,28 @@ onMounted(() => {
     });
 });
 
+
+// set bookingStatus
+watch(() => selectedDate.value, () => {
+    // set totalHours
+    if(selectedDate.value[0] && selectedDate.value[1]){
+        const totalMilliseconds = selectedDate.value[1].getTime() - selectedDate.value[0].getTime();
+        bookingStatus.totalHours = Math.floor(totalMilliseconds / (1000 * 60 * 60));
+    }
+
+    // set totalAmount
+    bookingStatus.totalAmount = bookingStatus.totalHours * props.space.hourlyRate;
+});
+
+
 function onBookButtonClick() {
     const startDate = selectedDate.value[0].toISOString().split("T")[0];
     const endDate = selectedDate.value[1].toISOString().split("T")[0];
     const hours = selectedDate.value[1].getUTCHours().toString().padStart(2, "0");
     const minutes = selectedDate.value[1].getUTCMinutes().toString().padStart(2, "0");
     const startTime = `${hours}:${minutes}`;
+    
+
 
     emit("bookSpaceForm:action", {
         action: "newBooking",
@@ -35,10 +59,13 @@ function onBookButtonClick() {
             startDate,
             endDate,
             startTime,
+            totalHours: bookingStatus.totalHours,
+            totalAmount: bookingStatus.totalAmount,
             specialRequest: specialRequest.value,
         },
     });
 }
+
 </script>
 
 <template>
@@ -65,6 +92,32 @@ function onBookButtonClick() {
             </FloatLabel>
         </InputGroup>
 
+        <div class="booking-status__container">
+            <h2>Summarized Booking</h2>
+
+            <div class="booking-status">
+                <div class="booking-status__item">
+                    <div class="booking-status__item-label">
+                        Total Hours:
+                    </div>
+                
+                    <div class="booking-status__item-value">
+                        {{bookingStatus.totalHours}}
+                    </div>
+                </div>
+                
+                <div class="booking-status__item">
+                    <div class="booking-status__item-label">
+                        Total Amount:
+                    </div>
+                
+                    <div class="booking-status__item-value">
+                        {{bookingStatus.totalAmount}}$
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <Button @click="onBookButtonClick">
             <i class="pi pi-check"></i>
             Book
@@ -81,5 +134,20 @@ function onBookButtonClick() {
 
 .p-textarea {
     width: 100%;
+}
+
+.booking-status__container {
+    display: flex;
+    flex-direction: column;
+}
+
+.booking-status {
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+.booking-status__item {
+    display: flex;
+    gap: var(--spacing-sm);
 }
 </style>

@@ -1,12 +1,12 @@
 <script setup>
 import { useRouter } from "vue-router";
-import useBookingStore from "@/stores/booking/useBookingStore.js";
-import BookingsLayout from "./layouts/BookingsLayout.vue";
-import BookingItemLayout from "./layouts/BookingItemLayout.vue";
+import useBookingStore from "../../stores/booking/useBookingStore.js";
 import BookingLayout from "./layouts/BookingLayout.vue";
 
-const { currentBookings, selectedBooking } = useBookingStore();
+
+const { bookings, selectedBooking } = useBookingStore();
 const router = useRouter();
+
 
 function manageBooking(booking) {
     selectedBooking.value = booking;
@@ -15,47 +15,11 @@ function manageBooking(booking) {
 </script>
 
 <template>
-    <BookingsLayout>
-        <template #header>Current Bookings</template>
-
-        <template #main>
-            <BookingLayout v-for="(booking, index) in currentBookings" @click="manageBooking(booking)">
-                <template #booking>
-                    <BookingItemLayout>
-                        <template #name>Name:</template>
-
-                        <template #value>
-                            {{ booking.space.name }}
-                        </template>
-                    </BookingItemLayout>
-
-                    <BookingItemLayout>
-                        <template #name>Start:</template>
-
-                        <template #value>
-                            {{ booking.startDate }}
-                        </template>
-                    </BookingItemLayout>
-
-                    <BookingItemLayout>
-                        <template #name>At:</template>
-
-                        <template #value>
-                            {{ booking.startTime }}
-                        </template>
-                    </BookingItemLayout>
-
-                    <BookingItemLayout>
-                        <template #name>End:</template>
-
-                        <template #value>
-                            {{ booking.endDate }}
-                        </template>
-                    </BookingItemLayout>
-                </template>
-            </BookingLayout>
+    <BookingLayout :bookings="bookings.currentBookings">
+        <template #tableHeader>
+            Current Bookings
         </template>
-    </BookingsLayout>
+    </BookingLayout>
 </template>
 
 <style scoped></style>

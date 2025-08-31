@@ -1,13 +1,13 @@
 const authModel = require("@models/auth");
 
 
-async function register({name, email, password}){
+async function register({name, email, password, role}){
 	try{
 		const doc = {
 			name,
 			email,
 			password,
-			role: "user",
+			role,
 			createdAt: Date.now(),
 		};
 
