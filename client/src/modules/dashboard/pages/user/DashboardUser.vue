@@ -27,8 +27,7 @@ onMounted(async () => {
 				<div class="kpis-container">
 					<Kpis />
 				</div>
-
-
+				
 				<div class="bookings-container">
 					<Bookings :bookings="bookings" />
 				</div>
@@ -49,12 +48,13 @@ onMounted(async () => {
 .kpis-container {
 	width: 100%;
 	max-width: 1400px;
+	padding:  0 var(--spacing-md) calc(var(--spacing-xl) * 2) var(--spacing-md);
 }
 
 .bookings-container {
 	width: 100%;
 	max-width: 1400px;
-	padding: var(--spacing-xl) 0;
+	padding: var(--spacing-xl) var(--spacing-md);
 }
 
 @media(min-width: 1050px){

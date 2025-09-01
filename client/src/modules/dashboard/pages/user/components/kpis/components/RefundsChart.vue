@@ -57,14 +57,11 @@ watch(() => props.refundsData, () => {
 </script>
 
 <template>
-	<div class="refunds-wrapper">
-		<h3>Refunds And Cancelations</h3>
-		<Chart v-if="props.refundsData" type="doughnut" :data="chartData" :options="chartOptions" />
-	</div>
+	<Chart v-if="props.refundsData" type="doughnut" :data="chartData" :options="chartOptions" />
 </template>
 
 <style scoped>
-.refunds-wrapper {
+.p-chart {
 	width: 100%;
 }
 </style>

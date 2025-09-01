@@ -96,24 +96,17 @@ watch(() => props.monthlySpendings, () => {
 
 
 <template>
-	<div class="wrapper">
-		<h3>Monthly Spendings</h3>
-		<Chart 
-			v-if="monthlySpendings && monthlySpendings.length > 0"
-			type="line" 
-			:data="chartData" 
-			:options="chartOptions" 
-		/>
-	</div>
+	<Chart 
+		v-if="monthlySpendings && monthlySpendings.length > 0"
+		type="line" 
+		:data="chartData" 
+		:options="chartOptions" 
+	/>
 </template>
 
 
 <style scoped>
-.wrapper {
+.p-chart {
 	width: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	padding: 0;
 }
 </style>

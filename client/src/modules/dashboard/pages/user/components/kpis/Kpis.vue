@@ -5,6 +5,7 @@ import MonthlySpendings from "./components/MonthlySpendings.vue";
 import RefundsChart from "./components/RefundsChart.vue";
 import TopBookedSpaces from "./components/TopBookedSpaces.vue";
 import useBookingStore from "../../stores/booking/useBookingStore.js";
+import KpiCard from "./components/KpiCard.vue";
 
 
 const {kpis} = useBookingStore();
@@ -38,60 +39,85 @@ const kpiHeaderValues = ref([
 
 
 <template>    
-	<div class="wrapper">
+	<div class="kpis-header-container">
 		<KpiHeader :kpis="kpiHeaderValues" />
 	</div>
 
-	<div class="wrapper wrapper-mid">
-		<div class="wrapper-mid__item wrapper-mid__monthly-spendings">
+	<div class="kpis-container">
+		<KpiCard>
+			<template #header>
+				<h3>Monthly Spendings</h3>
+			</template>
+			
 			<MonthlySpendings 
 				v-if="kpis && kpis.monthlySpendings"
 				:monthlySpendings="kpis.monthlySpendings" 
 			/>
-		</div>
-
-		<div class="wrapper-mid__item wrapper-mid__right">
+		</KpiCard>
+	
+		<KpiCard>
+			<template #header>
+				<h3>Refunds</h3>
+			</template>
+			
 			<RefundsChart :refundsData="kpis.refundsAndCancellations" />
-		</div>
-	</div>
-
-	<div class="wrapper wrapper-bottom">
-		<TopBookedSpaces :topSpaces="kpis.topBookedSpaces" />
-	</div>
-
-	<div class="wrapper">
+		</KpiCard>
+	
+		<KpiCard>
+			<template #header>
+				<h3>Top Booked Spaces</h3>
+			</template>
+			
+			<TopBookedSpaces :topSpaces="kpis.topBookedSpaces" />
+		</KpiCard>
 	</div>
 </template>   
 
 
 <style scoped>
-.wrapper {
+h3 {
+	margin: 0;
+}
+
+.kpis-header-container {
 	width: 100%;
+	display: grid;
+	grid-template-columns: minmax(280px, 360px);
+	justify-content: center;
+	justify-items: center;
+	column-gap: var(--spacing-md);
+	row-gap: var(--spacing-xl);
 }
 
-.wrapper-mid {
-	display: flex;
-	flex-wrap: wrap;
-	gap: var(--spacing-xl);
-	padding: var(--spacing-xl) 0;
-}
-
-.wrapper-mid__item{
+.kpis-container {
 	width: 100%;
-	flex: 1;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
+	display: grid;
+	grid-template-columns: minmax(280px, 360px);
+	justify-content: center;
+	justify-items: center;
+	column-gap: var(--spacing-md);
+	row-gap: var(--spacing-xl);
+	margin-top: var(--spacing-xl);
+	padding: calc(var(--spacing-xl) * 2) 0;
 }
 
-@media(min-width: 800px){
-	.wrapper{
+@media(min-width: 768px) {
+	.kpis-header-container {
+		grid-template-columns: repeat(2, 1fr);
+	}
+	
+	.kpis-container {
+		grid-template-columns: 2fr 1fr;
 	}
 }
 
-@media(min-width: 1024px){
-	.wrapper-mid__monthly-spendings {
-		flex: 2;
+@media(min-width: 1024px) {
+	.kpis-header-container {
+		grid-template-columns: repeat(4, 1fr);
+	}
+	
+	.kpis-container {
+		grid-template-columns: 2fr 1fr 1fr;
 	}
 }
 </style>

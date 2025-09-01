@@ -16,8 +16,6 @@ const props = defineProps({
 
 <template>    
 	<div class="bookings">
-		<h3>Bookings</h3>
-
 		<Tabs value="0" scrollable>
 			<TabList>
 				<Tab value="0">All Bookings</Tab>

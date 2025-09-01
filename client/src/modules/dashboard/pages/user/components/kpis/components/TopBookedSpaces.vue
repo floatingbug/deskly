@@ -38,14 +38,6 @@ function setChartOptions() {
             legend: { display: false },
             tooltip: { mode: "index", intersect: false }
         },
-        scales: {
-            x: { beginAtZero: true },
-            y: {
-                ticks: { autoSkip: false },
-                categoryPercentage: 1, // 40% der Kategorie ist der Balken
-                barPercentage: 0.8       // 80% des Balkens innerhalb der Kategorie
-            }
-        }
     };
 }
 
@@ -60,15 +52,13 @@ watch(() => props.topSpaces, () => {
 </script>
 
 <template>
-    <div class="chart-wrapper">
-        <h3>Top Booked Spaces</h3>
-        <Chart v-if="props.topSpaces.length" type="bar" :data="chartData" :options="chartOptions" />
-    </div>
+ 	<Chart v-if="props.topSpaces.length" type="bar" :data="chartData" :options="chartOptions" />
 </template>
 
 <style scoped>
-.chart-wrapper {
-    max-height: 300px;
+.p-chart {
+	width: 100%;
+	height: 100%;
 }
 </style>
 
