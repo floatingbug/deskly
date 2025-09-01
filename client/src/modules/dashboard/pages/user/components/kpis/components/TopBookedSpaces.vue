@@ -29,6 +29,7 @@ function setChartData() {
     };
 }
 
+
 function setChartOptions() {
     return {
         indexAxis: 'y',
