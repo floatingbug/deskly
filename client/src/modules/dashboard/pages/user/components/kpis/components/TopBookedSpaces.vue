@@ -41,10 +41,12 @@ function setChartOptions() {
     };
 }
 
+
 onMounted(() => {
     chartData.value = setChartData();
     chartOptions.value = setChartOptions();
 });
+
 
 watch(() => props.topSpaces, () => {
     chartData.value = setChartData();
