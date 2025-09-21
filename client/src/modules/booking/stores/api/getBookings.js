@@ -1,8 +1,8 @@
 import apiFetch from "@/api/apiFetch.js";
 
 
-export default async function fetchCanceledBookings(){
-	const path = "/user/get-canceled-bookings";
+export default async function getBookings(){
+	const path = "/user/bookings";
 	const options = {
 		method: "GET",
 		headers: {},

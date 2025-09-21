@@ -23,14 +23,14 @@
 	flex-direction: column;
 	overflow: hidden;
 	border-radius: var(--radius-md);
-	border: 1px solid var(--border-color-neutral);
-	background-color: var(--bg-primary-light);
+	box-shadow: var(--card-box-shadow);
+	background-color: var(--card-bg);
 }
 
 header {
 	padding: var(--spacing-md);
 	color: var(--color-text);
-	background-color: var(--bg-primary-light-dark);
+	background-color: var(--card-header-bg);
 }
 
 .main-content {

@@ -54,6 +54,7 @@ function setChartData() {
 function setChartOptions() {
     return {
         responsive: true,
+		maintainAspectRatio: false,
         plugins: {
             legend: {
                 display: true,

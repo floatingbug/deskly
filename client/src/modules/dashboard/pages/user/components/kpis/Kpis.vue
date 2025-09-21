@@ -117,7 +117,7 @@ h3 {
 	}
 	
 	.kpis-container {
-		grid-template-columns: 2fr 1fr 1fr;
+		grid-template-columns: 2fr 1fr;
 	}
 }
 </style>

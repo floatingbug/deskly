@@ -22,6 +22,8 @@ import Divider from "primevue/divider";
 import ToastService from "primevue/toastservice";
 import Chip from "primevue/chip";
 import Chart from 'primevue/chart';
+import Carousel from 'primevue/carousel';
+import Tag from "primevue/tag";
 
 const app = createApp(App);
 
@@ -52,6 +54,8 @@ app.component("Divider", Divider);
 app.component("InputNumber", InputNumber);
 app.component("Chip", Chip);
 app.component("Chart", Chart);
+app.component("Carousel", Carousel);
+app.component("Tag", Tag);
 
 app.use(router);
 

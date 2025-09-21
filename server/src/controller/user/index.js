@@ -1,3 +1,4 @@
+const getCanceledBookings = require("./getCanceledBookings");
 const getUserByJwt = require("./getUserByJwt");
 const getBookings = require("./getBookings");
 const getHostSpaces = require("./getHostSpaces");
@@ -6,6 +7,7 @@ const getUserById = require("./getUserById");
 
 
 module.exports = {
+    getCanceledBookings,
 	getUserByJwt,
 	getBookings,
 	getHostSpaces,

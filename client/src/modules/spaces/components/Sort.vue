@@ -12,19 +12,19 @@ const sorts = reactive({
 });
 
 const hourlyRateOptions = ref([
-    { name: "No Sort", value: "hourlyRateClearSort" },
+    { name: "Sort by Hourly Rate", value: "hourlyRateClearSort" },
     { name: "Hourly Rate: Low to High", value: "ascending" },
     { name: "Hourly Rate: High to Low", value: "descending" },
 ]);
 
 const capacityOptions = ref([
-    { name: "No Sort", value: "capacityClearSort" },
+    { name: "Sort by Capacity", value: "capacityClearSort" },
     { name: "Capacity: Low to High", value: "ascending" },
     { name: "Capacity: High to Low", value: "descending" },
 ]);
 
 const dateOptions = ref([
-    { name: "No Sort", value: "dateClearSort" },
+    { name: "Sort by Date", value: "dateClearSort" },
     { name: "Date: Low to High", value: "ascending" },
     { name: "Date: High to Low", value: "descending" },
 ]);

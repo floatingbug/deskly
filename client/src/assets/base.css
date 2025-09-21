@@ -1,97 +1,114 @@
 :root {
-  /**********
-   Colors
-   **********/
+	/**********
+	Colors
+	**********/
 
- /* Primary BG Variants */
-  --bg-primary: var(--p-primary-color);    
-  --bg-primary-light: var(--p-primary-100);
-  --bg-primary-light-dark: var(--p-primary-300);
-  --bg-primary-dark: var(--p-primary-800); 
-  --bg-primary-dark-light: var(--p-primary-600); 
+	/* Primary BG Variants */
+	--bg-primary: var(--p-primary-color);    
+	--bg-primary-light: var(--p-primary-100);
+	--bg-primary-light-dark: var(--p-primary-300);
+	--bg-primary-dark: var(--p-primary-800); 
+	--bg-primary-dark-light: var(--p-primary-600); 
 
-  /* Secondary BG Variants */
-  --bg-secondary: var(--p-surface-300);
-  --bg-secondary-light: var(--p-surface-100);
-  --bg-secondary-dark: var(--p-surface-500);
+	/* Secondary BG Variants */
+	--bg-secondary: var(--p-surface-300);
+	--bg-secondary-light: var(--p-surface-100);
+	--bg-secondary-dark: var(--p-surface-500);
 
-  /* Success BG Variants */
-  --bg-success: var(--p-green-500);
-  --bg-success-light: var(--p-green-100);
-  --bg-success-dark: var(--p-green-700);
+	/* Success BG Variants */
+	--bg-success: var(--p-green-500);
+	--bg-success-light: var(--p-green-100);
+	--bg-success-dark: var(--p-green-700);
 
-  /* Warning BG Variants */
-  --bg-warning: var(--p-yellow-500);
-  --bg-warning-light: var(--p-yellow-100);
-  --bg-warning-dark: var(--p-yellow-700);
+	/* Warning BG Variants */
+	--bg-warning: var(--p-yellow-500);
+	--bg-warning-light: var(--p-yellow-100);
+	--bg-warning-dark: var(--p-yellow-700);
 
-  /* Error BG Variants */
-  --bg-error: var(--p-red-500);
-  --bg-error-light: var(--p-red-100);
-  --bg-error-dark: var(--p-red-700);
+	/* Error BG Variants */
+	--bg-error: var(--p-red-500);
+	--bg-error-light: var(--p-red-100);
+	--bg-error-dark: var(--p-red-700);
 
-  /* Neutral / Surface Variants */
-  --bg-surface: var(--p-surface-200);
-  --bg-surface-light: var(--p-surface-50);
-  --bg-surface-dark: var(--p-surface-600);
+	/* Neutral / Surface Variants */
+	--bg-surface: var(--p-surface-200);
+	--bg-surface-light: var(--p-surface-50);
+	--bg-surface-light-dark: var(--p-surface-100);
+	--bg-surface-dark: var(--p-surface-600);
+	--bg-surface-dark-light: var(--p-surface-400);
 
-  --color-bg: #ffffff;
-  --color-text: #111827;
-  --color-text-contrast: var(--p-primary-contrast-color);
-  --color-subtitle: var(--p-surface-500);
+	/* Shadow Color */
+	--shadow-color: rgba(0, 0, 0, 0.15);
 
-  /**********
-   Spacing
-   **********/
+	/* Card */
+	--card-box-shadow: 0 2px 6px 0 var(--shadow-color);
+	--card-bg: #FFFFFF;
+	--card-header-bg: var(--bg-primary-light);
 
-  --spacing-xs: 0.25rem;
-  --spacing-sm: 0.5rem;
-  --spacing-md: 1rem;
-  --spacing-lg: 1.5rem;
-  --spacing-xl: 2rem;
-  
-  /**********
-   * Typografie
-   **********/
+	/* Text Color */
 
-  --font-family-sans: 'Inter', sans-serif;
-  --font-family-mono: 'Fira Code', monospace;
+	--color-bg: var(--p-surface-50);
+	--color-text: var(--p-surface-950);
 
-  --font-size-sm: 0.875rem;
-  --font-size-md: 1rem;
-  --font-size-lg: 1.25rem;
-  --font-size-xl: 1.5rem;
+	--color-text-contrast: var(--p-primary-contrast-color);
+
+	--color-subtitle: var(--p-surface-400);
+	--color-label: var(--p-surface-600);
+
+	--color-primary: var(--p-primary-color);
+
+	/**********
+	Spacing
+	**********/
+
+	--spacing-xs: 0.25rem;
+	--spacing-sm: 0.5rem;
+	--spacing-md: 1rem;
+	--spacing-lg: 1.5rem;
+	--spacing-xl: 2rem;
+
+	/**********
+	* Typografie
+	**********/
+
+	--font-family-sans: 'Inter', sans-serif;
+	--font-family-mono: 'Fira Code', monospace;
+
+	--font-size-sm: 0.875rem;
+	--font-size-md: 1rem;
+	--font-size-lg: 1.25rem;
+	--font-size-xl: 1.5rem;
 
 
-  /**********
-   Borders
-   **********/
+	/**********
+	Borders
+	**********/
 
-  /* Primary Borders */
-  --border-primary: var(--p-primary-color);
-  --border-primary-light: var(--p-primary-200);
-  --border-primary-dark: var(--p-primary-800);
+	/* Primary Borders */
+	--border-primary: var(--p-primary-color);
+	--border-primary-light: var(--p-primary-200);
+	--border-primary-dark: var(--p-primary-800);
 
-  /* State Borders */
-  --border-color-success: var(--p-green-500);
-  --border-color-success-light: var(--p-green-200);
-  --border-color-success-dark: var(--p-green-800);
+	/* State Borders */
+	--border-color-success: var(--p-green-500);
+	--border-color-success-light: var(--p-green-200);
+	--border-color-success-dark: var(--p-green-800);
 
-  --border-color-warning: var(--p-yellow-500);
-  --border-color-warning-light: var(--p-yellow-200);
-  --border-color-warning-dark: var(--p-yellow-800);
+	--border-color-warning: var(--p-yellow-500);
+	--border-color-warning-light: var(--p-yellow-200);
+	--border-color-warning-dark: var(--p-yellow-800);
 
-  --border-color-error: var(--p-red-500);
-  --border-color-error-light: var(--p-red-200);
-  --border-color-error-dark: var(--p-red-800);
+	--border-color-error: var(--p-red-500);
+	--border-color-error-light: var(--p-red-200);
+	--border-color-error-dark: var(--p-red-800);
 
-  /* Neutral Borders */
-  --border-color-neutral: var(--p-surface-300);
-  --border-color-neutral-light: var(--p-surface-200);
-  --border-color-neutral-dark: var(--p-surface-400);
-  
-  /* Border Radius */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 16px;
+	/* Neutral Borders */
+	--border-color-neutral: var(--p-surface-300);
+	--border-color-neutral-light: var(--p-surface-200);
+	--border-color-neutral-dark: var(--p-surface-400);
+
+	/* Border Radius */
+	--radius-sm: 4px;
+	--radius-md: 8px;
+	--radius-lg: 16px;
 }

@@ -1,7 +1,9 @@
-const API_URL = import.meta.env.VITE_API_URL;
 import useUserStore from "@/stores/useUserStore.js";
 
+
 const { user } = useUserStore();
+const API_URL = import.meta.env.VITE_API_URL;
+
 
 export default async function apiFetch({ path, options, addJwt = false }) {
     const url = `${API_URL}${path}`;

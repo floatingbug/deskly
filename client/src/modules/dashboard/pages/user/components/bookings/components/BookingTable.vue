@@ -11,6 +11,9 @@ const props = defineProps({
 });
 
 
+const emit = defineEmits(["bookingTable:action"]);
+
+
 const tableRows = ref([]);
 
 tableRows.value = props.bookings.map(booking => {
@@ -19,71 +22,60 @@ tableRows.value = props.bookings.map(booking => {
 		address: booking.space.location,
 		startDate: booking.startDate + " " + booking.startTime,
 		endDate: booking.endDate,
+		spaceId: booking.space._id,
+		type: booking.type,
 	};
 });
 
 
-function onRowSelect(){
+function onRowSelect(event){
+	emit("bookingTable:action", {
+		action: "openBooking",
+		bookingType: event.data.type,
+		spaceId: event.data.spaceId,
+	});
 }
 
 </script>
 
 
 <template>    
-    <div class="table-wrapper">
-        <DataTable
-            :value="tableRows"
-            selectionMode="single"
-            scrollHeight="400px"
-            scrollable 
-            @rowSelect="onRowSelect"
-        >
-            <template #header>
-                <slot name="tableHeader" />
-            </template>
-            
-            <column
-                field="name"
-                header="Name"
-            />
-            <column
-                field="address"
-                header="Address"
-            />
-            <column
-                field="startDate"
-                header="Start Date"
-            />
-            <column
-                field="endDate"
-                header="End Date"
-            />
+	<DataTable
+		:value="tableRows"
+		selectionMode="single"
+		scrollHeight="400px"
+		scrollable 
+		@rowSelect="onRowSelect"
+	>
+		<template #header>
+			<slot name="tableHeader" />
+		</template>
+		
+		<column
+			field="name"
+			header="Name"
+		/>
+		<column
+			field="address"
+			header="Address"
+		/>
+		<column
+			field="startDate"
+			header="Start Date"
+		/>
+		<column
+			field="endDate"
+			header="End Date"
+		/>
 
-            <template #footer>
-            </template>
-        </DataTable>
-    </div>
+		<template #footer>
+		</template>
+	</DataTable>
 </template>   
 
 
 <style scoped>
-.table-wrapper {
-    overflow-x: auto;
-}
-
-:deep(.p-datatable-header) {
-    background-color: var(--bg-primary-light-dark);
-}
-
-:deep(.p-datatable-footer) {
-    background-color: var(--bg-primary-light);
-}
-
-:deep(.p-datatable-column-title) {
-	width: 100px;
-}
-
-:deep(.p-datatable-tbody > tr > td) {
-	min-width: 180px;
+.p-datatable {
+	height: 530px;
 }
 </style>

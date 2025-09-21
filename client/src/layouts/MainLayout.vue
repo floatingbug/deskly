@@ -67,7 +67,7 @@ const {state} = useStateStore();
 	margin-bottom: 12rem;
 }
 
-@media(max-width: 1720px){
+@media(max-width: 1024px){
     .menu-left {
         position: fixed;
         padding: 0;

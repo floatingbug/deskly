@@ -1,5 +1,6 @@
 import {reactive, computed} from "vue";
 import fetchBookings from "./api/fetchBookings.js";
+import fetchCanceledBookings from "./api/fetchCanceledBookings.js";
 import userKpis from "./utils/userKpis.js";
 
 
@@ -8,7 +9,9 @@ const bookings = reactive({
 	currentBookings: [],
 	futureBookings: [],
 	pastBookings: [],
+	canceledBookings: [],
 });
+
 const kpis = reactive({
     totalSpendings: computed(() => userKpis.getTotalSpendings(bookings)),
     monthlySpendings: computed(() => userKpis.getMonthlySpendings(bookings)),
@@ -19,6 +22,7 @@ const kpis = reactive({
 	refundsAndCancellations: computed(() => userKpis.getRefundsOverview(bookings))
 });
 
+
 async function initializeBookingStore(){
 	/*
 	 * fetch bookings
@@ -28,7 +32,9 @@ async function initializeBookingStore(){
 
 	// fetch bookings
 	const fetchedBookings = await fetchBookings();
+	const fetchedCanceledBookings = await fetchCanceledBookings();
 	if(!fetchedBookings.success) errors.push(...fetchedBookings.errors);
+	if(!fetchedCanceledBookings.success) errors.push(...fetchedCanceledBookings.errors);
 
 	// return errors
 	if(errors.length > 0){
@@ -47,7 +53,10 @@ async function initializeBookingStore(){
 	
 	// set totalBookings
 	bookings.totalBookings = fetchedBookings.data;
-	
+
+	// set canceledBookings
+	bookings.canceledBookings = fetchedCanceledBookings.data;
+	bookings.canceledBookings.forEach(booking => booking.type = "canceled");
 
     // set currentBookings
     bookings.currentBookings = bookings.totalBookings.filter((booking) => {
@@ -56,15 +65,15 @@ async function initializeBookingStore(){
 
         return start <= today && end >= today;
     });
+	bookings.currentBookings.forEach(booking => booking.type = "current");
 
     // set futureBookings
     bookings.futureBookings = bookings.totalBookings.filter((booking) => new Date(booking.startDate) > today);
+	bookings.futureBookings.forEach(booking => booking.type = "future");
 
     // set pastBbookings
-    bookings.pastBookings= bookings.totalBookings.filter((booking) => new Date(booking.endDate) < today);
-
-	console.log(bookings);
-	console.log(kpis);
+    bookings.pastBookings = bookings.totalBookings.filter((booking) => new Date(booking.endDate) < today);
+	bookings.pastBookings.forEach(booking => booking.type = "past");
 
 	return {success: true};
 }

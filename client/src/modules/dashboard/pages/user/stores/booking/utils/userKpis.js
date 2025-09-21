@@ -44,8 +44,8 @@ export default {
 
     // 5. Refunds & Cancellations
 	getRefundsOverview(bookings) {
-		const cancelled = bookings.totalBookings.filter(b => b.status === "cancelled").length;
-		const completed = bookings.totalBookings.length - cancelled;
+		const cancelled = bookings.canceledBookings.length;
+		const completed = (bookings.totalBookings.length + cancelled) - cancelled;
 
 		return { cancelled, completed };
 	},

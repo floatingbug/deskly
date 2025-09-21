@@ -5,6 +5,10 @@ import dashboardRoutes from "../modules/dashboard/router";
 import bookSpaceRoutes from "../modules/bookSpace/router";
 import authRoutes from "../modules/auth/router";
 import addSpaceRoutes from "../modules/addSpace/router";
+import bookingRoutes from "../modules/booking/router";
+import inboxRoutes from "../modules/inbox/router";
+import spaceDetailsRoutes from "../modules/spaceDetails/router";
+
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,6 +19,9 @@ const router = createRouter({
         ...bookSpaceRoutes,
         ...authRoutes,
         ...addSpaceRoutes,
+		...bookingRoutes,
+		...inboxRoutes,
+		...spaceDetailsRoutes,
     ],
 });
 

@@ -3,7 +3,6 @@ const authRouter = require("./authRouter");
 const userRouter = require("./userRouter");
 const bookingRouter = require("./bookingRouter");
 const inboxRouter = require("./inboxRouter");
-const testRouter = require("./testRouter");
 
 
 module.exports = {
@@ -12,5 +11,4 @@ module.exports = {
 	userRouter,
 	bookingRouter,
 	inboxRouter,
-	testRouter,
 };

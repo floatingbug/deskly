@@ -1,11 +1,13 @@
 <script setup>
 import {ref, onMounted} from "vue";
+import {useRouter} from "vue-router";
 import MainLayout from "@/layouts/MainLayout.vue";
 import useBookingStore from "./stores/booking/useBookingStore.js";
 import Bookings from "./components/bookings/Bookings.vue";
 import Kpis from "./components/kpis/Kpis.vue";
 
 
+const router = useRouter();
 const {bookings, initializeBookingStore, kpis} = useBookingStore();
 const isInitialized = ref(false);
 
@@ -16,6 +18,13 @@ onMounted(async () => {
 	if(!result.success) console.log(result.errors);
 	isInitialized.value = true;
 });
+
+
+function onBookingsAction(event){
+	const query = `spaceId=${event.spaceId}&type=${event.bookingType}`;
+
+	router.push(`/booking?${query}`);
+}
 
 </script>
 
@@ -29,7 +38,10 @@ onMounted(async () => {
 				</div>
 				
 				<div class="bookings-container">
-					<Bookings :bookings="bookings" />
+					<Bookings 
+						:bookings="bookings" 
+						@bookings:action="onBookingsAction"
+					/>
 				</div>
 			</div>
 		</template>
@@ -47,13 +59,13 @@ onMounted(async () => {
 
 .kpis-container {
 	width: 100%;
-	max-width: 1400px;
+	max-width: 1024px;
 	padding:  0 var(--spacing-md) calc(var(--spacing-xl) * 2) var(--spacing-md);
 }
 
 .bookings-container {
 	width: 100%;
-	max-width: 1400px;
+	max-width: 1024px;
 	padding: var(--spacing-xl) var(--spacing-md);
 }
 

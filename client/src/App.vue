@@ -2,10 +2,14 @@
 import { ref, onMounted } from "vue";
 import { RouterLink, RouterView, useRouter } from "vue-router";
 import useUserStore from "@/stores/useUserStore.js";
+import useStateStore from "@/stores/useStateStore.js";
 import fetchUserByJwtAPI from "@/api/fetchUserByJwtAPI.js";
 import Toast from "primevue/toast";
+import ProgressSpinner from 'primevue/progressspinner';
+
 
 const { setUser, user } = useUserStore();
+const {state} = useStateStore();
 const router = useRouter();
 const isInitialized = ref(false);
 
@@ -27,13 +31,31 @@ onMounted(async () => {
 });
 </script>
 
+
 <template>
     <Toast />
+	<div class="progress-spinner-wrapper"
+		v-if="state.isLoading"
+	>
+		<ProgressSpinner />
+	</div>
     
     <RouterView />
 </template>
 
+
 <style>
+.progress-spinner-wrapper {
+	width: 100%;
+	height: 100dvh;
+	position: fixed;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+    z-index: 5000 !important;
+	backdrop-filter: blur(8px);
+	background-color: hsl(from var(--bg-surface) h s l / 50%);
+}
 
 .p-toast {
     z-index: 5000 !important;

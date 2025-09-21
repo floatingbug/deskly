@@ -38,6 +38,11 @@ const items = ref([
     <aside>
         <Menu
             :model="items"
+			:pt="{
+				root: {
+					class: 'menu'
+				}
+			}"
         >
             <template #item="{item, props}">
                 <router-link class="item"
@@ -62,6 +67,10 @@ aside {
     width: 100%;
     height: 100%;
     display: flex;
+}
+
+:deep(.menu) {
+	background-color: var(--card-bg);
 }
 
 .item {
