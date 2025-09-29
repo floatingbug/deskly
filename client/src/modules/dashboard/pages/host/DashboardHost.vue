@@ -110,7 +110,7 @@ async function onSpacesAction(event) {
     width: 100%;
     max-width: 1400px;
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(100px, 180px));
     justify-content: start;
     row-gap: var(--spacing-xl);
     column-gap: var(--spacing-xl);
@@ -148,14 +148,11 @@ async function onSpacesAction(event) {
 
 @media(min-width: 800px){
     .stats-container {
-        grid-template-columns: auto auto;
+        grid-template-columns: repeat(4, 1fr);
     }
 }
 
 @media(min-width: 1320px){
-    .stats-container {
-        grid-template-columns: repeat(4, 1fr);
-    }
     
     .bookings-container {
         grid-template-columns: 1fr 1fr;

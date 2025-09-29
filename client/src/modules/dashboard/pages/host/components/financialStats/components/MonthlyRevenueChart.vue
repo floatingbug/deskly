@@ -8,16 +8,13 @@ const props = defineProps({
 
 
 const monthlyRevenueChart = computed(() => {
-    // feste Liste aller Monate
     const allMonths = [
         "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
     ];
 
-	// get colors
 	const barColor = getComputedStyle(document.documentElement).getPropertyValue("--bg-primary-light-dark").trim();
 
-    // Map aus deinen Stats (label -> revenue)
     const revenueMap = new Map(
         props.financialStats.monthlyRevenue.map(m => [m.label, m.revenue])
     );
@@ -29,7 +26,7 @@ const monthlyRevenueChart = computed(() => {
                 label: "Revenue",
                 backgroundColor: barColor,
                 data: allMonths.map(month => {
-                    const value = revenueMap.get(month) || 0; // 0 wenn kein Wert
+                    const value = revenueMap.get(month) || 0;
                     return value.toFixed(2);
                 }),
             },
@@ -38,6 +35,8 @@ const monthlyRevenueChart = computed(() => {
 });
 
 const chartOptions = computed(() => ({
+	responsive: true,
+	maintainAspectRatio: false,
     plugins: {
         legend: { display: false },
         tooltip: {
@@ -54,25 +53,32 @@ const chartOptions = computed(() => ({
 
 
 <template>    
- <div class="chart-container">
-      <h3>Monthly Revenue</h3>
-          <Chart
-            type="bar"
-            :data="monthlyRevenueChart"
-            :options="chartOptions"
-          />
-  </div>
+	<div class="chart-container">
+		<header>
+			<h3>Monthly Revenue</h3>
+		</header>
+
+		<Chart
+			type="bar"
+			:data="monthlyRevenueChart"
+			:options="chartOptions"
+		/>
+	</div>
 </template>   
 
 
 <style scoped>
 .chart-container {
     width: 100%;
+	height: 100%;
 	display: flex;
 	flex-direction: column;
-	padding: var(--spacing-md);
 	border-radius: var(--radius-md);
 	border: 1px solid var(--bg-surface);
 	background-color: var(--color-bg);
+}
+
+header {
+	padding: var(--spacing-md) 0 0 var(--spacing-md);
 }
 </style>

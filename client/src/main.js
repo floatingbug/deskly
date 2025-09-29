@@ -24,6 +24,9 @@ import Chip from "primevue/chip";
 import Chart from 'primevue/chart';
 import Carousel from 'primevue/carousel';
 import Tag from "primevue/tag";
+import FileUpload from 'primevue/fileupload';
+import Image from 'primevue/image';
+
 
 const app = createApp(App);
 
@@ -56,6 +59,7 @@ app.component("Chip", Chip);
 app.component("Chart", Chart);
 app.component("Carousel", Carousel);
 app.component("Tag", Tag);
+app.component("Image", Image);
 
 app.use(router);
 

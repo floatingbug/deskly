@@ -95,8 +95,6 @@ onMounted(async() => {
 	flex-direction: column;
 }
 
-
-
 .amenity-items {
 	display: flex;
 	flex-direction: column;

@@ -1,10 +1,11 @@
 <script setup>
-import { ref, onMounted } from "vue";
-import EditSpace from "./EditSpace.vue";
+import { ref, onMounted, toRaw } from "vue";
+import {useRouter} from "vue-router";
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-import ColumnGroup from 'primevue/columngroup';   // optional
-import Row from 'primevue/row';                   // optional
+import ColumnGroup from 'primevue/columngroup';
+import Row from 'primevue/row';                
+import useTransferCache from "@/composables/useTransferCache.js";
 
 
 const props = defineProps({
@@ -15,7 +16,8 @@ const props = defineProps({
 const emit = defineEmits(["spaces:action"]);
 
 
-const isEditDialogVisible = ref(false);
+const {setCache} = useTransferCache();
+const router = useRouter();
 const selectedSpace = ref(null);
 const tableRows = ref([]);
 const selectedRow = ref();
@@ -34,39 +36,13 @@ onMounted(() => {
 });
 
 
-function onEditSpaceAction(event) {
-    if (event.action === "close") isEditDialogVisible.value = false;
-
-    if (event.action === "changes") {
-        emit("spaces:action", {
-            action: "updateSpace",
-            update: event.changedFields,
-            spaceId: event.spaceId,
-        });
-
-        const changedRow = tableRows.value.find(row => row.spaceId === event.spaceId);
-        for(const key in changedRow){
-            if(key in event.changedFields) changedRow[key] = event.changedFields[key];
-        }
-
-        isEditDialogVisible.value = false;
-    }
-
-    if (event.action === "delete") {
-        emit("spaces:action", {
-            action: "deleteSpace",
-            spaceId: event.spaceId,
-        });
-
-        tableRows.value = tableRows.value.filter(row => row.spaceId !== event.spaceId); 
-        isEditDialogVisible.value = false;
-    }
-}
-
 function onRowSelect(event){
-    isEditDialogVisible.value = true;
     selectedSpace.value = props.spaces.find(space => space._id === event.data.spaceId);
+	const rawSelectedSpace = toRaw(selectedSpace.value);
+	setCache(rawSelectedSpace);
+	router.push("/edit-space");
 }
+
 </script>
 
 <template>
@@ -91,12 +67,6 @@ function onRowSelect(event){
             </template>
         </DataTable>
     </div>
-
-    <EditSpace 
-        :space="selectedSpace"
-        :isEditDialogVisible="isEditDialogVisible" 
-        @editSpace:action="onEditSpaceAction"
-    />
 </template>
 
 <style scoped>

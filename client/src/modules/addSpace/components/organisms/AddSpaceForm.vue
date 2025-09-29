@@ -1,6 +1,8 @@
 <script setup>
 import { ref, toRaw, watch } from "vue";
 import { useToast } from "primevue/usetoast";
+import AddPictures from "../molecules/AddPictures.vue";
+
 
 const emit = defineEmits(["addSpaceForm:action", "addSpaceForm:change"]);
 
@@ -9,6 +11,10 @@ const props = defineProps({
 });
 
 const fields = ref([
+	{
+		id: "uploadImage",
+		type: "uploadImage",
+	},
     {
         label: "Name",
         value: "",
@@ -109,7 +115,11 @@ const fields = ref([
         isSelected: false,
     },
 ]);
+
 const fieldsCopy = JSON.parse(JSON.stringify(toRaw(fields.value)));
+const uploadUrl = `${import.meta.env.VITE_SERVER_URL}/upload-pictures`
+let selectedImages;
+
 
 watch(
     () => fields,
@@ -118,6 +128,10 @@ watch(
     },
     { deep: true },
 );
+
+function onAddPictureActions(event){
+	selectedImages = event.images;
+}
 
 async function addSpace() {
     let rawFields = toRaw(fields.value);
@@ -139,6 +153,7 @@ async function addSpace() {
     emit("addSpaceForm:action", {
         action: "submit",
         userInput,
+		images: selectedImages,
     });
 
     // reset fields
@@ -149,6 +164,12 @@ async function addSpace() {
 <template>
     <div class="add-space-form">
         <div class="form-field" v-for="(field, index) in fields" :key="index">
+			<div class="upload-image"
+				v-if="field.type === 'uploadImage'"
+			>
+				<AddPictures @addPictures:action="onAddPictureActions" />
+			</div>
+
             <InputGroup v-if="field.type === 'inputText'">
                 <InputGroupAddon>
                     <i :class="field.icon"></i>

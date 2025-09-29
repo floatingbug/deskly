@@ -46,13 +46,12 @@
 	--card-header-bg: var(--bg-primary-light);
 
 	/* Text Color */
-
 	--color-bg: var(--p-surface-50);
 	--color-text: var(--p-surface-950);
 
 	--color-text-contrast: var(--p-primary-contrast-color);
 
-	--color-subtitle: var(--p-surface-400);
+	--color-subtitle: var(--p-surface-500);
 	--color-label: var(--p-surface-600);
 
 	--color-primary: var(--p-primary-color);

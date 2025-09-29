@@ -31,6 +31,7 @@ const topSpaces = computed(() => props.financialStats.topEarningSpaces);
 <style scoped>
 .top-spaces {
 	width: 100%;
+	height: 100%;
 	display: flex;
 	flex-direction: column;
 	gap: var(--spacing-md);

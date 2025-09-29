@@ -8,6 +8,7 @@ import addSpaceRoutes from "../modules/addSpace/router";
 import bookingRoutes from "../modules/booking/router";
 import inboxRoutes from "../modules/inbox/router";
 import spaceDetailsRoutes from "../modules/spaceDetails/router";
+import editSpaceRoutes from "../modules/editSpace/router";
 
 
 const router = createRouter({
@@ -22,6 +23,7 @@ const router = createRouter({
 		...bookingRoutes,
 		...inboxRoutes,
 		...spaceDetailsRoutes,
+		...editSpaceRoutes,
     ],
 });
 

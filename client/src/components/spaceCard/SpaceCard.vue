@@ -25,11 +25,14 @@ function openBooking(){
         <header>
             <div class="screenshots">
                 <img 
-                    v-for="(path, index) in space.imagePath"
-                    :src="`${SERVER_URL}${path}`" 
-                    :alt="path"
+					:src="`${SERVER_URL}/${space.imageUrls[0]}`" 
+                    :alt="space.imageUrls[0]"
                 >
             </div>
+
+			<div class="name">
+				{{space.name}}
+			</div>
 
             <div class="description">
                 {{space.description}}
@@ -79,6 +82,17 @@ function openBooking(){
 }
 
 header {
+	position: relative;
+}
+
+.name {
+	width: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: var(--spacing-md);
+	font-size: var(--font-size-xl);
+	background-color: hsl(from var(--bg-success-light) h s l / 80%);
 }
 
 .screenshots {

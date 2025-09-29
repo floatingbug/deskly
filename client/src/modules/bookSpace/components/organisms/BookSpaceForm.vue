@@ -1,6 +1,6 @@
 <script setup>
 import { ref, reactive, watch, onMounted } from "vue";
-import getDisabledDates from "../utils/getDisabledDates.js";
+import getDisabledDates from "../../utils/getDisabledDates.js";
 
 
 const props = defineProps({

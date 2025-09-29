@@ -33,13 +33,16 @@ const {financialStats} = useBookingStore();
 <style scoped>
 .financial-stats {
 	width: 100%;
-	min-width: 300px;
 	display: grid;
 	column-gap: var(--spacing-xl);
 	row-gap: var(--spacing-xl);
 }
 
 @media(min-width: 1024px){
+	.component-container {
+		height: 300px;
+	}
+
 	.financial-stats {
 		grid-template-columns: repeat(3, 1fr);
 	}

@@ -4,6 +4,8 @@ const spacesService = require("@services/spaces");
 
 
 async function addSpace(req, res, next){
+	req.body = JSON.parse(req.body.userInput);
+
 	const errors = validatePayload({payload: req.body, user: req.user});
 
 	if(errors.length > 0) return response(res, {
@@ -16,6 +18,7 @@ async function addSpace(req, res, next){
 		const result = await spacesService.addSpace({
 			user: req.user,
 			space: req.body,
+			images: req.files,
 		});
 
 		response(res, result);

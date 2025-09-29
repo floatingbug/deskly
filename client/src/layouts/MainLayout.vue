@@ -62,12 +62,18 @@ const {state} = useStateStore();
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    padding: var(--spacing-xs);
+    padding: var(--spacing-sm);
     margin-top: calc(var(--spacing-xl) * 2.5);
 	margin-bottom: 12rem;
 }
 
-@media(max-width: 1024px){
+@media(min-width: 460px) {
+	.main-container {
+		padding: var(--spacing-md);
+	}
+}
+
+@media(max-width: 1024px) {
     .menu-left {
         position: fixed;
         padding: 0;

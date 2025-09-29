@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import AddSpaceForm from "./components/AddSpaceForm.vue";
+import AddSpaceForm from "./components/organisms/AddSpaceForm.vue";
 import addSpaceAPI from "./api/addSpaceAPI.js";
 import { useToast } from "primevue/usetoast";
 
@@ -11,6 +11,7 @@ const addSpaceFormErrors = ref([]);
 
 async function onAddSpaceFormAction(event) {
     const userInput = event.userInput;
+	const images = event.images;
 
     if (userInput.name === "") addSpaceFormErrors.value.push("Name is required.");
     if (userInput.descriptions === "") addSpaceFormErrors.value.push("Description is required.");
@@ -21,7 +22,7 @@ async function onAddSpaceFormAction(event) {
 
     if (addSpaceFormErrors.length > 0) return;
 
-    const result = await addSpaceAPI({ newSpace: userInput });
+    const result = await addSpaceAPI({userInput, images});
 
     if (!result.success) {
         toast.add({ severity: "info", summary: "Space not added.", detail: result.errors[0], life: 5000 });
