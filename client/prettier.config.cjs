@@ -1,9 +1,9 @@
 // prettier.config.js
 module.exports = {
-    tabWidth: 4,
-    useTabs: false,
-    semi: true,
-    printWidth: 120,
-    htmlWhitespaceSensitivity: "ignore",
-    endOfLine: "lf",
+	useTabs: true,
+	tabWidth: 4,
+	semi: true,
+	printWidth: 120,
+	htmlWhitespaceSensitivity: "ignore",
+	endOfLine: "lf",
 };

@@ -21,28 +21,28 @@ import Dialog from "primevue/dialog";
 import Divider from "primevue/divider";
 import ToastService from "primevue/toastservice";
 import Chip from "primevue/chip";
-import Chart from 'primevue/chart';
-import Carousel from 'primevue/carousel';
+import Chart from "primevue/chart";
+import Carousel from "primevue/carousel";
 import Tag from "primevue/tag";
-import FileUpload from 'primevue/fileupload';
-import Image from 'primevue/image';
-
+import FileUpload from "primevue/fileupload";
+import Image from "primevue/image";
+import IftaLabel from "primevue/iftalabel";
 
 const app = createApp(App);
 
 const MyPreset = definePreset(Aura, {
-    semantic,
-    components,
+	semantic,
+	components,
 });
 
 app.use(ToastService);
 app.use(PrimeVue, {
-    theme: {
-        preset: MyPreset,
-        options: {
-            darkModeSelector: false,
-        },
-    },
+	theme: {
+		preset: MyPreset,
+		options: {
+			darkModeSelector: false,
+		},
+	},
 });
 
 app.component("Button", Button);
@@ -60,6 +60,7 @@ app.component("Chart", Chart);
 app.component("Carousel", Carousel);
 app.component("Tag", Tag);
 app.component("Image", Image);
+app.component("IftaLabel", IftaLabel);
 
 app.use(router);
 

@@ -1,4 +1,4 @@
-export default function getTotalRevenue(bookings){
+export default function getTotalRevenue(bookings) {
 	return bookings.totalBookings.reduce((accumulator, booking) => {
 		accumulator += booking.totalAmount;
 

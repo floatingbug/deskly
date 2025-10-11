@@ -1,27 +1,20 @@
 <script setup>
 const emit = defineEmits(["spaceDetailsButton:action"]);
 
-
-function openSpaceDetails(){
+function openSpaceDetails() {
 	emit("spaceDetailsButton:action", {
 		action: "openSpaceDetails",
 	});
 }
-
 </script>
 
-
-<template>    
+<template>
 	<div class="space-details-button__container">
-		<Button class="space-details-button__wrapper"
-			variant="text"
-			@click="openSpaceDetails"
-		>
+		<Button class="space-details-button__wrapper" variant="text" @click="openSpaceDetails">
 			View Space Details
 		</Button>
 	</div>
-</template>   
-
+</template>
 
 <style scoped>
 .space-details-button__container {

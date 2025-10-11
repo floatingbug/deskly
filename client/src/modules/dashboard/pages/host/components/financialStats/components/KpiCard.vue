@@ -1,43 +1,36 @@
 <script setup>
-import {computed} from "vue";
-
+import { computed } from "vue";
 
 const props = defineProps({
 	financialStats: Object,
 });
 
-
 const kpis = computed(() => [
-    { label: "Total Revenue", value: props.financialStats.totalRevenue + "$", icon: "pi pi-dollar" },
-    { label: "Average Booking Value", value: props.financialStats.avarageBooking + "$", icon: "pi pi-chart-bar" },
-    { label: "Upcoming Revenue", value: props.financialStats.upcomingRevenue + "$", icon: "pi pi-clock" },
-    { label: "Lost Revenue", value: props.financialStats.lostRevenue + "$", icon: "pi pi-times-circle" },
-    { label: "Occupancy Rate", value: props.financialStats.occupancyRate + "%", icon: "pi pi-building" },
-    { label: "Growth Rate", value: props.financialStats.growthRate + "%", icon: "pi pi-chart-line" },
+	{ label: "Total Revenue", value: props.financialStats.totalRevenue + "$", icon: "pi pi-dollar" },
+	{ label: "Average Booking Value", value: props.financialStats.avarageBooking + "$", icon: "pi pi-chart-bar" },
+	{ label: "Upcoming Revenue", value: props.financialStats.upcomingRevenue + "$", icon: "pi pi-clock" },
+	{ label: "Lost Revenue", value: props.financialStats.lostRevenue + "$", icon: "pi pi-times-circle" },
+	{ label: "Occupancy Rate", value: props.financialStats.occupancyRate + "%", icon: "pi pi-building" },
+	{ label: "Growth Rate", value: props.financialStats.growthRate + "%", icon: "pi pi-chart-line" },
 ]);
-
 </script>
 
-
-<template>    
+<template>
 	<div class="kpi-card">
 		<h3>Key Performance Indicators</h3>
 
-		<div class="item"
-			v-for="(kpi, index) in kpis"
-		>
+		<div class="item" v-for="(kpi, index) in kpis">
 			<div class="label">
 				<i :class="kpi.icon"></i>
-				{{kpi.label}}:
+				{{ kpi.label }}:
 			</div>
 
 			<div class="value">
-				{{kpi.value}}
+				{{ kpi.value }}
 			</div>
 		</div>
 	</div>
-</template>   
-
+</template>
 
 <style scoped>
 .kpi-card {

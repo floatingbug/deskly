@@ -2,10 +2,6 @@
 import Menu from "primevue/menu";
 </script>
 
+<template></template>
 
-<template>    
-</template>   
-
-
-<style scoped>
-</style>
+<style scoped></style>

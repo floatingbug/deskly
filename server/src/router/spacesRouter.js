@@ -11,6 +11,7 @@ spacesRouter.get("/", spacesController.getSpaces);
 spacesRouter.post("/add-space", authUser, upload.array("images"), spacesController.addSpace);
 spacesRouter.patch("/update-space", authUser, spacesController.updateSpace);
 spacesRouter.delete("/delete-space", authUser, spacesController.deleteSpace);
+spacesRouter.patch("/update-screenshot-order", authUser, spacesController.updateScreenshotOrder);
 
 
 module.exports = spacesRouter;

@@ -1,7 +1,6 @@
 import apiFetch from "@/api/apiFetch.js";
 
-
-export default async function fetchBookings(){
+export default async function fetchBookings() {
 	const path = "/user/bookings";
 	const options = {
 		method: "GET",

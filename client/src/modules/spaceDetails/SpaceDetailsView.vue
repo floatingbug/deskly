@@ -1,16 +1,14 @@
 <script setup>
-import {ref, onMounted} from "vue";
+import { ref, onMounted } from "vue";
 import useTransferCache from "@/composables/useTransferCache.js";
 
-
-const {getCache} = useTransferCache();
+const { getCache } = useTransferCache();
 const detailItems = ref([]);
 const amenityItems = ref([]);
 const space = ref();
 const isInitialized = ref(false);
 
-
-onMounted(async() => {
+onMounted(async () => {
 	const booking = await getCache();
 	space.value = booking.space;
 
@@ -45,48 +43,34 @@ onMounted(async() => {
 	amenityItems.value = space.value.amenities;
 
 	isInitialized.value = true;
-})
-
+});
 </script>
 
-
 <template>
-	<div class="space-details"
-		v-if="isInitialized"
-	>
+	<div class="space-details" v-if="isInitialized">
 		<header>
-			<h2>{{space.name}}</h2>
+			<h2>{{ space.name }}</h2>
 		</header>
 
 		<div class="detail-items">
-			<div class="detail-items__row"
-				v-for="(item, index) in detailItems"
-				:key="index"
-			>
-				<div class="detail-items__row-name">
-					{{item.label}}:
-				</div>
-				
+			<div class="detail-items__row" v-for="(item, index) in detailItems" :key="index">
+				<div class="detail-items__row-name">{{ item.label }}:</div>
+
 				<div class="detail-items__row-value">
-					{{item.value}}
+					{{ item.value }}
 				</div>
 			</div>
 		</div>
 
-		
 		<div class="amenity-items">
 			<h3>Amenities</h3>
 
-			<div class="amenity-items__amenity"
-				v-for="(amenity, index) in amenityItems"
-				:key="index"
-			>
-				{{amenity.label}}
+			<div class="amenity-items__amenity" v-for="(amenity, index) in amenityItems" :key="index">
+				{{ amenity.label }}
 			</div>
 		</div>
 	</div>
 </template>
-
 
 <style scoped>
 .space-details {

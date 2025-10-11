@@ -7,13 +7,13 @@ const { user } = useUserStore();
 const router = useRouter();
 
 onMounted(() => {
-    if (user.role === "user") router.replace("/dashboard/user");
-    if (user.role === "host") router.replace("/dashboard/host");
+	if (user.role === "user") router.replace("/dashboard/user");
+	if (user.role === "host") router.replace("/dashboard/host");
 });
 </script>
 
 <template>
-    <RouterView />
+	<RouterView />
 </template>
 
 <style scoped></style>

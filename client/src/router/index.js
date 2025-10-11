@@ -10,21 +10,20 @@ import inboxRoutes from "../modules/inbox/router";
 import spaceDetailsRoutes from "../modules/spaceDetails/router";
 import editSpaceRoutes from "../modules/editSpace/router";
 
-
 const router = createRouter({
-    history: createWebHistory(import.meta.env.BASE_URL),
-    routes: [
-        ...homeRoutes,
-        ...spacesRoutes,
-        ...dashboardRoutes,
-        ...bookSpaceRoutes,
-        ...authRoutes,
-        ...addSpaceRoutes,
+	history: createWebHistory(import.meta.env.BASE_URL),
+	routes: [
+		...homeRoutes,
+		...spacesRoutes,
+		...dashboardRoutes,
+		...bookSpaceRoutes,
+		...authRoutes,
+		...addSpaceRoutes,
 		...bookingRoutes,
 		...inboxRoutes,
 		...spaceDetailsRoutes,
 		...editSpaceRoutes,
-    ],
+	],
 });
 
 export default router;

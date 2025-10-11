@@ -4,30 +4,32 @@ const {randomUUID} = require("crypto");
 const fs = require("fs");
 
 
-async function addSpace({user, space, images}){
-	const storedFilePaths = [];
+async function addSpace({user, space}){
+	const images = space.images;
+	const imagesMeta = space.imagesMeta;
 
 	// store images
 	const destPath = path.join(__dirname, "../../../public/space_images");
 
-	for(const file of images){
+	for(const [index, file] of images.entries()){
 		const ext = path.extname(file.originalname);
 		const newName = `${randomUUID()}${ext}`;
 		const filePath = path.join(destPath, newName);
 
 		await fs.promises.writeFile(filePath, file.buffer);
 
-		storedFilePaths.push(`/space_images/${newName}`);
+		// set imagesMeta
+		imagesMeta[index].imageName = newName;
+		imagesMeta[index].imagePath = `/space_images/${newName}`;
 	}
-
 	
 	// add space to db
 	try{
 		const doc = {
-			...space,
+			...space.userInput,
+			imagesMeta,
 			creatorId: user._id,
 			createdAt: new Date(),
-			imageUrls: storedFilePaths,
 		};
 
 		const result = await spacesModel.addSpace({doc});
@@ -36,6 +38,7 @@ async function addSpace({user, space, images}){
 			success: true,
 			code: 200,
 			message: "Space has been added.",
+			data: result,
 		};
 	}
 	catch(error){

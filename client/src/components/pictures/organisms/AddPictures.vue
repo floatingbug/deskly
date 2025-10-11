@@ -24,7 +24,9 @@ function onFileChange(event) {
 	for (const file of files) {
 		selectedFiles.value.push({
 			file,
-			url: URL.createObjectURL(file)
+			order: selectedFiles.value.length + 1,
+			isCover: selectedFiles.value.length === 0,
+			url: URL.createObjectURL(file),
 		});
 	}
 
@@ -32,7 +34,7 @@ function onFileChange(event) {
 
 	emit("addPictures:action", {
 		action: "newImages",
-		images: selectedFiles.value.map(item => item.file),
+		images: selectedFiles.value,
 	});
 }
 
@@ -42,61 +44,37 @@ function removeFile(index) {
 
 	emit("addPictures:action", {
 		action: "newImages",
-		images: selectedFiles.value.map(item => item.file),
-	})
+		images: selectedFiles.value.map((item) => item.file),
+	});
 }
 
-async function uploadFiles() {
-	if (!selectedFiles.value.length) {
-		alert("Bitte mindestens ein Bild auswählen!");
-		return;
-	}
-
-	const formData = new FormData();
-	selectedFiles.value.forEach(item => formData.append("files[]", item.file));
-
-	try {
-		const res = await fetch("/upload", {
-			method: "POST",
-			body: formData
-		});
-		const data = await res.text();
-		alert("Upload erfolgreich: " + data);
-
-		selectedFiles.value.forEach(item => URL.revokeObjectURL(item.url));
-		selectedFiles.value = [];
-
-		// Event leeren
-		emit("update:files", []);
-	} catch (err) {
-		alert("Fehler beim Upload: " + err);
-	}
-}
 </script>
 
 <template>
 	<div>
-		<h1>Bilder hochladen</h1>
+		<input ref="fileInput" type="file" accept="image/*" multiple style="display: none" @change="onFileChange" />
 
-		<input
-			ref="fileInput"
-			type="file"
-			accept="image/*"
-			multiple
-			style="display:none"
-			@change="onFileChange"
-		/>
+			<div class="add-img-button">
+				<Button
+					severity="secondary"
+					@click="openFileDialog"
+				>
+					<i class="pi pi-times" />
+					Add images
+				</Button>
+			</div>
 
-		<button type="button" @click="openFileDialog">Dateien auswählen</button>
-
-		<div v-if="selectedFiles.length > 0" class="file-count">
-			{{ selectedFiles.length }} Bild(er) ausgewählt
-		</div>
+		<div v-if="selectedFiles.length > 0" class="file-count">{{ selectedFiles.length }} images selected</div>
 
 		<div class="preview-container">
 			<div v-for="(item, index) in selectedFiles" :key="index" class="preview-item">
 				<img :src="item.url" class="preview-img" />
-				<button type="button" @click="removeFile(index)">❌</button>
+				<Button
+					severity="warn"
+					@click="removeFile(index)"
+				>
+					<i class="pi pi-times" style=""/>
+				</Button>
 			</div>
 		</div>
 	</div>
@@ -104,7 +82,7 @@ async function uploadFiles() {
 
 <style scoped>
 .file-count {
-	margin-top: 0.5rem;
+	margin-top: var(--spacing-md);
 	font-size: 14px;
 	color: #555;
 }
@@ -112,8 +90,8 @@ async function uploadFiles() {
 .preview-container {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 10px;
-	margin-top: 1rem;
+	gap: var(--spacing-sm);
+	margin-top: var(--spacing-md);
 }
 
 .preview-item {
@@ -123,16 +101,14 @@ async function uploadFiles() {
 .preview-img {
 	width: 120px;
 	height: auto;
-	border: 1px solid #ddd;
-	border-radius: 6px;
+	border: 1px solid var(--border-color-neutral);
+	border-radius: var(--radius-sm);
 }
 
 .preview-item button {
 	position: absolute;
 	top: 2px;
 	right: 2px;
-	background: rgba(255,255,255,0.7);
-	border: none;
 	cursor: pointer;
 }
 </style>

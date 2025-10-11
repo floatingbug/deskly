@@ -1,20 +1,15 @@
 <script setup>
-import {ref} from "vue";
+import { ref } from "vue";
 import useBookingStore from "../../stores/booking/useBookingStore.js";
 import KpiCard from "./components/KpiCard.vue";
 import MonthlyRevenueChart from "./components/MonthlyRevenueChart.vue";
 import TopEarningSpaces from "./components/TopEarningSpaces.vue";
 
-
-const {financialStats} = useBookingStore();
-
-
+const { financialStats } = useBookingStore();
 </script>
 
-
-<template>    
-	<div class="financial-stats"
-	>
+<template>
+	<div class="financial-stats">
 		<div class="component-container">
 			<KpiCard :financialStats="financialStats" />
 		</div>
@@ -27,8 +22,7 @@ const {financialStats} = useBookingStore();
 			<TopEarningSpaces :financialStats="financialStats" />
 		</div>
 	</div>
-</template>   
-
+</template>
 
 <style scoped>
 .financial-stats {
@@ -38,7 +32,7 @@ const {financialStats} = useBookingStore();
 	row-gap: var(--spacing-xl);
 }
 
-@media(min-width: 1024px){
+@media (min-width: 1024px) {
 	.component-container {
 		height: 300px;
 	}

@@ -1,16 +1,11 @@
 <script setup>
- const props = defineProps({
-    amenities: Array,
-  }); 
-
+const props = defineProps({
+	amenities: Array,
+});
 </script>
 
 <template>
-  <div>
-    
-  </div>
+	<div></div>
 </template>
 
-<style scoped>
-  
-</style>
+<style scoped></style>

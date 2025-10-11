@@ -3,7 +3,6 @@ import fetchHostBookingsAPI from "./api/fetchHostBookingsAPI.js";
 import fetchCanceledBookingsAPI from "./api/fetchCanceledBookingsAPI.js";
 import createStats from "./utils/createStats/index.js";
 
-
 const bookings = reactive({
 	currentBookings: [],
 	futureBookings: [],
@@ -20,60 +19,59 @@ const financialStats = reactive({
 	lostRevenue: 0,
 	topEarningSpaces: 0,
 	avarageBooking: 0,
-	occupancyRate: 0, 
+	occupancyRate: 0,
 	growthRate: 0,
 });
 
-
 async function initializeBookingStore() {
-    const fetchedBookings = await fetchHostBookingsAPI();
-    const fetchedCanceledBookings = await fetchCanceledBookingsAPI();
-    const today = new Date();
+	const fetchedBookings = await fetchHostBookingsAPI();
+	const fetchedCanceledBookings = await fetchCanceledBookingsAPI();
+	const today = new Date();
 
 	/*
 	 ************* set bookings *****************
-	*/
+	 */
 
 	// total bookings
 	bookings.totalBookings = fetchedBookings.data;
 
-    // canceled bookings
-    bookings.canceledBookings= fetchedCanceledBookings.data;
+	// canceled bookings
+	bookings.canceledBookings = fetchedCanceledBookings.data;
 
-    // current bookings
-    bookings.currentBookings = bookings.totalBookings.filter((booking) => {
-        const start = new Date(booking.startDate);
-        const end = new Date(booking.endDate);
+	// current bookings
+	bookings.currentBookings = bookings.totalBookings.filter((booking) => {
+		const start = new Date(booking.startDate);
+		const end = new Date(booking.endDate);
 
-        return start <= today && end >= today;
-    });
+		return start <= today && end >= today;
+	});
 
-    // future bookings
-    bookings.futureBookings = bookings.totalBookings.filter((booking) => new Date(booking.startDate) > today);
+	// future bookings
+	bookings.futureBookings = bookings.totalBookings.filter((booking) => new Date(booking.startDate) > today);
 
-    // past bookings
-    bookings.pastBookings= bookings.totalBookings.filter((booking) => new Date(booking.endDate) < today);
+	// past bookings
+	bookings.pastBookings = bookings.totalBookings.filter((booking) => new Date(booking.endDate) < today);
 
 	/*
 	 *********** set financialStats ******************
-	*/
+	 */
 
 	financialStats.avarageBooking = createStats.getAvarageBooking(bookings);
-    financialStats.monthlyRevenue = createStats.getMonthlyRevenue(bookings);
-    financialStats.upcomingRevenue = createStats.getUpcomingRevenue(bookings);
-    financialStats.lostRevenue = createStats.getLostRevenue(bookings);
-    financialStats.topEarningSpaces = createStats.getTopEarningSpaces(bookings)
-    financialStats.occupancyRate = createStats.getOccupancyRate(bookings);
-    financialStats.growthRate = createStats.getGrowthRate(bookings);
+	financialStats.monthlyRevenue = createStats.getMonthlyRevenue(bookings);
+	financialStats.upcomingRevenue = createStats.getUpcomingRevenue(bookings);
+	financialStats.lostRevenue = createStats.getLostRevenue(bookings);
+	financialStats.topEarningSpaces = createStats.getTopEarningSpaces(bookings);
+	financialStats.occupancyRate = createStats.getOccupancyRate(bookings);
+	financialStats.growthRate = createStats.getGrowthRate(bookings);
 	financialStats.totalRevenue = createStats.getTotalRevenue(bookings);
 
-    return;
+	return;
 }
 
 export default function useBookingStore() {
-    return {
-        initializeBookingStore,
-        bookings,
-        financialStats,
-    };
+	return {
+		initializeBookingStore,
+		bookings,
+		financialStats,
+	};
 }

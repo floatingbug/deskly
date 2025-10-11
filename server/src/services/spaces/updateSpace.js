@@ -2,14 +2,17 @@ const spacesModel = require("@models/spaces");
 const {ObjectId} = require("@config/db");
 
 
-async function updateSpace({spaceUpdate, spaceId, user}){
+async function updateSpace({inputs, amenities, spaceId, user}){
 	try{
 		const filter = {
 			_id: new ObjectId(spaceId),
 			creatorId: user._id,
 		};
 		const update = {
-			$set: spaceUpdate,
+			$set: {
+				...inputs,
+				amenities,
+			},
 		};
 
 		const result = await spacesModel.updateSpace({filter, update});

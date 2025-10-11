@@ -1,19 +1,16 @@
-<script setup>
-</script>
+<script setup></script>
 
-
-<template>    
+<template>
 	<div class="card">
 		<header>
 			<slot name="header" />
 		</header>
-		
+
 		<div class="main-content">
 			<slot />
 		</div>
 	</div>
-</template>   
-
+</template>
 
 <style scoped>
 .card {

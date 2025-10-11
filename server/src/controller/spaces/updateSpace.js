@@ -5,10 +5,23 @@ const spacesService = require("@services/spaces");
 async function updateSpace(req, res, next){
 	const errors = validateRequest({payload: req.body, user: req.user});
 
+	if(errors.length > 0){
+		return response(res, {
+			success: false,
+			code: 400,
+			errors,
+		});
+	}
+
+	const inputs = req.body.inputs;
+	const amenities = req.body.amenities;
+	const spaceId = req.body.spaceId;
+
 	try{
 		const result = await spacesService.updateSpace({
-			spaceUpdate: req.body.update, 
-			spaceId: req.body.spaceId,
+			inputs,
+			amenities,
+			spaceId,
 			user: req.user,
 		});
 

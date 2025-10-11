@@ -9,7 +9,6 @@ import bookSpaceAPI from "./api/bookSpaceAPI.js";
 import fetchBookingsAPI from "./api/fetchBookingsAPI.js";
 import { useToast } from "primevue/usetoast";
 
-
 const toast = useToast();
 const route = useRoute();
 const router = useRouter();
@@ -17,51 +16,43 @@ const space = ref();
 const bookings = ref();
 const isInitialized = ref(false);
 
-
 onMounted(async () => {
-    const fetchedSpace = await fetchSpaceById({ spaceId: route.query.spaceId });
-    space.value = fetchedSpace.data;
+	const fetchedSpace = await fetchSpaceById({ spaceId: route.query.spaceId });
+	space.value = fetchedSpace.data;
 
-    const fetchedBookings = await fetchBookingsAPI({ spaceId: route.query.spaceId });
-    bookings.value = fetchedBookings.data;
+	const fetchedBookings = await fetchBookingsAPI({ spaceId: route.query.spaceId });
+	bookings.value = fetchedBookings.data;
 
 	isInitialized.value = true;
 });
 
-
 async function onBookSpaceFormAction(event) {
-    const result = await bookSpaceAPI({ booking: event.booking });
+	const result = await bookSpaceAPI({ booking: event.booking });
 
-    if (!result.success) {
-        toast.add({ severity: "warn", summary: "Booking failed", detail: result.errors[0], life: 5000 });
-    }
-    
-    toast.add({ severity: "success", summary: "Booking success", detail: result.message, life: 5000 });
+	if (!result.success) {
+		toast.add({ severity: "warn", summary: "Booking failed", detail: result.errors[0], life: 5000 });
+	}
 
-    router.push("/dashboard");
+	toast.add({ severity: "success", summary: "Booking success", detail: result.message, life: 5000 });
+
+	router.push("/dashboard");
 }
 </script>
 
 <template>
 	<MainLayout>
 		<template #mainContent>
-			<div class="book-space"
-				v-if="isInitialized"
-			>
+			<div class="book-space" v-if="isInitialized">
 				<section>
 					<SpaceInformations :space="space" />
 				</section>
 
 				<Divider></Divider>
-				
+
 				<section>
 					<h2>Book Space</h2>
 
-					<BookSpaceForm
-						:space="space"
-						:bookings="bookings"
-						@bookSpaceForm:action="onBookSpaceFormAction"
-					/>
+					<BookSpaceForm :space="space" :bookings="bookings" @bookSpaceForm:action="onBookSpaceFormAction" />
 				</section>
 			</div>
 		</template>

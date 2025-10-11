@@ -4,8 +4,24 @@ const spacesService = require("@services/spaces");
 
 
 async function addSpace(req, res, next){
-	req.body = JSON.parse(req.body.userInput);
 
+	// parse body
+	try{
+		const userInput = JSON.parse(req.body.userInput);
+		const imagesMeta = JSON.parse(req.body.imagesMeta);
+		const images = req.files;
+
+		req.body = {userInput, imagesMeta, images};
+	}
+	catch(error){
+		return response(res, {
+			success: false,
+			code: 400,
+			errors: [error],
+		});
+	}
+
+	// validate payload/body
 	const errors = validatePayload({payload: req.body, user: req.user});
 
 	if(errors.length > 0) return response(res, {
@@ -14,11 +30,11 @@ async function addSpace(req, res, next){
 		errors,
 	});
 
+	// add space
 	try{
 		const result = await spacesService.addSpace({
 			user: req.user,
 			space: req.body,
-			images: req.files,
 		});
 
 		response(res, result);
@@ -44,7 +60,7 @@ function validatePayload({payload, user}) {
 		{ id: "printers", label: "Printers" },
 		{ id: "lockers", label: "Lockers" }
 	];
-	const { address, amenities, name, capacity, hourlyRate, description } = payload;
+	const { address, amenities, name, capacity, hourlyRate, description } = payload.userInput;
 
 	if(user.role !== "host"){
 		errors.push("Only hosts can add spaces.");

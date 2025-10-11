@@ -1,55 +1,32 @@
 <script setup>
-
-
 const emit = defineEmits(["cancelBookingDialog:action"]);
 
-
-function onUpdateVisible(){
+function onUpdateVisible() {
 	closeDialog();
 }
 
-function closeDialog(){
+function closeDialog() {
 	emit("cancelBookingDialog:action", {
-		action: "closeDialog"
+		action: "closeDialog",
 	});
 }
 
-function cancelBooking(){
+function cancelBooking() {
 	emit("cancelBookingDialog:action", {
 		action: "cancelBooking",
 	});
 }
-
 </script>
 
-
-<template>    
-	<Dialog 
-		visible="visible" 
-		header="Cancel Booking"
-		modal 
-		@update:visible="onUpdateVisible"
-	>
+<template>
+	<Dialog visible="visible" header="Cancel Booking" modal @update:visible="onUpdateVisible">
 		<div class="buttons">
-			<Button
-				severity="secondary"
-				variant="outlined"
-				raised
-				@click="closeDialog"
-			>
-				Abort
-			</Button>
+			<Button severity="secondary" variant="outlined" raised @click="closeDialog">Abort</Button>
 
-			<Button
-				severity="danger"
-				@click="cancelBooking"
-			>
-				Cancel Booking
-			</Button>
+			<Button severity="danger" @click="cancelBooking">Cancel Booking</Button>
 		</div>
 	</Dialog>
-</template>   
-
+</template>
 
 <style scoped>
 .buttons {

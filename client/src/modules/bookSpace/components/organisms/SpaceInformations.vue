@@ -4,87 +4,101 @@ import ImageCarousel from "../molecules/ImageCarousel.vue";
 
 
 const props = defineProps({
-    space: Object,
+	space: Object,
 });
 
 
 const createdAt = ref();
+const imageUrls = ref([]);
+const isInitialized = ref(false);
 
 
 onMounted(() => {
-    createdAt.value = new Date(props.space.createdAt).toLocaleDateString();
+	createdAt.value = new Date(props.space.createdAt).toLocaleDateString();
+
+	// set imageUrls
+	imageUrls.value = props.space.imagesMeta.sort((a, b) => {
+		if(a.isCover && !b.isCover) return -1;
+		if(!a.isCover && b.isCover) return 1;
+		return a.order - b.order;
+	})
+		.map(obj => obj.imagePath);
+
+	isInitialized.value = true;
 });
 
 </script>
 
 <template>
-    <div class="space-informations">
-        <header>
-            <div class="header__name">
-                <h2>
-                    {{ space.name }}
-                </h2>
-            </div>
-
-			<div class="header__carousel">
-				<ImageCarousel :imageUrls="space.imageUrls" />
+	<div class="space-informations"
+		v-if="isInitialized"
+	>
+		<header>
+			<div class="header__name">
+				<h2>
+					{{ space.name }}
+				</h2>
 			</div>
 
-            <div class="header__items">
-            	<div class="header__item">
-            		<div class="header__description">
-            		    {{ space.description }}
-            		</div>
-            	</div>
-            	
-            	<div class="header__item header__item-location">
-            		<div class="header__location">
-            		    {{ space.address}}
-            		</div>
-            	</div>
-            </div>
-        </header>
+			<div class="header__carousel">
+				<ImageCarousel :imageUrls="imageUrls" />
+			</div>
 
-        <div class="content">
-            <div class="content__items">
-            	<ul>
-            	    <li v-for="(amenity, index) in space.amenities">
-            	        {{ amenity.label }}
-            	    </li>
-            	</ul>
-            </div>
+			<div class="header__items">
+				<div class="header__item">
+					<div class="header__description">
+						{{ space.description }}
+					</div>
+				</div>
 
-            <div class="content__items">
-                <div class="content__items-item">
-                    <span>Hourly Rate:</span>
-                    <div class="content__item-value">
-                    	{{ space.hourlyRate }}
-                    </div>
-                </div>
+				<div class="header__item header__item-location">
+					<div class="header__location">
+						{{ space.address }}
+					</div>
+				</div>
+			</div>
+		</header>
 
-                <div class="content__items-item">
-                    <span>Capacity:</span>
-                    <div class="content__item-value">
-                    	{{ space.capacity }}
-                    </div>
-                </div>
-            </div>
-        </div>
+		<div class="content">
+			<div class="content__items">
+				<ul>
+					<li v-for="(amenity, index) in space.amenities">
+						{{ amenity.label }}
+					</li>
+				</ul>
+			</div>
 
-        <footer>
-            <div class="date">
-                <span>Created at:</span>
-                {{ createdAt }}
-            </div>
-        </footer>
-    </div>
+			<div class="content__items">
+				<div class="content__items-item">
+					<span>Hourly Rate:</span>
+					<div class="content__item-value">
+						{{ space.hourlyRate }}
+					</div>
+				</div>
+
+				<div class="content__items-item">
+					<span>Capacity:</span>
+					<div class="content__item-value">
+						{{ space.capacity }}
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<footer>
+			<div class="date">
+				<span>Created at:</span>
+				{{ createdAt }}
+			</div>
+		</footer>
+	</div>
 </template>
 
 <style scoped>
 .space-informations {
 	width: 100%;
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 .header__carousel {

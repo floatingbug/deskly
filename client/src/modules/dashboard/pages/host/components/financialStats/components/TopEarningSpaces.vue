@@ -1,32 +1,23 @@
 <script setup>
-import {computed} from "vue";
-
+import { computed } from "vue";
 
 const props = defineProps({
 	financialStats: Object,
 });
 
-
 const topSpaces = computed(() => props.financialStats.topEarningSpaces);
-
 </script>
 
-
-<template>    
+<template>
 	<div class="top-spaces card">
 		<h3>Top Earning Spaces</h3>
 		<div class="item" v-for="space in topSpaces" :key="space.spaceId">
-			<div class="label">
-				{{ space.name }}:
-			</div>
+			<div class="label">{{ space.name }}:</div>
 
-			<div class="value">
-				{{ space.revenue.toFixed(2) }}$
-			</div>
+			<div class="value">{{ space.revenue.toFixed(2) }}$</div>
 		</div>
 	</div>
-</template>   
-
+</template>
 
 <style scoped>
 .top-spaces {

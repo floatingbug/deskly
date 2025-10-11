@@ -1,5 +1,5 @@
 <script setup>
-import {ref} from "vue";
+import { ref } from "vue";
 import KpiHeader from "./components/KpiHeader.vue";
 import MonthlySpendings from "./components/MonthlySpendings.vue";
 import RefundsChart from "./components/RefundsChart.vue";
@@ -7,9 +7,7 @@ import TopBookedSpaces from "./components/TopBookedSpaces.vue";
 import useBookingStore from "../../stores/booking/useBookingStore.js";
 import KpiCard from "./components/KpiCard.vue";
 
-
-const {kpis} = useBookingStore();
-
+const { kpis } = useBookingStore();
 
 const kpiHeaderValues = ref([
 	{
@@ -34,11 +32,9 @@ const kpiHeaderValues = ref([
 		value: kpis.averageBookingDuration + " Days",
 	},
 ]);
-
 </script>
 
-
-<template>    
+<template>
 	<div class="kpis-header-container">
 		<KpiHeader :kpis="kpiHeaderValues" />
 	</div>
@@ -48,31 +44,27 @@ const kpiHeaderValues = ref([
 			<template #header>
 				<h3>Monthly Spendings</h3>
 			</template>
-			
-			<MonthlySpendings 
-				v-if="kpis && kpis.monthlySpendings"
-				:monthlySpendings="kpis.monthlySpendings" 
-			/>
+
+			<MonthlySpendings v-if="kpis && kpis.monthlySpendings" :monthlySpendings="kpis.monthlySpendings" />
 		</KpiCard>
-	
+
 		<KpiCard>
 			<template #header>
 				<h3>Refunds</h3>
 			</template>
-			
+
 			<RefundsChart :refundsData="kpis.refundsAndCancellations" />
 		</KpiCard>
-	
+
 		<KpiCard>
 			<template #header>
 				<h3>Top Booked Spaces</h3>
 			</template>
-			
+
 			<TopBookedSpaces :topSpaces="kpis.topBookedSpaces" />
 		</KpiCard>
 	</div>
-</template>   
-
+</template>
 
 <style scoped>
 h3 {
@@ -101,21 +93,21 @@ h3 {
 	padding: calc(var(--spacing-xl) * 2) 0;
 }
 
-@media(min-width: 768px) {
+@media (min-width: 768px) {
 	.kpis-header-container {
 		grid-template-columns: repeat(2, 1fr);
 	}
-	
+
 	.kpis-container {
 		grid-template-columns: 2fr 1fr;
 	}
 }
 
-@media(min-width: 1024px) {
+@media (min-width: 1024px) {
 	.kpis-header-container {
 		grid-template-columns: repeat(4, 1fr);
 	}
-	
+
 	.kpis-container {
 		grid-template-columns: 2fr 1fr;
 	}

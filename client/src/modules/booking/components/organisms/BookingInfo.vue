@@ -1,44 +1,35 @@
 <script setup>
-import {ref, onMounted} from "vue";
-
+import { ref, onMounted } from "vue";
 
 const props = defineProps({
 	booking: Object,
 	bookingType: String,
 });
-
 </script>
 
-
-<template>    
+<template>
 	<div class="booking-info">
 		<section>
 			<div class="section-header">
 				<h2>Booking Details</h2>
 			</div>
-			
+
 			<div class="items">
 				<div class="items__header">
 					<h3>Time Period</h3>
 				</div>
-			
+
 				<div class="items__item">
-					<div class="items__item-label">
-						Start Time: 
-					</div>
-			
-					<div class="items__item-value">
-						{{booking.startDate}} at {{booking.startTime}}
-					</div>
+					<div class="items__item-label">Start Time:</div>
+
+					<div class="items__item-value">{{ booking.startDate }} at {{ booking.startTime }}</div>
 				</div>
-				
+
 				<div class="items__item">
-					<div class="items__item-label">
-						End Time: 
-					</div>
-			
+					<div class="items__item-label">End Time:</div>
+
 					<div class="items__item-value">
-						{{booking.endDate}}
+						{{ booking.endDate }}
 					</div>
 				</div>
 			</div>
@@ -51,49 +42,38 @@ const props = defineProps({
 				</div>
 
 				<div class="items__item">
-					<div class="items__item-label">
-						Status:
-					</div>
+					<div class="items__item-label">Status:</div>
 
 					<div class="items__item-value">
-						{{bookingType}}
+						{{ bookingType }}
 					</div>
 				</div>
 			</div>
-			
+
 			<Divider></Divider>
-			
+
 			<div class="items">
 				<div class="items__header">
 					<h3>Payment Details</h3>
 				</div>
-			
+
 				<div class="items__item">
-					<div class="items__item-label">
-						Total Amount: 
-					</div>
-				
-					<div class="items__item-value">
-						${{booking.totalAmount}}
-					</div>
+					<div class="items__item-label">Total Amount:</div>
+
+					<div class="items__item-value">${{ booking.totalAmount }}</div>
 				</div>
-			
+
 				<div class="items__item">
-					<div class="items__item-label">
-						Hourly Rate: 
-					</div>
-				
-					<div class="items__item-value">
-						${{booking.space.hourlyRate}}
-					</div>
+					<div class="items__item-label">Hourly Rate:</div>
+
+					<div class="items__item-value">${{ booking.space.hourlyRate }}</div>
 				</div>
 			</div>
 		</section>
 
 		<Divider></Divider>
 	</div>
-</template>   
-
+</template>
 
 <style scoped>
 .booking-info {
