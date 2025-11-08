@@ -40,8 +40,7 @@ const kpis = computed(() => [
 	flex-direction: column;
 	gap: var(--spacing-md);
 	padding: var(--spacing-md);
-	border-radius: var(--radius-md);
-	border: 1px solid var(--bg-surface);
+	overflow-y: auto;
 	background-color: var(--color-bg);
 }
 

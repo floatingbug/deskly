@@ -37,4 +37,5 @@ module.exports = {
 	connectDB,
 	getDB,
 	ObjectId,
+	client,
 };

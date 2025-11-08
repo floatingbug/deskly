@@ -97,7 +97,6 @@ function navigateToAddSpace() {
 				<p class="host-cta__text">
 					Earn by listing your office or meeting space. It only takes a minute to get started.
 				</p>
-				<Button label="Add a space" icon="pi pi-plus" size="small" @click="navigateToAddSpace" />
 			</div>
 		</section>
 	</div>
@@ -114,6 +113,7 @@ function navigateToAddSpace() {
 	width: 100%;
 	display: flex;
 	justify-content: center;
+	margin-top: 0;
 	background: linear-gradient(180deg, hsl(from var(--p-primary-800) h s calc(l + 5) / 18%) 0%, transparent 100%);
 }
 
@@ -210,7 +210,7 @@ function navigateToAddSpace() {
 }
 
 .host-cta__text {
-	margin: 0 0 0.75rem 0;
+	margin: var(--spacing-lg) 0 0.75rem 0;
 	color: var(--p-surface-700);
 }
 </style>

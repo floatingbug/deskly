@@ -1,9 +1,7 @@
 <script setup>
 import { ref } from "vue";
-import Menu from "primevue/menu";
-import useStateStore from "@/stores/useStateStore.js";
+import MenuLayout from "../layouts/MenuLayout.vue";
 
-const { state } = useStateStore();
 
 const items = ref([
 	{
@@ -31,41 +29,8 @@ const items = ref([
 </script>
 
 <template>
-	<aside>
-		<Menu
-			:model="items"
-			:pt="{
-				root: {
-					class: 'menu',
-				},
-			}"
-		>
-			<template #item="{ item, props }">
-				<router-link class="item" v-bind="props.action" :to="item.path" @click="state.isSideMenuOpen = false">
-					<span class="item-icon" :class="item.icon"></span>
-					<span>{{ item.label }}</span>
-				</router-link>
-			</template>
-		</Menu>
-	</aside>
+	<MenuLayout :items="items" />
 </template>
 
 <style scoped>
-aside {
-	width: 100%;
-	height: 100%;
-	display: flex;
-}
-
-:deep(.menu) {
-	background-color: var(--card-bg);
-}
-
-.item {
-	font-size: var(--font-size-sm);
-}
-
-.item-icon {
-	font-size: var(--font-size-sm);
-}
 </style>

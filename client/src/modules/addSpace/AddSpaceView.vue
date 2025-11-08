@@ -4,10 +4,13 @@ import { useRouter } from "vue-router";
 import AddSpaceForm from "./components/organisms/AddSpaceForm.vue";
 import addSpaceAPI from "./api/addSpaceAPI.js";
 import { useToast } from "primevue/usetoast";
+import MainLayout from "@/layouts/MainLayout.vue";
+
 
 const router = useRouter();
 const toast = useToast();
 const addSpaceFormErrors = ref([]);
+
 
 async function onAddSpaceFormAction(event) {
 	const userInput = event.userInput;
@@ -41,17 +44,21 @@ function onAddSpaceFormChange(event) {
 </script>
 
 <template>
-	<div class="add-space">
-		<h1>Add Space</h1>
-
-		<div class="add-space-form-container">
-			<AddSpaceForm
-				:errors="addSpaceFormErrors"
-				@addSpaceForm:action="onAddSpaceFormAction"
-				@addSpaceForm:change="onAddSpaceFormChange"
-			/>
-		</div>
-	</div>
+	<MainLayout>
+		<template #mainContent>
+			<div class="add-space">
+				<h1>Add Space</h1>
+			
+				<div class="add-space-form-container">
+					<AddSpaceForm
+						:errors="addSpaceFormErrors"
+						@addSpaceForm:action="onAddSpaceFormAction"
+						@addSpaceForm:change="onAddSpaceFormChange"
+					/>
+				</div>
+			</div>
+		</template>
+	</MainLayout>
 </template>
 
 <style scoped>

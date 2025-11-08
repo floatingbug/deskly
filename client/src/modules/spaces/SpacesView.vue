@@ -91,19 +91,21 @@ async function onSpacesAction(event) {
 		</template>
 
 		<template #mainContent>
-			<div class="main-content">
-				<div class="open-filter-button">
-					<Button v-if="!isFilterOpen && device.size <= 1024" rounded @click="isFilterOpen = true">
-						<span>Filter</span>
-						<i class="pi pi-filter"></i>
-					</Button>
+			<div class="open-filter-button">
+				<Button v-if="!isFilterOpen && device.size <= 1024" rounded @click="isFilterOpen = true">
+					<span>Filter</span>
+					<i class="pi pi-filter"></i>
+				</Button>
+			</div>
+
+			<div class="main-content__spaces">
+				<div class="main-content__left">
+					<div class="main-content__filter" :class="!isFilterOpen && device.size <= 1024 ? 'filter-closed' : ''">
+						<Filter @filter:action="onFilterAction" />
+					</div>
 				</div>
 
-				<div class="main-content__filter" :class="!isFilterOpen && device.size <= 1024 ? 'filter-closed' : ''">
-					<Filter @filter:action="onFilterAction" />
-				</div>
-
-				<div class="main-content__spaces">
+				<div class="main-content__right">
 					<div class="main-content__sort">
 						<Sort @sort:action="onSortAction" />
 					</div>
@@ -125,25 +127,23 @@ async function onSpacesAction(event) {
 </template>
 
 <style scoped>
-.main-content {
-	width: 100%;
-	display: flex;
-	justify-content: center;
-	gap: var(--spacing-lg);
-}
-
 .main-content__filter {
 	width: 100%;
 	max-width: 320px;
 	height: 100%;
-	position: fixed;
+	position: absolute;
 	top: calc(var(--spacing-lg) * 2);
 	left: 0;
-	z-index: 3000;
+	z-index: 800;
 	transition: transform 250ms;
 }
 
 .main-content__spaces {
+	display: flex;
+	justify-content: center;
+}
+
+.main-content__right {
 	display: flex;
 	flex-direction: column;
 	gap: var(--spacing-xl);
@@ -154,10 +154,8 @@ async function onSpacesAction(event) {
 }
 
 .open-filter-button {
-	position: fixed;
-	left: var(--spacing-lg);
-	top: calc(var(--spacing-lg) * 2.5);
-	z-index: 1000;
+	margin-bottom: var(--spacing-xl);
+	z-index: 900;
 }
 
 .settings__item {
@@ -168,6 +166,10 @@ async function onSpacesAction(event) {
 @media (min-width: 1024px) {
 	.main-content__filter {
 		position: static;
+	}
+
+	.main-content__spaces {
+		gap: var(--spacing-xl);
 	}
 }
 </style>

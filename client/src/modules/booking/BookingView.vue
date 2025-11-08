@@ -1,19 +1,17 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import useBookingStore from "./stores/useBookingStore.js";
+import useBookingsStore from "@/stores/useBookingsStore.js";
+import useStateStore from "@/stores/useStateStore.js";
 import { useToast } from "primevue/usetoast";
 import apiFetch from "@/api/apiFetch.js";
-import useStateStore from "@/stores/useStateStore.js";
 import MainLayout from "@/layouts/MainLayout.vue";
 import BookingInfo from "./components/organisms/BookingInfo.vue";
 import BookingActions from "./components/organisms/BookingActions.vue";
 import SpaceDetailsButton from "./components/molecules/SpaceDetailsButton.vue";
-import useTransferCache from "@/composables/useTransferCache.js";
 
-const { initializeBookingStore, booking } = useBookingStore();
-const { state } = useStateStore();
-const { setCache } = useTransferCache();
+const { initializeBookingStore, booking } = useBookingsStore();
+const {state} = useStateStore();
 const toast = useToast();
 const route = useRoute();
 const router = useRouter();
@@ -57,14 +55,43 @@ async function cancelBooking() {
 	state.isLoading = false;
 }
 
+async function sendMessage(event) {
+	const creatorId = booking.value.space.creatorId;
+	const message = event.message;
+	const path = "/inbox/add-message";
+	const options = {
+		method: "POST",
+		headers: {
+			"content-type": "application/json",
+		},
+		body: JSON.stringify({
+			receiverId: creatorId,
+			message,
+		}),
+	};
+
+	const result = await apiFetch({
+		path,
+		options,
+		addJwt: true,
+	});
+
+	if(!result.success){
+		toast.add({ severity: 'warn', summary: 'Fail to send message.', detail: result.errors[0], life: 5000 });
+		return;
+	}
+
+	toast.add({ severity: 'info', summary: 'Message sent', detail: 'Message has been sent.', life: 5000 });
+}
+
 function onBookingActions(event) {
 	if (event.action === "cancelBooking") cancelBooking();
+	if(event.action === "sendMessage") sendMessage(event);
 }
 
 function onSpaceDetailsButtonActions(event) {
 	if (event.action === "openSpaceDetails") {
-		setCache(booking.value);
-		router.push("/space-details");
+		router.push(`/space-details?spaceId=${booking.value.spaceId}`);
 	}
 }
 </script>

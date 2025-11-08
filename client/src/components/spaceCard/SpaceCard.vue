@@ -2,11 +2,11 @@
 import {ref, onMounted} from "vue";
 import { useRouter } from "vue-router";
 
+
 const props = defineProps({
 	space: Object,
 });
 
-console.log(props.space);
 
 const router = useRouter();
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
@@ -24,6 +24,7 @@ onMounted(() => {
 function openBooking() {
 	router.push(`/book-space?spaceId=${props.space._id}`);
 }
+
 </script>
 
 <template>
@@ -42,6 +43,21 @@ function openBooking() {
 			</div>
 		</header>
 
+		<div class="amenities">
+			<div class="amenities__title">
+				Amenities
+			</div>
+
+			<div class="amenities__container">
+				<div class="amenities__item"
+					v-for="(amenity, index) in space.amenities"
+					:key="index"
+				>
+					{{amenity.label}}
+				</div>
+			</div>
+		</div>
+
 		<div class="details">
 			<div class="details-item">
 				<div class="details-label">Capacity:</div>
@@ -51,7 +67,7 @@ function openBooking() {
 			</div>
 
 			<div class="details-item">
-				<div class="details-label">Hourly Rate:</div>
+				<div class="details-label">$/hr:</div>
 
 				<div class="details-value">
 					{{ space.hourlyRate }}
@@ -67,53 +83,80 @@ function openBooking() {
 .space-card {
 	width: 100%;
 	max-width: 300px;
+	height: 350px;
 	border-radius: var(--radius-md);
 	user-select: none;
 	cursor: pointer;
 	overflow: hidden;
-	background-color: var(--bg-surface);
+	border: 1px solid var(--border-color-neutral);
+	background-color: var(--bg-surface-light);
 }
 
 .space-card:hover {
-	box-shadow: 0 0 2px 3px var(--bg-primary);
+	box-shadow: 0 0 2px 1px var(--bg-primary);
 }
 
 header {
+	height: 60%;
 	position: relative;
 }
 
-.name {
+header .name {
 	width: 100%;
 	position: absolute;
 	top: 0;
 	left: 0;
 	padding: var(--spacing-md);
 	font-size: var(--font-size-xl);
-	background-color: hsl(from var(--bg-success-light) h s l / 80%);
+	font-weight: bold;
+	color: var(--color-surface-glass);
+	background-color: var(--bg-surface-glass);
 }
 
-.screenshots {
+header .screenshots {
 	width: 100%;
-	height: 300px;
+	height: 80%;
 }
 
-.screenshots img {
+header .screenshots img {
 	width: 100%;
 	height: 100%;
+	aspect-ratio: 16 / 9;
 	object-fit: cover;
 }
 
-.description {
-	height: 100px;
+header .description {
+	width: 100%;
 	padding: var(--spacing-md);
 	overflow: hidden;
 }
 
+.amenities {
+	height: 20%;
+	padding: var(--spacing-md);
+	overflow: hidden;
+}
+
+.amenities__title {
+	color: var(--color-subtitle);
+	font-weight: bold;
+	margin-top: var(--spacing-sm);
+}
+
+.amenities__container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--spacing-md);
+	margin-top: var(--spacing-sm);
+}
+
 .details {
 	width: 100%;
+	height: 10%;
 	display: flex;
 	gap: var(--spacing-md);
-	padding: 0 var(--spacing-md);
+	padding: var(--spacing-md);
+	margin-top: var(--spacing-sm);
 }
 
 .details-item {
@@ -125,6 +168,8 @@ header {
 }
 
 .details-value {
+	color: var(--color-primary);
+	font-weight: bold;
 }
 
 footer {

@@ -24,6 +24,10 @@ const router = createRouter({
 		...spaceDetailsRoutes,
 		...editSpaceRoutes,
 	],
+	scrollBehaviour(to, from, savedPosition) {
+		return {top: 0, left: 0};
+	},
 });
+
 
 export default router;

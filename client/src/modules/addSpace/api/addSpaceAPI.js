@@ -3,9 +3,6 @@ import apiFetch from "@/api/apiFetch.js";
 export default async function ({ userInput, images }) {
 	const formData = new FormData();
 
-	console.log(images);
-	console.log(userInput);
-
 	// add input fields
 	formData.append("userInput", JSON.stringify(userInput));
 

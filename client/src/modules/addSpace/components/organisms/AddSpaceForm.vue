@@ -43,6 +43,14 @@ const fields = ref([
 		type: "inputNumber",
 	},
 	{
+		label: "Hourly Rate",
+		value: 0,
+		icon: "pi pi-tag",
+		id: "hourlyRate",
+		type: "inputNumber",
+		isSelected: false,
+	},
+	{
 		label: "Amenities",
 		icon: "pi pi-tag",
 		id: "amenities",
@@ -104,14 +112,6 @@ const fields = ref([
 				isSelected: false,
 			},
 		],
-	},
-	{
-		label: "Hourly Rate",
-		value: 0,
-		icon: "pi pi-tag",
-		id: "hourlyRate",
-		type: "inputNumber",
-		isSelected: false,
 	},
 ]);
 
@@ -182,7 +182,7 @@ async function addSpace() {
 					<i :class="field.icon"></i>
 				</InputGroupAddon>
 
-				<FloatLabel>
+				<FloatLabel variant="in">
 					<InputNumber
 						v-if="field.id === 'hourlyRate'"
 						v-model="field.value"
@@ -223,13 +223,15 @@ async function addSpace() {
 			<div class="amenities" v-if="field.type === 'checkboxes'">
 				<h2>Choose Amenities</h2>
 
-				<Chip
-					class="amenity"
-					v-for="(amenity, index) in field.amenities"
-					:class="amenity.isSelected ? 'amenity-selected' : ''"
-					:label="amenity.label"
-					@click="amenity.isSelected = !amenity.isSelected"
-				/>
+				<div class="amenities-container">
+					<Chip
+						class="amenity"
+						v-for="(amenity, index) in field.amenities"
+						:class="amenity.isSelected ? 'amenity-selected' : ''"
+						:label="amenity.label"
+						@click="amenity.isSelected = !amenity.isSelected"
+					/>
+				</div>
 			</div>
 		</div>
 
@@ -263,9 +265,18 @@ async function addSpace() {
 	justify-content: flex-end;
 }
 
+.amenities-container {
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--spacing-md);
+	margin-top: var(--spacing-xl);
+}
+
 .amenity {
 	user-select: none;
 	cursor: pointer;
+	border: 1px solid var(--border-color-neutral);
 }
 
 .amenity-selected {

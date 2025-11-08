@@ -21,21 +21,17 @@ function onUserMenuAction(event) {
 		<div class="container container-left">
 			<Button
 				class="menu-button"
-				variant="text"
+				variant="outlined"
 				severity="contrast"
 				@click="state.isSideMenuOpen = !state.isSideMenuOpen"
 			>
 				<i class="pi pi-bars" />
 			</Button>
 
-			<span>DESKLY</span>
+			<span class="logo">DESKLY</span>
 		</div>
 
 		<div class="container container-right">
-			<Button variant="text" severity="contrast">
-				<i class="pi pi-inbox" />
-			</Button>
-
 			<UserMenu @userMenu:action="onUserMenuAction" />
 		</div>
 	</div>
@@ -60,5 +56,10 @@ function onUserMenuAction(event) {
 .container-left {
 	display: flex;
 	gap: var(--spacing-sm);
+}
+
+.logo {
+	letter-spacing: 2px;
+	color: var(--color-text-contrast);
 }
 </style>

@@ -1,6 +1,8 @@
 <script setup>
 import { ref } from "vue";
 import CancelBookingDialog from "../molecules/CancelBookingDialog.vue";
+import ContactHostDialog from "../molecules/ContactHostDialog.vue";
+
 
 const props = defineProps({
 	bookingType: String,
@@ -21,21 +23,22 @@ function onCancelBookingDialogAction(event) {
 		});
 	}
 }
+
+function onContactHostDialogActions(event){
+	if(event.action === "closeDialog") showContact.value = false;
+
+	if(event.action === "sendMessage"){
+		emit("bookingActions:action", {
+			...event,
+		});
+	}
+}
+
 </script>
 
 <template>
 	<div class="booking-actions">
 		<Button v-if="bookingType != 'canceled'" severity="danger" @click="showCancel = true">Cancel Booking</Button>
-
-		<Button
-			v-if="bookingType != 'canceled'"
-			severity="secondary"
-			variant="outlined"
-			raised
-			@click="showEdit = true"
-		>
-			Edit Booking
-		</Button>
 
 		<Button
 			:severity="bookingType === 'canceled' ? 'primary' : 'secondary'"
@@ -47,6 +50,11 @@ function onCancelBookingDialogAction(event) {
 		</Button>
 
 		<CancelBookingDialog v-if="showCancel" @cancelBookingDialog:action="onCancelBookingDialogAction" />
+
+		<ContactHostDialog 
+			v-if="showContact"
+			@contactHostDialog:action="onContactHostDialogActions"
+		/>
 	</div>
 </template>
 

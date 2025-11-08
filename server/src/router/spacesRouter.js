@@ -12,6 +12,9 @@ spacesRouter.post("/add-space", authUser, upload.array("images"), spacesControll
 spacesRouter.patch("/update-space", authUser, spacesController.updateSpace);
 spacesRouter.delete("/delete-space", authUser, spacesController.deleteSpace);
 spacesRouter.patch("/update-screenshot-order", authUser, spacesController.updateScreenshotOrder);
+spacesRouter.patch("/change-screenshot", authUser, upload.single("image"), spacesController.changeScreenshot);
+spacesRouter.patch("/delete-screenshot", authUser, upload.single("image"), spacesController.deleteScreenshot);
+spacesRouter.post("/add-screenshots", authUser, upload.array("images"), spacesController.addScreenshots);
 
 
 module.exports = spacesRouter;

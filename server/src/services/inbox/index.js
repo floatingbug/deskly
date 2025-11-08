@@ -1,6 +1,10 @@
-const addMessageToInbox = require("./addMessageToInbox");
+const addMessage = require("./addMessage");
+const getConversations = require("./getConversations");
+const getMessages = require("./getMessages");
 
 
 module.exports = {
-	addMessageToInbox,
+	addMessage,
+	getConversations,
+	getMessages,
 };

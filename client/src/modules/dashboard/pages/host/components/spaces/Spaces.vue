@@ -5,22 +5,25 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import ColumnGroup from "primevue/columngroup";
 import Row from "primevue/row";
-import useTransferCache from "@/composables/useTransferCache.js";
+import useSpacesStore from "@/stores/useSpacesStore.js";
 
-const props = defineProps({
-	spaces: Array,
-});
 
 const emit = defineEmits(["spaces:action"]);
 
-const { setCache } = useTransferCache();
+
+const {initializeSpacesStore, getSpaces, selectSpace} = useSpacesStore();
 const router = useRouter();
 const selectedSpace = ref(null);
 const tableRows = ref([]);
 const selectedRow = ref();
+const spaces = ref([]);
 
-onMounted(() => {
-	tableRows.value = props.spaces.map((space) => {
+
+onMounted(async () => {
+	await initializeSpacesStore();
+	spaces.value = getSpaces();
+
+	tableRows.value = spaces.value.map((space) => {
 		return {
 			name: space.name,
 			capacity: space.capacity,
@@ -31,12 +34,12 @@ onMounted(() => {
 	});
 });
 
+
 function onRowSelect(event) {
-	selectedSpace.value = props.spaces.find((space) => space._id === event.data.spaceId);
-	const rawSelectedSpace = toRaw(selectedSpace.value);
-	setCache(rawSelectedSpace);
+	selectSpace(event.data.spaceId);
 	router.push("/edit-space");
 }
+
 </script>
 
 <template>

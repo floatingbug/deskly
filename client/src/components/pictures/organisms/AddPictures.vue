@@ -54,15 +54,15 @@ function removeFile(index) {
 	<div>
 		<input ref="fileInput" type="file" accept="image/*" multiple style="display: none" @change="onFileChange" />
 
-			<div class="add-img-button">
-				<Button
-					severity="secondary"
-					@click="openFileDialog"
-				>
-					<i class="pi pi-times" />
-					Add images
-				</Button>
-			</div>
+		<div class="add-img-button">
+			<Button class="add-image-button"
+				severity="secondary"
+				@click="openFileDialog"
+			>
+				<i class="pi pi-times" />
+				Add images
+			</Button>
+		</div>
 
 		<div v-if="selectedFiles.length > 0" class="file-count">{{ selectedFiles.length }} images selected</div>
 
@@ -70,7 +70,7 @@ function removeFile(index) {
 			<div v-for="(item, index) in selectedFiles" :key="index" class="preview-item">
 				<img :src="item.url" class="preview-img" />
 				<Button
-					severity="warn"
+					severity="danger"
 					@click="removeFile(index)"
 				>
 					<i class="pi pi-times" style=""/>
@@ -83,8 +83,8 @@ function removeFile(index) {
 <style scoped>
 .file-count {
 	margin-top: var(--spacing-md);
-	font-size: 14px;
-	color: #555;
+	font-size: var(--font-size-sm);
+	color: var(--color-subtitle);
 }
 
 .preview-container {
@@ -99,10 +99,11 @@ function removeFile(index) {
 }
 
 .preview-img {
-	width: 120px;
-	height: auto;
-	border: 1px solid var(--border-color-neutral);
-	border-radius: var(--radius-sm);
+	width: 100%;
+	max-width: 180px;
+	height: 100%;
+	aspect-ratio: 16 / 9;
+	object-fit: cover;
 }
 
 .preview-item button {
@@ -110,5 +111,9 @@ function removeFile(index) {
 	top: 2px;
 	right: 2px;
 	cursor: pointer;
+}
+
+.add-image-button {
+	border: 1px solid var(--border-color-neutral);
 }
 </style>

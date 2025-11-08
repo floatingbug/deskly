@@ -5,6 +5,8 @@ const spacesService = require("@services/spaces");
 async function updateSpace(req, res, next){
 	const errors = validateRequest({payload: req.body, user: req.user});
 
+	console.log(req.body);
+
 	if(errors.length > 0){
 		return response(res, {
 			success: false,

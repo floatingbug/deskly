@@ -13,10 +13,11 @@ const emit = defineEmits(["bookingTable:action"]);
 
 const tableRows = ref([]);
 
+
 tableRows.value = props.bookings.map((booking) => {
 	return {
 		name: booking.space.name,
-		address: booking.space.location,
+		address: booking.space.address,
 		startDate: booking.startDate + " " + booking.startTime,
 		endDate: booking.endDate,
 		spaceId: booking.space._id,

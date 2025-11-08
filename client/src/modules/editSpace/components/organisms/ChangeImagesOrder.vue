@@ -1,5 +1,5 @@
 <script setup>
-import {ref, onMounted, toRaw} from "vue";
+import {ref, onMounted, watch, toRaw} from "vue";
 import draggable from "vuedraggable";
 
 
@@ -16,7 +16,18 @@ const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 const imageItems = ref([]);
 
 onMounted(() => {
-	// set imageItems
+	setImageItems();
+})
+
+
+watch(() => props.imagesMeta, () => {
+	setImageItems();
+}, {deep: true});
+
+
+function setImageItems(){
+	const cacheBuster = Date.now();
+
 	imageItems.value = props.imagesMeta
 		.sort((a, b) => {
 			if(a.isCover) return -1;
@@ -27,13 +38,13 @@ onMounted(() => {
 			return {
 				id: item.order,
 				imageName: item.imageName,
-				url: `${SERVER_URL}${item.imagePath}`,
+				url: `${SERVER_URL}${item.imagePath}?v=${cacheBuster}`,
 				imagePath: item.imagePath,
 				isCover: item.isCover,
 				order: item.order,
 			};
 		});
-})
+}
 
 function updateOrder() {
 	imageItems.value.forEach((item, index) => {
@@ -106,6 +117,7 @@ function updateOrder() {
 	width: 100%;
 	height: 100%;
 	aspect-ratio: 16 / 9;
+	object-fit: cover;
 }
 
 .cover {

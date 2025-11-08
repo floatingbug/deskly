@@ -46,12 +46,8 @@ onBeforeUnmount(() => {
 	justify-content: center;
 	column-gap: var(--spacing-md);
 	row-gap: var(--spacing-md);
-}
-
-@media (min-width: 460px) {
-	.spaces {
-		grid-template-columns: repeat(2, 1fr);
-	}
+	overflow: hidden;
+	padding: var(--spacing-md);
 }
 
 @media (min-width: 768px) {

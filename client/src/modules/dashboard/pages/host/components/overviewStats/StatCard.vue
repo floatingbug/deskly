@@ -14,11 +14,11 @@ const props = defineProps({
 			</small>
 		</header>
 
-		<section class="main-content">
+		<div class="main-content">
 			<div class="count__item" v-if="stat.type === 'count'">
 				<div class="count__value">{{ stat.value }}</div>
 			</div>
-		</section>
+		</div>
 
 		<footer></footer>
 	</div>

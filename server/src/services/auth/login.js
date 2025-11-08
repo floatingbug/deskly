@@ -49,6 +49,7 @@ async function login({nameOrEmail, password}){
 			message: "Sent token.",
 			data: {
 				user: {
+					_id: user._id,
 					name: user.name,
 					role: user.role,
 					jwt: token,

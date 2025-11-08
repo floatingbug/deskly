@@ -10,7 +10,7 @@ async function getUserByJwt({token}){
 			})
 		});
 
-		let {_id, iat, password, ...user} = decodedUser;
+		let {iat, password, ...user} = decodedUser;
 		user.jwt = token;
 
 		return {

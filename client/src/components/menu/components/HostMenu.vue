@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue";
-import Menu from "primevue/menu";
+import MenuLayout from "../layouts/MenuLayout.vue";
+
 
 const items = ref([
 	{
@@ -28,30 +29,8 @@ const items = ref([
 </script>
 
 <template>
-	<aside>
-		<Menu :model="items">
-			<template #item="{ item, props }">
-				<router-link class="item" v-bind="props.action" :to="item.path">
-					<span class="item-icon" :class="item.icon"></span>
-					<span>{{ item.label }}</span>
-				</router-link>
-			</template>
-		</Menu>
-	</aside>
+	<MenuLayout :items="items" />
 </template>
 
 <style scoped>
-aside {
-	width: 100%;
-	height: 100%;
-	display: flex;
-}
-
-.item {
-	font-size: var(--font-size-sm);
-}
-
-.item-icon {
-	font-size: var(--font-size-sm);
-}
 </style>

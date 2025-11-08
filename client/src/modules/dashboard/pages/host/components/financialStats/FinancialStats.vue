@@ -34,7 +34,7 @@ const { financialStats } = useBookingStore();
 
 @media (min-width: 1024px) {
 	.component-container {
-		height: 300px;
+		height: 320px;
 	}
 
 	.financial-stats {

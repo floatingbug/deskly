@@ -6,6 +6,8 @@ const authService = require("@services/auth");
 async function register(req, res, next){
 	const errors = validatePayload(req.body);
 
+	console.log(req.body);
+
 	if(errors.length > 0) return response(res, {
 		success: false,
 		code: 400,

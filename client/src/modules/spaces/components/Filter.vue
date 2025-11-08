@@ -13,7 +13,7 @@ const filterSettings = reactive({
 	amenities: [
 		{ label: "WiFi", id: "wifi", isSelected: false },
 		{ label: "Meeting rooms", id: "meeting_rooms", isSelected: false },
-		{ label: "Printers", id: "printers", isSelected: false },
+		{ label: "Printers", id: "printer", isSelected: false },
 		{ label: "Lockers", id: "lockers", isSelected: false },
 		{ label: "Free water", id: "free_water", isSelected: false },
 		{ label: "Coffee", id: "coffee", isSelected: false },
@@ -79,67 +79,68 @@ function closeFilter() {
 
 <template>
 	<div class="filter">
-		<section>
-			<div class="title">
-				<div class="title__left">
-					<i class="pi pi-filter"></i>
-					<span>Filter</span>
-				</div>
-
-				<div class="title__right">
-					<Button v-if="device.size <= 1024" severity="secondary" variant="text" rounded @click="closeFilter">
-						<i class="pi pi-times-circle" style="font-size: 1.5rem"></i>
-					</Button>
-				</div>
+		<div class="title filter-item">
+			<div class="title__left">
+				<i class="pi pi-filter"></i>
+				<span>Filter</span>
 			</div>
-		</section>
 
-		<section>
-			<div class="sliders">
-				<div class="slider">
-					<div class="slider__label-input">
-						<div class="slider__label">Max. Hourly Rate</div>
-						<div class="slider__input">
-							<InputText v-model.number="filterSettings.hourlyRate.value" size="small" />
-						</div>
-					</div>
-
-					<Slider v-model="filterSettings.hourlyRate.value" :max="20"></Slider>
-				</div>
-
-				<div class="slider">
-					<div class="slider__label-input">
-						<div class="slider__label">Capacity</div>
-						<div class="slider__input">
-							<InputText v-model.number="filterSettings.capacity.value" size="small" />
-						</div>
-					</div>
-
-					<Slider v-model="filterSettings.capacity.value"></Slider>
-				</div>
+			<div class="title__right">
+				<Button v-if="device.size <= 1024" severity="secondary" variant="text" rounded @click="closeFilter">
+					<i class="pi pi-times-circle" style="font-size: 1.5rem"></i>
+				</Button>
 			</div>
-		</section>
+		</div>
 
-		<section>
+		<div class="sliders filter-item">
+			<div class="slider">
+				<div class="slider__label-input">
+					<div class="slider__label">Max. Hourly Rate</div>
+					<div class="slider__input">
+						<InputText v-model.number="filterSettings.hourlyRate.value" size="small" />
+					</div>
+				</div>
+
+				<Slider v-model="filterSettings.hourlyRate.value" :max="20"></Slider>
+			</div>
+
+			<div class="slider filter-item">
+				<div class="slider__label-input">
+					<div class="slider__label">Capacity</div>
+					<div class="slider__input">
+						<InputText v-model.number="filterSettings.capacity.value" size="small" />
+					</div>
+				</div>
+
+				<Slider v-model="filterSettings.capacity.value"></Slider>
+			</div>
+		</div>
+
+		<div class="filter-item">
+			<h3>Amenities</h3>
+
 			<div class="amenities">
 				<Chip
 					v-for="(amenity, index) in filterSettings.amenities"
 					:key="index"
-					:class="amenity.isSelected ? 'selected-amenity' : ''"
+					:class="amenity.isSelected ? 'selected-amenity' : 'amenity'"
 					@click="amenity.isSelected = !amenity.isSelected"
 				>
 					{{ amenity.label }}
 				</Chip>
 			</div>
-		</section>
+		</div>
 
-		<section>
-			<div class="footer">
-				<Button severity="secondary" @click="resetFilter">Reset</Button>
+		<div class="footer filter-item">
+			<Button class="reset-button"
+				severity="secondary" 
+				@click="resetFilter"
+			>
+				Reset
+			</Button>
 
-				<Button @click="applyFilter">Apply</Button>
-			</div>
-		</section>
+			<Button @click="applyFilter">Apply</Button>
+		</div>
 	</div>
 </template>
 
@@ -149,16 +150,21 @@ function closeFilter() {
 	min-height: 800px;
 	display: flex;
 	flex-direction: column;
-	gap: var(--spacing-xl);
 	padding: var(--spacing-md);
-	background-color: hsl(from var(--bg-surface) h s l / 80%);
+	border: 1px solid var(--border-color-neutral);
+	background-color: hsl(from var(--bg-surface-light) h s l / 80%);
 	backdrop-filter: blur(8px);
+}
+
+.filter-item {
+	margin: var(--spacing-xl) 0;
 }
 
 .title {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	margin-top: 0;
 }
 
 .title__left {
@@ -169,7 +175,7 @@ function closeFilter() {
 .sliders {
 	display: flex;
 	flex-direction: column;
-	gap: var(--spacing-lg);
+	gap: var(--spacing-md);
 }
 
 .slider {
@@ -205,6 +211,10 @@ function closeFilter() {
 	cursor: pointer;
 }
 
+.amenity {
+	border: 1px solid var(--border-color-neutral-light);
+}
+
 .selected-amenity {
 	color: var(--color-text-contrast);
 	background-color: var(--bg-surface-dark);
@@ -214,6 +224,11 @@ function closeFilter() {
 	display: flex;
 	justify-content: flex-end;
 	gap: var(--spacing-md);
+	margin-bottom: 0;
+}
+
+.reset-button {
+	border: 1px solid var(--border-color-neutral-light);
 }
 
 @media (min-width: 1024px) {

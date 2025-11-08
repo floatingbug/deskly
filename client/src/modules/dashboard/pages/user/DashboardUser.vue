@@ -41,22 +41,14 @@ function onBookingsAction(event) {
 </template>
 
 <style scoped>
-.main-content {
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-}
 
 .kpis-container {
 	width: 100%;
-	max-width: 1024px;
 	padding: 0 var(--spacing-md) calc(var(--spacing-xl) * 2) var(--spacing-md);
 }
 
 .bookings-container {
 	width: 100%;
-	max-width: 1024px;
 	padding: var(--spacing-xl) var(--spacing-md);
 }
 

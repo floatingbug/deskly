@@ -1,5 +1,5 @@
 <script setup>
-import {ref, watch} from "vue";
+import {ref, onMounted, watch} from "vue";
 
 
 const props = defineProps({
@@ -15,14 +15,13 @@ const amenityValue = ref(false);
 
 
 // initialize amenity state
-watch(() => props.item.value, () => {
+onMounted(() => {
 	amenityValue.value = props.item.value;
 });
 
 // reset amenity state
 watch(() => props.resetTriggerAmenity, () => {
 	amenityValue.value = props.item.value;
-	console.log(props.item.value);
 });
 
 

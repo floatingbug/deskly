@@ -7,20 +7,16 @@ import EditSpaceForm from "./components/organisms/EditSpaceForm.vue";
 import ChangeImagesOrder from "./components/organisms/ChangeImagesOrder.vue";
 import ChangeImages from "./components/organisms/ChangeImages.vue";
 import apiFetch from "@/api/apiFetch.js";
+import useSpacesStore from "@/stores/useSpacesStore.js";
+import AddScreenshots from "./components/organisms/AddScreenshots.vue";
 
-const { getCache } = useTransferCache();
-const { setSpace, getSpace } = useSpaceStore();
-let space = null;
+
+const {getSelectedSpace} = useSpacesStore();
+const space = ref();
 const isInitialized = ref(false);
 
 onMounted(async () => {
-	const tmpSpace = await getCache();
-
-	if (tmpSpace && !space) setSpace(tmpSpace);
-	space = getSpace();
-
-	console.log(space);
-	console.log("--------->", space.value.imagesMeta);
+	space.value = getSelectedSpace();
 
 	isInitialized.value = true;
 });
@@ -28,7 +24,6 @@ onMounted(async () => {
 
 async function onEditSpaceFormActions(event){
 	//add changed fields
-	console.log(event);
 	const path = "/spaces/update-space";
 	const options = {
 		method: "PATCH",
@@ -47,8 +42,6 @@ async function onEditSpaceFormActions(event){
 		options,
 		addJwt: true,
 	});
-
-	console.log(result);
 }
 
 async function onChangeImagesOrderActions(event){
@@ -70,7 +63,58 @@ async function onChangeImagesOrderActions(event){
 		addJwt: true,
 	});
 
-	console.log(result);
+	space.value.imagesMeta = event.newImagesMeta;
+}
+
+async function onChangeImagesActions(event){
+	if(event.action === "changeImage"){
+		const formData = new FormData();
+
+		formData.append("image", event.newImage);
+		formData.append("imageName", event.imageName);
+
+		const path = "/spaces/change-screenshot";
+		const options = {
+			method: "PATCH",
+			headers: {},
+			body: formData,
+		};
+
+		const result = await apiFetch({
+			path,
+			options,
+			addJwt: true,
+		});
+
+
+		// reload image
+		const imageMeta = space.value.imagesMeta.find(image => image.imageName === event.imageName);
+		const tmpImagePath = imageMeta.imagePath;
+		imageMeta.imagePath = `${imageMeta.imagePath}?v=${Math.random()}`; 
+		imageMeta.imagePath = tmpImagePath; 
+	}
+
+	else if(event.action === "deleteImage"){
+		const path = "/spaces/delete-screenshot";
+		const options = {
+			method: "PATCH",
+			headers: {
+				"content-type": "application/json",
+			},
+			body: JSON.stringify({
+				imageName: event.imageName,
+				spaceId: space.value._id,
+			}),
+		};
+
+		const result = await apiFetch({
+			path,
+			options,
+			addJwt: true,
+		});
+
+		space.value.imagesMeta = result.data.imagesMeta;
+	}
 }
 
 </script>
@@ -91,12 +135,19 @@ async function onChangeImagesOrderActions(event){
 				</section>
 				
 				<section>
-					<div class="edit-screenshots">
+					<div class="edit-screenshots"
+						v-if="isInitialized"
+					>
 						<div class="edit-screenshots__header">
 							<h2>Edit screenshots</h2>
 						</div>
 
 						<div class="edit-screenshots__main">
+							<div class="add-images">
+								<h3>Add screenshots</h3>
+								<AddScreenshots />
+							</div>
+
 							<div class="change-images-order">
 								<h3 class="title">Change order</h3>
 								<span class="subtitle">(drag and drop)</span>
@@ -106,10 +157,13 @@ async function onChangeImagesOrderActions(event){
 									@changeImagesOrder:action="onChangeImagesOrderActions"
 								/>
 							</div>
-							
+
 							<div class="change-images">
 								<h3 class="title">Edit screenshots</h3>
-								<ChangeImages :imagesMeta="space.imagesMeta" />
+								<ChangeImages 
+									:imagesMeta="space.imagesMeta" 
+									@changeImages:action="onChangeImagesActions"
+								/>
 							</div>
 						</div>
 					</div>

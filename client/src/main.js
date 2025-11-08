@@ -27,6 +27,9 @@ import Tag from "primevue/tag";
 import FileUpload from "primevue/fileupload";
 import Image from "primevue/image";
 import IftaLabel from "primevue/iftalabel";
+import Select from "primevue/select";
+import Badge from 'primevue/badge';
+
 
 const app = createApp(App);
 
@@ -61,6 +64,8 @@ app.component("Carousel", Carousel);
 app.component("Tag", Tag);
 app.component("Image", Image);
 app.component("IftaLabel", IftaLabel);
+app.component("Select", Select);
+app.component("Badge", Badge);
 
 app.use(router);
 

@@ -4,6 +4,9 @@ const addSpace = require("./addSpace");
 const updateSpace = require("./updateSpace");
 const deleteSpace = require("./deleteSpace");
 const updateScreenshotOrder = require("./updateScreenshotOrder");
+const changeScreenshot = require("./changeScreenshot");
+const deleteScreenshot = require("./deleteScreenshot");
+const addScreenshots = require("./addScreenshots");
 
 
 module.exports = {
@@ -13,4 +16,7 @@ module.exports = {
 	updateSpace,
 	deleteSpace,
 	updateScreenshotOrder,
+	changeScreenshot,
+	deleteScreenshot,
+	addScreenshots,
 };

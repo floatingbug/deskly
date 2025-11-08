@@ -16,15 +16,9 @@ import FinancialStats from "./components/financialStats/FinancialStats.vue";
 
 const { initializeBookingStore, bookings } = useBookingStore();
 const toast = useToast();
-const spaces = ref([]);
 const isInitialized = ref(false);
 
 onMounted(async () => {
-	const fetchedSpaces = await fetchSpacesAPI();
-
-	// spaces
-	spaces.value = fetchedSpaces.data;
-
 	await initializeBookingStore();
 
 	isInitialized.value = true;
@@ -79,7 +73,7 @@ async function onSpacesAction(event) {
 			</div>
 
 			<div class="spaces-container">
-				<Spaces v-if="isInitialized" :spaces="spaces" @spaces:action="onSpacesAction" />
+				<Spaces @spaces:action="onSpacesAction" />
 			</div>
 
 			<div class="bookings-container" v-if="isInitialized">
@@ -99,6 +93,7 @@ async function onSpacesAction(event) {
 .stats-container {
 	width: 100%;
 	max-width: 1400px;
+	height: auto;
 	display: grid;
 	grid-template-columns: repeat(2, minmax(100px, 180px));
 	justify-content: start;

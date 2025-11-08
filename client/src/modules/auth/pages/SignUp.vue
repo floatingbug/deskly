@@ -1,120 +1,138 @@
 <script setup>
-import { ref, reactive, watch } from "vue";
+import {ref, reactive} from "vue";
 import { useRouter } from "vue-router";
 import AuthLayout from "../layouts/AuthLayout.vue";
 import signUpAPI from "../api/signUpAPI.js";
-import Select from "primevue/select";
+import AuthForm from "../components/organisms/AuthForm.vue";
+
 
 const router = useRouter();
-const credentials = reactive({
+
+const credentials = ref({
 	name: "",
 	email: "",
-	role: "user",
+	role: "",
 	password: "",
 });
-const errors = ref([]);
-const roleOptions = ref([
+
+const items = ref([
 	{
-		label: "User",
-		value: "user",
+		id: "name",
+		label: "Name",
+		type: "text",
 	},
 	{
-		label: "Host",
-		value: "host",
+		id: "email",
+		label: "E-Mail",
+		type: "email",
 	},
+	{
+		id: "password",
+		label: "Password",
+		type: "password",
+	},
+	{
+		id: "role",
+		label: "Role",
+		type: "select",
+		options: [
+			{
+				name: "User",
+				id: "user",
+			},
+			{
+				name: "Host",
+				id: "host",
+			},
+		],
+	}
 ]);
 
-watch(
-	() => credentials,
-	() => {
-		errors.value = [];
-	},
-	{ deep: true },
-);
+const errors = reactive({
+	name: [],
+	email: [],
+	password: [],
+	role: [],
+});
 
-async function onSignUpButtonClick() {
-	const result = await signUpAPI(credentials);
 
-	if (!result.success) {
-		errors.value = result.errors;
-		return;
+async function onAuthFormActions(event) {
+	if(event.action === "submit"){
+		// if errors are remaining return
+		const error = Object.keys(errors).find(key => errors[key].length > 0);
+		if(error) return;
+
+		// validate user inputs
+		if(!validateInputs()) return;
+
+		// send credentials to server
+		const result = await signUpAPI({
+			name: credentials.value.name,
+			email: credentials.value.email,
+			password: credentials.value.password,
+			role: credentials.value.role,
+		});
+
+		router.push("/auth/sign-in");
 	}
 
-	router.push("/auth/sign-in");
+	// remove errors
+	if(event.action === "removeErrors"){
+		removeErrors(event.inputId);
+	}
 }
 
-async function onSelectButtonChange(event) {
-	console.log(event);
+function validateInputs(){
+	let success = true;
+
+	// validate required inputs
+	if(!credentials.value.name){
+		errors.name.push("Please enter a name."); 
+		success = false;
+	}
+	if(credentials.value.name && credentials.value.name.length < 3){
+		errors.name.push("Name must have at least 3 characters.");
+	}
+
+	if(!credentials.value.email){
+		errors.email.push("Please enter an e-mail address."); 
+		success = false;
+	}
+	if(!credentials.value.password){
+		errors.password.push("Please enter a password."); 
+		success = false;
+	}
+	if(!credentials.value.role){
+		errors.role.push("Please select a role."); 
+		success = false;
+	}
+
+
+	return success;
 }
+
+function removeErrors(inputId){
+	errors[inputId] = [];
+}
+
 </script>
 
 <template>
-	<AuthLayout :errors="errors">
-		<template #header>Sign up</template>
-
-		<template #name>
-			<InputGroup>
-				<InputGroupAddon>
-					<i class="pi pi-user"></i>
-				</InputGroupAddon>
-
-				<FloatLabel>
-					<InputText v-model="credentials.name"></InputText>
-					<label for="name">Name</label>
-				</FloatLabel>
-			</InputGroup>
+	<AuthLayout>
+		<template #header>
+			Sign up
 		</template>
 
-		<template #email>
-			<InputGroup>
-				<InputGroupAddon>
-					<i class="pi pi-envelope"></i>
-				</InputGroupAddon>
-
-				<FloatLabel>
-					<InputText type="email" v-model="credentials.email"></InputText>
-					<label for="name">E-Mail</label>
-				</FloatLabel>
-			</InputGroup>
-		</template>
-
-		<template #password>
-			<InputGroup>
-				<InputGroupAddon>
-					<i class="pi pi-lock"></i>
-				</InputGroupAddon>
-
-				<FloatLabel>
-					<InputText type="password" v-model="credentials.password"></InputText>
-					<label for="password">Password</label>
-				</FloatLabel>
-			</InputGroup>
-		</template>
-
-		<template #selectButton>
-			<div class="role-select">
-				<span>Select Your Role</span>
-				<Select
-					v-model="credentials.role"
-					:options="roleOptions"
-					optionLabel="label"
-					optionValue="value"
-					@update:modelValue="onSelectButtonChange"
-				/>
-			</div>
-		</template>
-
-		<template #submit>
-			<Button @click="onSignUpButtonClick">Sign up</Button>
+		<template #mainContent>
+			<AuthForm 
+				v-model="credentials"
+				:items="items"
+				:errors="errors"
+				@authForm:action="onAuthFormActions"
+			/>
 		</template>
 	</AuthLayout>
 </template>
 
 <style scoped>
-.role-select {
-	width: 100%;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
 </style>

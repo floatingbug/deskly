@@ -2,136 +2,141 @@
 import { ref, onMounted } from "vue";
 import InputField from "../molecules/InputField.vue";
 import Amenity from "../molecules/Amenity.vue";
-
-
-const props = defineProps({
-	space: Object,
-});
+import useSpacesStore from "@/stores/useSpacesStore.js";
 
 
 const emit = defineEmits(["editSpaceForm:action"]);
 
 
-const inputItems = ref([
-	{
-		type: "inputText",
-		id: "name",
-		label: "Name",
-		value: props.space.name,
-		newValue: "",
-	},
-	{
-		type: "inputText",
-		id: "location",
-		label: "Location",
-		value: props.space.address,
-		newValue: "",
-	},
-	{
-		type: "textArea",
-		id: "description",
-		label: "description",
-		value: props.space.description,
-		newValue: "",
-	},
-	{
-		type: "inputNumber",
-		id: "capacity",
-		label: "Capacity",
-		value: String(props.space.capacity),
-		newValue: 0,
-	},
-	{
-		type: "inputNumber",
-		id: "hourlyRate",
-		label: "Hourly Rate",
-		value: String(props.space.hourlyRate),
-		newValue: 0,
-	},
-]);
-
-const amenityItems = ref([
-	{
-		label: "Event Area",
-		id: "event_area",
-		value: false,
-		newValue: false,
-	},
-	{
-		label: "Phone Booths",
-		id: "phone_booths",
-		value: false,
-		newValue: false,
-	},
-	{
-		label: "Terrace",
-		id: "terrace",
-		value: false,
-		newValue: false,
-	},
-	{
-		label: "Coffee",
-		id: "coffee",
-		value: false,
-		newValue: false,
-	},
-	{
-		label: "WiFi",
-		id: "wifi",
-		value: false,
-		newValue: false,
-	},
-	{
-		label: "Yoga Room",
-		id: "yoga_room",
-		value: false,
-		newValue: false,
-	},
-	{
-		label: "Standing Desks",
-		id: "standing_desks",
-		value: false,
-		newValue: false,
-	},
-	{
-		label: "Free Water",
-		id: "free_water",
-		value: false,
-		newValue: false,
-	},
-	{
-		label: "Meeting Rooms",
-		id: "meeting_rooms",
-		value: false,
-		newValue: false,
-	},
-	{
-		label: "Printers",
-		id: "printers",
-		value: false,
-		newValue: false,
-	},
-	{
-		label: "Lockers",
-		id: "lockers",
-		value: false,
-		newValue: false,
-	},
-]);
+const {getSelectedSpace} = useSpacesStore();
+const space = ref();
+const inputItems = ref();
+const amenityItems = ref();
 
 const resetTrigger = ref(1);
 const resetTriggerAmenity = ref(1);
 
 
-onMounted(() => {
+onMounted(async () => {
+	space.value = await getSelectedSpace();
+
+	inputItems.value = [
+		{
+			type: "inputText",
+			id: "name",
+			label: "Name",
+			value: space.value.name,
+			newValue: "",
+		},
+		{
+			type: "inputText",
+			id: "location",
+			label: "Location",
+			value: space.value.address,
+			newValue: "",
+		},
+		{
+			type: "textArea",
+			id: "description",
+			label: "description",
+			value: space.value.description,
+			newValue: "",
+		},
+		{
+			type: "inputNumber",
+			id: "capacity",
+			label: "Capacity",
+			value: String(space.value.capacity),
+			newValue: 0,
+		},
+		{
+			type: "inputNumber",
+			id: "hourlyRate",
+			label: "Hourly Rate",
+			value: String(space.value.hourlyRate),
+			newValue: 0,
+		},
+	];
+
+	amenityItems.value = [
+		{
+			label: "Event Area",
+			id: "event_area",
+			value: false,
+			newValue: false,
+		},
+		{
+			label: "Phone Booths",
+			id: "phone_booths",
+			value: false,
+			newValue: false,
+		},
+		{
+			label: "Terrace",
+			id: "terrace",
+			value: false,
+			newValue: false,
+		},
+		{
+			label: "Coffee",
+			id: "coffee",
+			value: false,
+			newValue: false,
+		},
+		{
+			label: "WiFi",
+			id: "wifi",
+			value: false,
+			newValue: false,
+		},
+		{
+			label: "Yoga Room",
+			id: "yoga_room",
+			value: false,
+			newValue: false,
+		},
+		{
+			label: "Standing Desks",
+			id: "standing_desks",
+			value: false,
+			newValue: false,
+		},
+		{
+			label: "Free Water",
+			id: "free_water",
+			value: false,
+			newValue: false,
+		},
+		{
+			label: "Meeting Rooms",
+			id: "meeting_rooms",
+			value: false,
+			newValue: false,
+		},
+		{
+			label: "Printers",
+			id: "printers",
+			value: false,
+			newValue: false,
+		},
+		{
+			label: "Lockers",
+			id: "lockers",
+			value: false,
+			newValue: false,
+		},
+	];
+
 	for(const amenityItem of amenityItems.value){
-		for(const amenity of props.space.amenities){
+		for(const amenity of space.value.amenities){
 			if(amenityItem.id === amenity.id){
 				amenityItem.value = true;
 				amenityItem.newValue = true;
 			}
 		}
 	}
+
+	console.log(amenityItems.value);
 });
 
 
@@ -165,7 +170,7 @@ async function saveChanges(){
 	// emit changes
 	emit("editSpaceForm:action", {
 		changes,
-		spaceId: props.space._id,
+		spaceId: space._id,
 	});
 }
 

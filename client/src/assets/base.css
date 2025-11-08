@@ -40,6 +40,9 @@
 	--bg-surface-dark: var(--p-surface-600);
 	--bg-surface-dark-light: var(--p-surface-400);
 
+	/* Glass surface */
+	--bg-surface-glass: hsl(from var(--bg-surface-light) h s l / 80%);
+
 	/* Shadow Color */
 	--shadow-color: rgba(0, 0, 0, 0.15);
 
@@ -49,8 +52,11 @@
 	--card-header-bg: var(--bg-primary-light);
 
 	/* Text Color */
-	--color-bg: var(--p-surface-50);
-	--color-text: var(--p-surface-950);
+	--color: var(--p-surface-50);
+
+	--color-text: hsl(from var(--p-primary-950) h s calc(l - 10) / 100%);
+	
+	--color-surface-glass: var(--p-surface-800);
 
 	--color-text-contrast: var(--p-primary-contrast-color);
 
@@ -58,6 +64,7 @@
 	--color-label: var(--p-surface-600);
 
 	--color-primary: var(--p-primary-color);
+
 
 	/**********
 	Spacing

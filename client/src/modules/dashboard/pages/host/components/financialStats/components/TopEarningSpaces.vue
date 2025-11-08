@@ -27,8 +27,6 @@ const topSpaces = computed(() => props.financialStats.topEarningSpaces);
 	flex-direction: column;
 	gap: var(--spacing-md);
 	padding: var(--spacing-md);
-	border-radius: var(--radius-md);
-	border: 1px solid var(--bg-surface);
 	background-color: var(--color-bg);
 }
 

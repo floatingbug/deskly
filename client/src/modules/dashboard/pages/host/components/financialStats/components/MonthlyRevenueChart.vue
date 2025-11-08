@@ -1,11 +1,22 @@
 <script setup>
-import { computed } from "vue";
+import { ref, onMounted, watch } from "vue";
+import Chart from "primevue/chart";
 
 const props = defineProps({
-	financialStats: Object,
+	financialStats: {
+		type: Object,
+		required: true,
+	},
 });
 
-const monthlyRevenueChart = computed(() => {
+const monthlyRevenueChart = ref(null);
+const chartOptions = ref(null);
+
+function setChartData() {
+	if (!props.financialStats || !props.financialStats.monthlyRevenue) {
+		return { labels: [], datasets: [] };
+	}
+
 	const allMonths = [
 		"January",
 		"February",
@@ -21,7 +32,9 @@ const monthlyRevenueChart = computed(() => {
 		"December",
 	];
 
-	const barColor = getComputedStyle(document.documentElement).getPropertyValue("--bg-primary-light-dark").trim();
+	const barColor = getComputedStyle(document.documentElement)
+		.getPropertyValue("--bg-primary-light-dark")
+		.trim();
 
 	const revenueMap = new Map(props.financialStats.monthlyRevenue.map((m) => [m.label, m.revenue]));
 
@@ -38,23 +51,39 @@ const monthlyRevenueChart = computed(() => {
 			},
 		],
 	};
-});
+}
 
-const chartOptions = computed(() => ({
-	responsive: true,
-	maintainAspectRatio: false,
-	plugins: {
-		legend: { display: false },
-		tooltip: {
-			callbacks: {
-				label: function (context) {
-					const month = props.financialStats.monthlyRevenue[context.dataIndex];
-					return `${month.label}: ${month.revenue.toFixed(2)} (${month.bookings} bookings)`;
+function setChartOptions() {
+	return {
+		responsive: true,
+		maintainAspectRatio: false,
+		plugins: {
+			legend: { display: false },
+			tooltip: {
+				callbacks: {
+					label: function (context) {
+						const month = props.financialStats.monthlyRevenue[context.dataIndex];
+						if (!month) return "";
+						return `${month.label}: ${month.revenue.toFixed(2)} (${month.bookings} bookings)`;
+					},
 				},
 			},
 		},
+	};
+}
+
+onMounted(() => {
+	monthlyRevenueChart.value = setChartData();
+	chartOptions.value = setChartOptions();
+});
+
+watch(
+	() => props.financialStats,
+	() => {
+		monthlyRevenueChart.value = setChartData();
 	},
-}));
+	{ deep: true }
+);
 </script>
 
 <template>
@@ -63,7 +92,12 @@ const chartOptions = computed(() => ({
 			<h3>Monthly Revenue</h3>
 		</header>
 
-		<Chart type="bar" :data="monthlyRevenueChart" :options="chartOptions" />
+		<Chart
+			v-if="props.financialStats"
+			type="bar"
+			:data="monthlyRevenueChart"
+			:options="chartOptions"
+		/>
 	</div>
 </template>
 
@@ -73,8 +107,6 @@ const chartOptions = computed(() => ({
 	height: 100%;
 	display: flex;
 	flex-direction: column;
-	border-radius: var(--radius-md);
-	border: 1px solid var(--bg-surface);
 	background-color: var(--color-bg);
 }
 
