@@ -31,9 +31,7 @@ jobs:
       - name: Deploy with rsync
         uses: burnett01/rsync-deployments@5.2
         with:
-          # --no-times = verhindert Permission-Fehler beim Setzen der Zeitstempel
-          # --delete   = löscht alte Dateien, die nicht mehr im Build sind
-          switches: -avz --delete --no-times
+          switches: -avz --delete --no-perms --no-times
           path: client/dist/
           remote_path: /var/www/deskly
           remote_host: ${{ secrets.SSH_HOST }}
