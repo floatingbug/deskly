@@ -23,9 +23,6 @@ export default async function ({ userInput, images }) {
 		body: formData,
 	};
 
-	console.log(metaDataStringifyed);
-
-
 	const result = await apiFetch({
 		path,
 		options,

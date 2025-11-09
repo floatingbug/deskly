@@ -135,8 +135,6 @@ onMounted(async () => {
 			}
 		}
 	}
-
-	console.log(amenityItems.value);
 });
 
 
