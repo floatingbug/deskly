@@ -10,30 +10,50 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 🧩 Code aus dem Repository holen
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # ⚙️ Node.js Umgebung vorbereiten
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
+      # 🏗️ Vue-Frontend bauen
       - name: Build Vue frontend
         working-directory: ./client
         run: |
           npm ci
           npm run build
 
+      # 🚀 Frontend mit rsync deployen
       - name: Deploy with rsync
         uses: burnett01/rsync-deployments@5.2
         with:
-          switches: -avz --delete
+          # --no-times = verhindert Permission-Fehler beim Setzen der Zeitstempel
+          # --delete   = löscht alte Dateien, die nicht mehr im Build sind
+          switches: -avz --delete --no-times
           path: client/dist/
           remote_path: /var/www/deskly
           remote_host: ${{ secrets.SSH_HOST }}
           remote_user: ${{ secrets.SSH_USER }}
           remote_key: ${{ secrets.SSH_KEY }}
 
+      # 🔁 Optional: Backend (Node.js) aktualisieren und neu starten
+      - name: Update backend
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd /var/www/deskly-backend
+            git pull origin main
+            npm ci
+            pm2 restart all || pm2 start server.js --name deskly-backend --port 3104
+
+      # 🔄 Nginx reloaden, um neue statische Dateien einzulesen
       - name: Reload nginx
         uses: appleboy/ssh-action@v0.1.10
         with:
@@ -42,3 +62,4 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             sudo systemctl reload nginx
+
