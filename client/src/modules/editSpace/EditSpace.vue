@@ -24,6 +24,7 @@ onMounted(async () => {
 
 async function onEditSpaceFormActions(event){
 	//add changed fields
+	console.log(event);
 	const path = "/spaces/update-space";
 	const options = {
 		method: "PATCH",

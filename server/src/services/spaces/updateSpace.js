@@ -3,6 +3,11 @@ const {ObjectId} = require("@config/db");
 
 
 async function updateSpace({inputs, amenities, spaceId, user}){
+	console.log(inputs);
+	console.log(amenities);
+	console.log("-->", spaceId);
+	console.log(user);
+
 	try{
 		const filter = {
 			_id: new ObjectId(spaceId),
@@ -16,6 +21,8 @@ async function updateSpace({inputs, amenities, spaceId, user}){
 		};
 
 		const result = await spacesModel.updateSpace({filter, update});
+
+		console.log(result);
 
 		return {
 			success: true,

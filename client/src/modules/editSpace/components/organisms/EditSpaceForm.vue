@@ -168,7 +168,7 @@ async function saveChanges(){
 	// emit changes
 	emit("editSpaceForm:action", {
 		changes,
-		spaceId: space._id,
+		spaceId: space.value._id,
 	});
 }
 

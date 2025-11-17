@@ -2,6 +2,7 @@
 import {ref, watch, nextTick} from "vue";
 import MessageBubble from "../atoms/MessageBubble.vue";
 import MessageInput from "../molecules/MessageInput.vue";
+import useUserStore from "@/stores/useUserStore.js";
 
 
 const props = defineProps({
@@ -15,6 +16,7 @@ const props = defineProps({
 const emit = defineEmits(["chatWindow:action"]);
 
 
+const {user} = useUserStore();
 const messagesContainer = ref(null);
 
 
@@ -58,6 +60,8 @@ function onMessageInputActions(event){
 				v-for="(message, index) in messages"
 				:key="index"
 				:message="message"
+				class="message-bubble"
+				:class="message.messageCreatorName === user.name ? 'user-message-bubble' : ''"
 			/>
 		</div>
 
@@ -86,13 +90,24 @@ function onMessageInputActions(event){
 
 .messages-container {
 	height: 70%;
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-md);
 	overflow-y: auto;
 	scroll-behavior: smooth;
+}
+
+.message-bubble {
+	width: 90%;
 }
 
 .message-input-container {
 	height: 30%;
 	z-index: 2;
 	background-color: var(--bg-surface-light);
+}
+
+.user-message-bubble {
+	margin-left: auto;
 }
 </style>
