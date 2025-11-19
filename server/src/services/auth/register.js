@@ -8,6 +8,7 @@ async function register({name, email, password, role}){
 			email,
 			password,
 			role,
+			subscriptionTier: "basic",
 			createdAt: Date.now(),
 		};
 

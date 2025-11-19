@@ -3,6 +3,7 @@ const getBookings = require("./getBookings");
 const deleteBooking = require("./deleteBooking");
 const addCanceledBooking = require("./addCanceledBooking");
 const getCanceledBookings = require("./getCanceledBookings");
+const countBookings = require("./countBookings");
 
 
 module.exports = {
@@ -11,4 +12,5 @@ module.exports = {
 	deleteBooking,
 	addCanceledBooking,
 	getCanceledBookings,
+	countBookings,
 };

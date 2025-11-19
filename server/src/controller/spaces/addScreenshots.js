@@ -11,6 +11,7 @@ async function addScreenshots(req, res, next){
 			spaceId,
 			userId: req.user._id,
 			images,
+			user: req.user,
 		});
 
 		return response(res, result);

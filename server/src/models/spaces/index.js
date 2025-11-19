@@ -7,7 +7,6 @@ const deleteSpace = require("./deleteSpace");
 const updateScreenshotOrder = require("./updateScreenshotOrder");
 const deleteImage = require("./deleteImage");
 const replaceImagesMeta = require("./replaceImagesMeta");
-const addScreenshots = require("./addScreenshots");
 
 
 module.exports = {
@@ -20,5 +19,4 @@ module.exports = {
 	updateScreenshotOrder,
 	deleteImage,
 	replaceImagesMeta,
-	addScreenshots,
 };
