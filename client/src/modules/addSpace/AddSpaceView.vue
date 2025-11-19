@@ -5,14 +5,18 @@ import AddSpaceForm from "./components/organisms/AddSpaceForm.vue";
 import addSpaceAPI from "./api/addSpaceAPI.js";
 import { useToast } from "primevue/usetoast";
 import MainLayout from "@/layouts/MainLayout.vue";
+import useStateStore from "@/stores/useStateStore.js";
 
 
+const {state} = useStateStore();
 const router = useRouter();
 const toast = useToast();
 const addSpaceFormErrors = ref([]);
 
 
 async function onAddSpaceFormAction(event) {
+	state.isLoading = true;
+
 	const userInput = event.userInput;
 	const images = event.images;
 
@@ -25,15 +29,18 @@ async function onAddSpaceFormAction(event) {
 	if (userInput.amenities.length <= 0) addSpaceFormErrors.value.push("At least one amenity is required.");
 	if (!images) addSpaceFormErrors.value.push("At least one Screenshot is required.");
 
-	if (addSpaceFormErrors.value.length > 0) return;
+	if (addSpaceFormErrors.value.length > 0) return state.isLoading = false;;
 
 	// send space
 	const result = await addSpaceAPI({ userInput, images });
+	
 
 	if (!result.success) {
 		toast.add({ severity: "info", summary: "Space not added.", detail: result.errors[0], life: 5000 });
-		return;
+		return state.isLoading = false;
 	}
+
+	state.isLoading = false;
 
 	router.push("/dashboard");
 }

@@ -37,7 +37,7 @@ async function addSpace(req, res, next){
 			space: req.body,
 		});
 
-		response(res, result);
+		return response(res, result);
 	}
 	catch(error){
 		next(error);
